@@ -27,89 +27,15 @@
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
 		<!-- 轮播图 -->
-		<view class="swiper">
-			<view class="swiper-box">
-				<swiper circular="true" autoplay="true" @change="swiperChange">
-					<swiper-item v-for="swiper in swiperList" :key="swiper.id">
-						<image :src="swiper.img" @tap="toSwiper(swiper)"></image>
-					</swiper-item>
-				</swiper>
-				<view class="indicator">
-					<view
-						class="dots"
-						v-for="(swiper, index) in swiperList"
-						:class="[currentSwiper >= index ? 'on' : '']"
-						:key="index"
-					></view>
-				</view>
-			</view>
-		</view>
+		<mySwiper :swiperList="swiperList" />
 		<!-- 分类列表 -->
-		<view class="category-list">
-			<view
-				class="category"
-				v-for="(row, index) in categoryList"
-				:key="index"
-				@tap="toCategory(row)"
-			>
-				<view class="img"><image :src="row.img"></image></view>
-				<view class="text">{{ row.name }}</view>
-			</view>
-		</view>
-		<!-- 广告图 -->
-		<view class="banner"><image src="/static/img/banner.jpg"></image></view>
-		<!-- 活动区 -->
-		<view class="promotion">
-			<view class="text">优惠专区</view>
-			<view class="list">
-				<view
-					class="column"
-					v-for="(row, index) in Promotion"
-					@tap="toPromotion(row)"
-					:key="index"
-				>
-					<view class="top">
-						<view class="title">{{ row.title }}</view>
-						<view class="countdown" v-if="row.countdown">
-							<view>{{ row.countdown.h }}</view>
-							:
-							<view>{{ row.countdown.m }}</view>
-							:
-							<view>{{ row.countdown.s }}</view>
-						</view>
-					</view>
-					<view class="left">
-						<view class="ad">{{ row.ad }}</view>
-						<view class="into">点击进入</view>
-					</view>
-					<view class="right"><image :src="row.img"></image></view>
-				</view>
-			</view>
-		</view>
-		<!-- 商品列表 -->
-		<view class="goods-list">
-			<view class="title">
-				<image src="/static/img/hua.png"></image>
-				猜你喜欢
-				<image src="/static/img/hua.png"></image>
-			</view>
-			<view class="product-list">
-				<view
-					class="product"
-					v-for="product in productList"
-					:key="product.goods_id"
-					@tap="toGoods(product)"
-				>
-					<image mode="widthFix" :src="product.img"></image>
-					<view class="name">{{ product.name }}</view>
-					<view class="info">
-						<view class="price">{{ product.price }}</view>
-						<view class="slogan">{{ product.slogan }}</view>
-					</view>
-				</view>
-			</view>
-			<view class="loading-text">{{ loadingText }}</view>
-		</view>
+
+		<categoryList :categoryList="categoryList" />
+		
+		<!-- 广告 -->
+			<banner :bannerImg="bannerImg"/>
+			<!-- 广告活动 -->
+	<!-- <promotion/> -->
 	</view>
 </template>
 
@@ -117,7 +43,12 @@
 var ttt = 0;
 //高德SDK
 import amap from '@/common/SDK/amap-wx.js';
+import productList from '../../../components/productList/productList.vue'
 export default {
+	
+	components:{
+		productList
+	},
 	data() {
 		return {
 			showHeader:true,
@@ -127,7 +58,7 @@ export default {
 			statusTop:null,
 			nVueTitle:null,
 			city: '北京',
-			currentSwiper: 0,
+			bannerImg:"/static/img/banner.jpg",
 			// 轮播图片
 			swiperList: [
 				{ id: 1, src: 'url1', img: '/static/img/1.jpg' },
@@ -140,86 +71,14 @@ export default {
 				{ id: 2, name: '家电', img: '/static/img/category/2.png' },
 				{ id: 3, name: '服饰', img: '/static/img/category/3.png' },
 				{ id: 4, name: '日用', img: '/static/img/category/4.png' },
-				{ id: 5, name: '蔬果', img: '/static/img/category/5.png' },
-				{ id: 6, name: '运动', img: '/static/img/category/6.png' },
-				{ id: 7, name: '书籍', img: '/static/img/category/7.png' },
-				{ id: 8, name: '文具', img: '/static/img/category/8.png' }
+				// { id: 5, name: '蔬果', img: '/static/img/category/5.png' },
+				// { id: 6, name: '运动', img: '/static/img/category/6.png' },
+				// { id: 7, name: '书籍', img: '/static/img/category/7.png' },
+				// { id: 8, name: '文具', img: '/static/img/category/8.png' }
 			],
-			Promotion: [],
-			//猜你喜欢列表
-			productList: [
-				{
-					goods_id: 0,
-					img: '/static/img/goods/p1.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 1,
-					img: '/static/img/goods/p2.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 2,
-					img: '/static/img/goods/p3.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 3,
-					img: '/static/img/goods/p4.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 4,
-					img: '/static/img/goods/p5.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 5,
-					img: '/static/img/goods/p6.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 6,
-					img: '/static/img/goods/p7.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 7,
-					img: '/static/img/goods/p8.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 8,
-					img: '/static/img/goods/p9.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				},
-				{
-					goods_id: 9,
-					img: '/static/img/goods/p10.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				}
-			],
-			loadingText: '正在加载...'
+		
+	
+		
 		};
 	},
 	onPageScroll(e) {
@@ -257,6 +116,7 @@ export default {
 			this.productList.push(p);
 		}
 	},
+
 	onLoad() {
 		
 		// #ifdef APP-PLUS
@@ -283,101 +143,10 @@ export default {
 				// #endif
 			}
 		});
-		//开启定时器
-		this.Timer();
-		//加载活动专区
-		this.loadPromotion();
 	},
 	methods: {
-		//加载Promotion 并设定倒计时,,实际应用中应该是ajax加载此数据。
-		loadPromotion() {
-			let cutTime = new Date();
-			let yy = cutTime.getFullYear(),
-				mm = cutTime.getMonth() + 1,
-				dd = cutTime.getDate();
-			let tmpcountdown = yy + '/' + mm + '/' + dd + ' 23:59:59';
-			let tmpPromotion = [
-				{
-					title: '整点秒杀',
-					ad: '整天秒杀专区',
-					img: '/static/img/s1.jpg',
-					countdown: false
-				},
-				{
-					title: '限时抢购',
-					ad: '每天23点上线',
-					img: '/static/img/s2.jpg',
-					countdown: tmpcountdown
-				} //countdown为目标时间，程序会获取当前时间倒数
-			];
-			//检查倒计时
-			for (let i = 0; i < tmpPromotion.length; i++) {
-				let row = tmpPromotion[i];
-				if (row.countdown) {
-					let h = '00',
-						m = '00',
-						s = '00';
-					let currentTime = new Date();
-					let cutoffTime = new Date(tmpcountdown);
-					if (!(currentTime >= cutoffTime)) {
-						let countTime = parseInt(
-							(cutoffTime.getTime() - currentTime.getTime()) / 1000
-						);
-						h = parseInt(countTime / 3600);
-						m = parseInt((countTime % 3600) / 60);
-						s = countTime % 60;
-						h = h < 10 ? '0' + h : h;
-						m = m < 10 ? '0' + m : m;
-						s = s < 10 ? '0' + s : s;
-					}
-					tmpPromotion[i].countdown = { h: h, m: m, s: s };
-				}
-			}
-			this.Promotion = tmpPromotion;
-		},
-		//定时器
-		Timer() {
-			setInterval(() => {
-				if (this.Promotion.length > 0) {
-					for (let i = 0; i < this.Promotion.length; i++) {
-						let row = this.Promotion[i];
-						if (row.countdown) {
-							if (
-								!(
-									row.countdown.h == 0 &&
-									row.countdown.m == 0 &&
-									row.countdown.s == 0
-								)
-							) {
-								if (row.countdown.s > 0) {
-									row.countdown.s--;
-									row.countdown.s =
-										row.countdown.s < 10
-											? '0' + row.countdown.s
-											: row.countdown.s;
-								} else if (row.countdown.m > 0) {
-									row.countdown.m--;
-									row.countdown.m =
-										row.countdown.m < 10
-											? '0' + row.countdown.m
-											: row.countdown.m;
-									row.countdown.s = 59;
-								} else if (row.countdown.h > 0) {
-									row.countdown.h--;
-									row.countdown.h =
-										row.countdown.h < 10
-											? '0' + row.countdown.h
-											: row.countdown.h;
-									row.countdown.m = 59;
-									row.countdown.s = 59;
-								}
-								this.Promotion[i].countdown = row.countdown;
-							}
-						}
-					}
-				}
-			}, 1000);
-		},
+	
+	
 		//消息列表
 		toMsg(){
 			uni.navigateTo({
@@ -416,6 +185,7 @@ export default {
 			this.currentSwiper = event.detail.current;
 		}
 	}
+
 };
 </script>
 <style lang="scss">
@@ -578,199 +348,5 @@ page{position: relative;background-color: #fff;}
 	}
 }
 
-.category-list {
-	width: 92%;
-	margin: 0 4%;
-	padding: 0 0 30upx 0;
-	border-bottom: solid 2upx #f6f6f6;
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	.category {
-		width: 25%;
-		margin-top: 50upx;
-		display: flex;
-		flex-wrap: wrap;
-		.img {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			image {
-				width: 9vw;
-				height: 9vw;
-			}
-		}
-		.text {
-			margin-top: 16upx;
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			font-size: 24upx;
-			color: #3c3c3c;
-		}
-	}
-}
-.banner {
-	width: 92%;
-	margin: 40upx 4%;
-	image {
-		width: 100%;
-		height: 20vw;
-		border-radius: 10vw;
-		box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.3);
-	}
-}
-.promotion {
-	width: 92%;
-	margin: 0 4%;
-	.text {
-		width: 100%;
-		height: 60upx;
-		font-size: 34upx;
-		font-weight: 600;
-		margin-top: -10upx;
-	}
-	.list {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		.column {
-			width: 43%;
-			padding: 15upx 3%;
-			background-color: #ebf9f9;
-			border-radius: 10upx;
-			overflow: hidden;
-			display: flex;
-			justify-content: space-between;
-			flex-wrap: wrap;
-			.top {
-				width: 100%;
-				height: 40upx;
-				display: flex;
-				align-items: center;
-				margin-bottom: 5upx;
-				.title {
-					font-size: 30upx;
-				}
-				.countdown {
-					margin-left: 20upx;
-					display: flex;
-					height: 40upx;
-					display: flex;
-					align-items: center;
-					font-size: 20upx;
-					view {
-						height: 30upx;
-						background-color: #f06c7a;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						color: #fff;
-						border-radius: 4upx;
-						margin: 0 4upx;
-						padding: 0 2upx;
-					}
-				}
-			}
-			.left {
-				width: 50%;
-				height: 18.86vw;
-				display: flex;
-				flex-wrap: wrap;
-				align-content: space-between;
-				.ad {
-					margin-top: 5upx;
-					width: 100%;
-					font-size: 22upx;
-					color: #acb0b0;
-				}
-				.into {
-					width: 100%;
-					font-size: 24upx;
-					color: #aaa;
-					margin-bottom: 5upx;
-				}
-			}
-			.right {
-				width: 18.86vw;
-				height: 18.86vw;
-				image {
-					width: 18.86vw;
-					height: 18.86vw;
-				}
-			}
-		}
-	}
-}
-.goods-list {
-	// background-color: #f4f4f4;
-	.title {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 80upx;
-		color: #f47825;
-		font-size: 30upx;
-		margin-top: 10upx;
-		image {
-			width: 30upx;
-			height: 30upx;
-		}
-	}
-	.loading-text {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 60upx;
-		color: #979797;
-		font-size: 24upx;
-	}
-	.product-list {
-		width: 92%;
-		padding: 0 4% 3vw 4%;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		.product {
-			width: 48%;
-			border-radius: 20upx;
-			background-color: #fff;
-			margin: 0 0 15upx 0;
-			box-shadow: 0upx 5upx 25upx rgba(0, 0, 0, 0.1);
-			image {
-				width: 100%;
-				border-radius: 20upx 20upx 0 0;
-			}
-			.name {
-				width: 92%;
-				padding: 10upx 4%;
-				display: -webkit-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 2;
-				text-align: justify;
-				overflow: hidden;
-				font-size: 30upx;
-			}
-			.info {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-end;
-				width: 92%;
-				padding: 10upx 4% 10upx 4%;
 
-				.price {
-					color: #e65339;
-					font-size: 30upx;
-					font-weight: 600;
-				}
-				.slogan {
-					color: #807c87;
-					font-size: 24upx;
-				}
-			}
-		}
-	}
-}
 </style>

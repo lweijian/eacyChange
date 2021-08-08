@@ -255,10 +255,21 @@
 				"backgroundColorBottom":"#ffffff"
 			}
         }
+        ,{
+            "path" : "pages/tabBar/shoppingMall/shoppingMall",
+            "style" :                                                                                    
+            {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText":"商城",
+				"onReachBottomDistance":50
+				
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText" : "",
+		"navigationBarTitleText" : "easyChange",
 		"navigationBarBackgroundColor" : "#ffffff",
 		"backgroundColor" : "#ffffff",
 		"backgroundColorTop":"#ffffff",
@@ -279,13 +290,18 @@
 				"pagePath": "pages/tabBar/category/category",
 				"iconPath": "static/img/tabBar/category.png",
 				"selectedIconPath": "static/img/tabBar/category-on.png",
-				"text": "分类"
-			},
-			{
+				"text": "设计"
+			},{
 				"pagePath": "pages/tabBar/cart/cart",
 				"iconPath": "static/img/tabBar/cart.png",
 				"selectedIconPath": "static/img/tabBar/cart-on.png",
-				"text": "购物车"
+				"text": "发现"
+			},
+			{
+				"pagePath": "pages/tabBar/shoppingMall/shoppingMall",
+				"iconPath": "static/img/tabBar/cart.png",
+				"selectedIconPath": "static/img/tabBar/cart-on.png",
+				"text": "商城"
 			},
 			{
 				"pagePath": "pages/tabBar/user/user",
