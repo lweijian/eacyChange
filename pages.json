@@ -247,7 +247,6 @@
 			"path": "pages/tabBar/shoppingMall/shoppingMall",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "商城",
 				"onReachBottomDistance": 50
 
 			}

@@ -530,7 +530,7 @@
 		}
 	}
 	.footer{
-		width: 92%;
+		width: 100%;
 		padding: 0 4%;
 		background-color: #fbfbfb;
 		height: 100upx;
