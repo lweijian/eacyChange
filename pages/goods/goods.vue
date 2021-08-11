@@ -2,6 +2,7 @@
 	<view>
 		<view class="status" :style="{ opacity: afterHeaderOpacity }"></view>
 		<view class="header">
+			
 			<!-- 头部-默认显示 -->
 			<view class="before" :style="{ opacity: 1 - afterHeaderOpacity, zIndex: beforeHeaderzIndex }">
 				<view class="back"><view class="icon xiangqian" @tap="back" v-if="showBack"></view></view> 
@@ -492,7 +493,7 @@ page {
 	/*  #endif  */
 	.before,
 	.after {
-		width: 92%;
+		width: 100%;
 		padding: 0 4%;
 		height: 100upx;
 		display: flex;
@@ -620,7 +621,7 @@ page {
 	}
 }
 .info-box {
-	width: 92%;
+	width: 100%;
 	padding: 20upx 4%;
 	background-color: #fff;
 	margin-bottom: 20upx;
@@ -746,7 +747,7 @@ page {
 .footer {
 	position: fixed;
 	bottom: 0upx;
-	width: 92%;
+	width: 100%;
 	padding: 0 4%;
 	height: 99upx;
 	border-top: solid 1upx #eee;
@@ -820,7 +821,7 @@ page {
 		position: fixed;
 		z-index: 22;
 		bottom: -70%;
-		width: 92%;
+		width: 100%;
 		padding: 0 4%;
 		height: 70%;
 		border-radius: 20upx 20upx 0 0;
@@ -990,7 +991,7 @@ page {
 		z-index: 11;
 	}
 	.layer{
-		width: 92%;
+		width: 100%;
 		position: fixed;
 		z-index: 12;
 		padding: 0 4%;

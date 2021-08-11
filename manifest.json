@@ -67,5 +67,9 @@
             "urlCheck" : true
         },
         "permission" : {}
+    },
+    "h5" : {
+        "title" : "challenge-cup",
+        "domain" : "test"
     }
 }

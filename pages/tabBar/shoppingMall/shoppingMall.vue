@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<productList :productList=productList :loadingText=loadingText />
-		
 	</view>
 </template>
 
@@ -84,6 +83,7 @@
 					}
 				],
 				loadingText: '正在加载...'
+				
 			};
 		},
 		
@@ -140,5 +140,5 @@
 </script>
 
 <style lang="scss">
-
+	
 </style>

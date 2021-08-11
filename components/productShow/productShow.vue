@@ -1,11 +1,7 @@
 <template>
 		<!-- 商品列表 -->
 		<view class="goods-list">
-			<view class="title">
-				<image src="/static/img/hua.png"></image>
-				商品
-				<image src="/static/img/hua.png"></image>
-			</view>
+		
 			<view class="product-list">
 				<view
 					class="product"
@@ -14,10 +10,17 @@
 					@tap="toGoods(product)"
 				>
 					<image mode="widthFix" :src="product.img"></image>
-					<view class="name">{{ product.name }}</view>
+					<view class="introduce">{{ product.name }}</view>
 					<view class="info">
-						<view class="price">{{ product.price }}</view>
-						<view class="slogan">{{ product.slogan }}</view>
+						<view class="author">
+							<image class="head-img" src="../../static/img/VIP.png" mode="heightFix"></image>
+							<view class="author-name">{{ product.authorName }}</view>
+						</view>
+						
+						<view class="slogan">
+							<u-icon name="thumb-up"/>
+						{{ product.slogan }}
+						</view>
 					</view>
 				</view>
 			</view>
@@ -28,7 +31,7 @@
 
 <script>
 	export default {
-		name:"productList",
+		name:"productShow",
 		props:['productList','loadingText'],
 		data() {
 			return {
@@ -56,20 +59,7 @@
 .goods-list {
 	// background-color: #f4f4f4;
 	
-	.title {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 80upx;
-		color: #f47825;
-		font-size: 30upx;
-		margin-top: 10upx;
-		image {
-			width: 30upx;
-			height: 30upx;
-		}
-	}
+
 	.loading-text {
 		width: 100%;
 		display: flex;
@@ -95,7 +85,7 @@
 				width: 100%;
 				border-radius: 20upx 20upx 0 0;
 			}
-			.name {
+			.introduce {
 				width: 92%;
 				padding: 8upx 4%;
 				display: -webkit-box;
@@ -109,14 +99,27 @@
 				display: flex;
 				justify-content: space-between;
 				align-items: flex-end;
-				width: 92%;
 				padding: 10upx 4% 10upx 4%;
-
-				.price {
-					color: #e65339;
-					font-size: 30upx;
-					font-weight: 600;
-				}
+				.author{
+					display: flex;
+					align-items: center;
+					.head-img{
+						height: 40upx;
+						width: 40upx;
+						margin: 0 10upx;
+						image{
+							width: 100%;
+							height: 100%;
+							border-radius: 100%;
+							
+						}
+					}
+					.author-name {
+					
+						font-size: 12upx;
+						
+					}
+					}
 				.slogan {
 					color: #807c87;
 					font-size: 24upx;

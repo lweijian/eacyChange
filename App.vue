@@ -16,4 +16,5 @@
 	/*每个页面公共css */
 	@import "uview-ui/index.scss";
 	@import "/static/iconfont/font.scss";
+	/* #ifdef H5 */ uni-page-head { display: none; } /* #endif */
 </style>

@@ -4,12 +4,9 @@
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
 			<view class="addr"></view>
 			<view class="input-box">
-				
+
 			</view>
-			<view class="icon-btn">
-				<view class="icon tongzhi" @tap="toMsg"></view>
-				<view class="icon setting" @tap="toSetting"></view>
-			</view>
+
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
@@ -22,14 +19,31 @@
 			<!-- 昵称,个性签名 -->
 			<view class="right">
 				<view class="username" @tap="toLogin">{{user.username}}</view>
-				<view class="signature" @tap="toSetting">{{user.signature}}</view>
+
 			</view>
+
+			<view class="signature" @tap="toLogin">{{user.signature}}</view>
+			<view class="data-show">
+				<view class="data-item" v-for="(item,index) in user.dataShow">
+					<view class="data-number"> {{item.number}}</view>
+					<view class="data-name"> {{item.name}}</view>
+
+				</view>
+
+			</view>
+
+			<view class="icon-btn">
+				<view>编辑资料</view>
+				<view class="icon setting" @tap="toSetting"></view>
+			</view>
+
+
 			<!-- 二维码按钮 -->
-			<view class="erweima" @tap="toMyQR">
+			<!-- 			<view class="erweima" @tap="toMyQR">
 				<view class="icon qr"></view>
-			</view>
+			</view> -->
 		</view>
-		<!-- VIP banner -->
+		<!-- 	VIP banner
 		<view class="VIP">
 			<view class="img">
 				<image src="/static/img/VIP.png"></image>
@@ -37,19 +51,23 @@
 			<view class="title">开通VIP会员</view>
 			<view class="tis">会员特权</view>
 		</view>
+		 -->
+
+
 		<!-- 订单-余额 -->
-		<view class="order">
-			<!-- 订单类型 -->
-			<view class="list">
+		<!-- 	<view class="order"> -->
+		<!-- 订单类型 -->
+		<!-- 			<view class="list">
 				<view class="box" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(index)">
 					<view class="img">
 						<view class="icon" :class="row.icon"></view>
 					</view>
 					<view class="text">{{row.text}}</view>
 				</view>
-			</view>
-			<!-- 余额 -->
-			<view class="balance-info">
+			</view> -->
+
+		<!-- 余额 -->
+		<!-- 		<view class="balance-info">
 				<view class="left">
 					<view class="box">
 						<view class="num">{{user.integral}}</view>
@@ -73,8 +91,11 @@
 					</view>
 				</view>
 			</view>
-		</view>
-		<!-- 工具栏 -->
+		 -->
+	</view>
+
+
+	<!-- 		工具栏
 		<view class="toolbar">
 			<view class="title">我的工具栏</view>
 			<view class="list">
@@ -86,65 +107,120 @@
 				</view>
 			</view>
 		</view>
-		<!-- 占位 -->
-		<view class="place-bottom"></view>
+		 -->
+	<!-- 占位 -->
+	<!-- 		<view class="place-bottom"></view> -->
 	</view>
 </template>
 <script>
-
 	export default {
 		data() {
 			return {
-				isfirst:true,
-				headerPosition:"fixed",
-				headerTop:null,
-				statusTop:null,
-				showHeader:true,
+				isfirst: true,
+				headerPosition: "fixed",
+				headerTop: null,
+				statusTop: null,
+				showHeader: true,
 				//个人信息,
-				user:{
-					username:'游客1002',
-					face:'/static/img/face.jpg',
-					signature:'点击昵称跳转登录/注册页',
-					integral:0,
-					balance:0,
-					envelope:0
+				user: {
+					username: '游客1002',
+					face: '/static/img/face.jpg',
+					signature: '点击昵称跳转登录/注册页',
+					integral: 0,
+					balance: 0,
+					envelope: 0,
+					dataShow: [{
+						name: " 关注",
+						number: 110
+					}, {
+						name: "粉丝",
+						number: 120
+					}, {
+						name: "点赞与收藏",
+						number: 120
+					}]
 				},
 				// 订单类型
-				orderList:[
-					{text:'待付款',icon:"fukuan"},
-					{text:'待发货',icon:"fahuo"},
-					{text:'待收货',icon:"shouhuo"},
-					{text:'待评价',icon:"pingjia"},
-					{text:'退换货',icon:"tuihuo"}
+				orderList: [{
+						text: '待付款',
+						icon: "fukuan"
+					},
+					{
+						text: '待发货',
+						icon: "fahuo"
+					},
+					{
+						text: '待收货',
+						icon: "shouhuo"
+					},
+					{
+						text: '待评价',
+						icon: "pingjia"
+					},
+					{
+						text: '退换货',
+						icon: "tuihuo"
+					}
 				],
 				// 工具栏列表
-				mytoolbarList:[
-					{url:'../../user/keep/keep',text:'我的收藏',img:'/static/img/user/point.png'},
-					{url:'../../user/coupon/coupon',text:'优惠券',img:'/static/img/user/quan.png'}, 
-					{url:'',text:'新客豪礼',img:'/static/img/user/renw.png'},
-					{url:'',text:'领红包',img:'/static/img/user/momey.png'},
-					
-					{url:'../../user/address/address',text:'收货地址',img:'/static/img/user/addr.png'},
-					{url:'',text:'账户安全',img:'/static/img/user/security.png'},
-					{url:'',text:'银行卡',img:'/static/img/user/bank.png'},
-					{url:'',text:'抽奖',img:'/static/img/user/choujiang.png'},
+				mytoolbarList: [{
+						url: '../../user/keep/keep',
+						text: '我的收藏',
+						img: '/static/img/user/point.png'
+					},
+					{
+						url: '../../user/coupon/coupon',
+						text: '优惠券',
+						img: '/static/img/user/quan.png'
+					},
+					{
+						url: '',
+						text: '新客豪礼',
+						img: '/static/img/user/renw.png'
+					},
+					{
+						url: '',
+						text: '领红包',
+						img: '/static/img/user/momey.png'
+					},
+
+					{
+						url: '../../user/address/address',
+						text: '收货地址',
+						img: '/static/img/user/addr.png'
+					},
+					{
+						url: '',
+						text: '账户安全',
+						img: '/static/img/user/security.png'
+					},
+					{
+						url: '',
+						text: '银行卡',
+						img: '/static/img/user/bank.png'
+					},
+					{
+						url: '',
+						text: '抽奖',
+						img: '/static/img/user/choujiang.png'
+					},
 					// {text:'客服',img:'/static/img/user/kefu.png'},
 					// {text:'签到',img:'/static/img/user/mingxi.png'}
-					
+
 				]
 			}
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-		    setTimeout(function () {
-		        uni.stopPullDownRefresh();
-		    }, 1000);
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
 		},
-		onPageScroll(e){
+		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
-			this.headerTop = e.scrollTop>=0?null:0;
-			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+			this.headerPosition = e.scrollTop >= 0 ? "fixed" : "absolute";
+			this.headerTop = e.scrollTop >= 0 ? null : 0;
+			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
 		},
 		onLoad() {
 			this.statusHeight = 0;
@@ -153,63 +229,66 @@
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
 		},
-		onReady(){
+		onReady() {
 			//此处，演示,每次页面初次渲染都把登录状态重置
 			uni.setStorage({
 				key: 'UserInfo',
 				data: false,
-				success: function () {
-				},
-				fail:function(e){
-				}
+				success: function() {},
+				fail: function(e) {}
 			});
 		},
-		onShow(){
+		onShow() {
 			uni.getStorage({
 				key: 'UserInfo',
-				success: (res)=>{
-					if(!res.data){
-						if(this.isfirst){
+				success: (res) => {
+					if (!res.data) {
+						if (this.isfirst) {
 							//this.toLogin();
 						}
-						return ;
+						return;
 					}
 					this.user = res.data;
 				},
-				fail:(e)=>{
+				fail: (e) => {
 					//this.toLogin(); 
 				}
 			});
 		},
 		methods: {
 			//消息列表
-			toMsg(){
+			toMsg() {
 				uni.navigateTo({
-					url:'../../msg/msg'
+					url: '../../msg/msg'
 				})
 			},
-			toOrderList(index){
-				uni.setStorageSync('tbIndex',index);
-				uni.navigateTo({url:'../../user/order_list/order_list?tbIndex='+index}) 
-			},
-			toSetting(){
+			toOrderList(index) {
+				uni.setStorageSync('tbIndex', index);
 				uni.navigateTo({
-					url:'../../user/setting/setting'
+					url: '../../user/order_list/order_list?tbIndex=' + index
 				})
 			},
-			toMyQR(){
+			toSetting() {
 				uni.navigateTo({
-					url:'../../user/myQR/myQR'
+					url: '../../user/setting/setting'
 				})
 			},
-			toLogin(){
-				uni.showToast({title: '请登录',icon:"none"});
+			toMyQR() {
 				uni.navigateTo({
-					url:'../../login/login'
+					url: '../../user/myQR/myQR'
+				})
+			},
+			toLogin() {
+				uni.showToast({
+					title: '请登录',
+					icon: "none"
+				});
+				uni.navigateTo({
+					url: '../../login/login'
 				})
 				this.isfirst = false;
 			},
-			isLogin(){
+			isLogin() {
 				//实际应用中,用户登录状态应该用token等方法去维持登录状态.
 				const value = uni.getStorageSync('UserInfo');
 				if (value) {
@@ -217,280 +296,371 @@
 				}
 				return false
 			},
-			toDeposit(){
+			toDeposit() {
 				uni.navigateTo({
-					url:'../../user/deposit/deposit'
+					url: '../../user/deposit/deposit'
 				})
 			},
-			toPage(url){
-				if(!url){
-					uni.showToast({title: '模板未包含此页面',icon:"none"});return;
+			toPage(url) {
+				if (!url) {
+					uni.showToast({
+						title: '模板未包含此页面',
+						icon: "none"
+					});
+					return;
 				}
 				uni.navigateTo({
-					url:url
+					url: url
 				})
 			}
 		}
-	} 
+	}
 </script>
 <style lang="scss">
-	page{position: relative;background-color: #fff;}
+	$HeadColor:#5a5c6b;
+	$FontColor:#eee;
+
+	page {
+		position: relative;
+		background-color: #fff;
+	}
+
 	.status {
 		width: 100%;
 		height: 0;
 		position: fixed;
 		z-index: 10;
-		background-color: #f06c7a;
+		background-color: $HeadColor;
 		top: 0;
 		/*  #ifdef  APP-PLUS  */
-		height: var(--status-bar-height);//覆盖样式
+		height: var(--status-bar-height); //覆盖样式
 		/*  #endif  */
-		
+
 	}
-	
-	.header{
+
+	.header {
 		width: 92%;
 		padding: 0 4%;
-		height: 100upx;
-		display: flex;
-		justify-content: flex-end;
+		height: 100rpx;
 		align-items: center;
 		position: fixed;
 		top: 0;
 		z-index: 10;
-		background-color: #f06c7a;
+		background-color: $HeadColor;
 		/*  #ifdef  APP-PLUS  */
 		top: var(--status-bar-height);
 		/*  #endif  */
-		.icon-btn{
-			width: 120upx;
-			height: 60upx;
-			flex-shrink: 0;
-			display: flex;
-			.icon{
-				color: #fff;
-				width: 60upx;
-				height: 60upx;
-				display: flex;
-				justify-content: flex-end;
-				align-items: center;
-				font-size: 42upx;
-			}
-		}
+
 	}
-	.place{
-		background-color: #f06c7a;
-		height: 100upx;
+
+	.place {
+		background-color: $HeadColor;
+		height: 100rpx;
 		/*  #ifdef  APP-PLUS  */
 		margin-top: var(--status-bar-height);
 		/*  #endif  */
 	}
-	.place-bottom{
-		height: 300upx;
+
+	.place-bottom {
+		height: 300rpx;
 	}
-	.user{
-		width: 92%;
+
+	.user {
+		width: 100%;
 		padding: 0 4%;
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		// position: relative;
-		background-color: #f06c7a;
-		padding-bottom: 120upx;
-		.left{
-			width: 20vw;
-			height: 20vw;
+		position: relative;
+		background-color: $HeadColor;
+		padding-bottom: 40rpx;
+
+		.left {
+			width: 15vw;
+			height: 15vw;
 			flex-shrink: 0;
-			margin-right: 20upx;
-			border: solid 1upx #fff;
+			margin-right: 20rpx;
+
 			border-radius: 100%;
-			image{
-				width: 20vw;
-				height: 20vw;
+
+			image {
+				width: 15vw;
+				height: 15vw;
 				border-radius: 100%;
 			}
-			
+
 		}
-		.right{
-			width: 100%;
-			.username{
-				font-size: 36upx;
+
+		.right {
+			width: 80%;
+
+			.username {
+				font-size: 36rpx;
 				color: #fff;
 			}
-			.signature{
-				color: #eee;
-				font-size: 28upx;
-			}
+
 		}
-		.erweima{
+
+		.signature {
+			width: 100%;
+			overflow: hidden;
+			margin: 30upx 0;
+			color: $FontColor;
+			font-size: 24rpx;
+
+		}
+
+		.erweima {
 			flex-shrink: 0;
 			width: 10vw;
 			height: 10vw;
 			margin-left: 5vw;
 			border-radius: 100%;
-		
+
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background: linear-gradient(to left, #fbbb37 0%,#fcf0d0 105%);
-			.icon{
+			background: linear-gradient(to left, #fbbb37 0%, #fcf0d0 105%);
+
+			.icon {
 				color: #7b6335;
-				font-size: 42upx;
+				font-size: 42rpx;
 			}
 		}
+
+		.data-show {
+			display: flex;
+
+			color: $FontColor;
+
+
+			.data-item {
+				margin-right: 60upx;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				.data-name {
+					font-size: 12rpx;
+
+				}
+			}
+		}
+
+		.icon-btn {
+			width: 300rpx;
+			height: 60rpx;
+			flex-shrink: 0;
+			display: flex;
+			color: $FontColor;
+			position: absolute;
+			right: 0;
+			bottom: 45rpx;
+
+			view {
+				width: 170upx;
+				border: 1px solid #fff;
+				border-radius: 50% / 50%;
+				font-size: 28rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-right: 24upx;
+				opacity: 0.7;
+			}
+
+			.icon {
+				border: 1px solid #fff;
+				width: 100rpx;
+				height: 60rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 42rpx;
+				color: $FontColor;
+			}
+		}
+
 	}
-	.order{
-		width: 84%;
+
+
+	.order {
+
 		margin: 30upx 4% 30upx 4%;
 		padding: 30upx 4% 20upx 4%;
 		background-color: #fff;
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.1);
-		border-radius: 15upx;
-		.list{
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.1);
+		border-radius: 15rpx;
+
+		.list {
 			display: flex;
 			border-bottom: solid 1upx #17e6a1;
-			padding-bottom: 10upx;
-			.box{
+			padding-bottom: 10rpx;
+
+			.box {
 				width: 20%;
-				.img{
+
+				.img {
 					width: 100%;
 					display: flex;
 					justify-content: center;
-					.icon{
-						font-size: 50upx;
+
+					.icon {
+						font-size: 50rpx;
 						color: #464646;
 					}
 				}
-				.text{
+
+				.text {
 					width: 100%;
 					display: flex;
 					justify-content: center;
-					font-size: 28upx;
+					font-size: 28rpx;
 					color: #3d3d3d;
 				}
 			}
 		}
-		.balance-info{
+
+		.balance-info {
 			display: flex;
 			padding: 10upx 0;
-			.left{
+
+			.left {
 				width: 75%;
 				display: flex;
-				.box{
+
+				.box {
 					width: 50%;
-					font-size: 28upx;
-					
-					.num{
+					font-size: 28rpx;
+
+					.num {
 						width: 100%;
-						height: 50upx;
+						height: 50rpx;
 						display: flex;
 						justify-content: center;
 						align-items: flex-end;
 						color: #f9a453;
 					}
-					.text{
+
+					.text {
 						width: 100%;
 						display: flex;
 						justify-content: center;
 						color: #3d3d3d;
-						font-size: 28upx;
+						font-size: 28rpx;
 					}
 				}
 			}
-			.right{
+
+			.right {
 				border-left: solid 1upx #17e6a1;
 				width: 25%;
-				.box{
-					
-					.img{
+
+				.box {
+
+					.img {
 						width: 100%;
-						height: 50upx;
+						height: 50rpx;
 						display: flex;
 						justify-content: center;
 						align-items: flex-end;
-						.icon{
-							font-size: 45upx;
+
+						.icon {
+							font-size: 45rpx;
 							color: #e78901;
 						}
 					}
-					.text{
+
+					.text {
 						width: 100%;
 						display: flex;
 						justify-content: center;
-						font-size: 28upx;
+						font-size: 28rpx;
 						color: #3d3d3d;
 					}
 				}
 			}
 		}
 	}
-	.VIP{
+
+	.VIP {
 		width: 84%;
 		margin: -65upx auto 20upx auto;
 		padding: 30upx 4%;
-		background: linear-gradient(to left, #dea96d 0%,#f6d59b 100%);
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.2);
-		border-radius: 15upx;
+		background: linear-gradient(to left, #dea96d 0%, #f6d59b 100%);
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.2);
+		border-radius: 15rpx;
 		display: flex;
 		align-items: center;
-		.img{
+
+		.img {
 			flex-shrink: 0;
-			width: 60upx;
-			height: 60upx;
-			image{
-				width: 60upx;
-				height: 60upx;
+			width: 60rpx;
+			height: 60rpx;
+
+			image {
+				width: 60rpx;
+				height: 60rpx;
 			}
 		}
-		.title{
+
+		.title {
 			width: 100%;
 			color: #796335;
-			font-size: 30upx;
+			font-size: 30rpx;
 		}
-		.tis{
+
+		.tis {
 			width: 100%;
 			display: flex;
 			justify-content: flex-end;
 			color: #fcf0d0;
-			font-size: 26upx;
+			font-size: 26rpx;
 		}
 	}
-	.toolbar{
+
+	.toolbar {
 		width: 92%;
 		margin: 0 4% 0 4%;
 		padding: 0 0 20upx 0;
 		background-color: #fff;
-		box-shadow: 0upx 0upx 25upx rgba(0,0,0,0.1);
-		border-radius: 15upx;
-		.title{
-			padding-top: 10upx;
+		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.1);
+		border-radius: 15rpx;
+
+		.title {
+			padding-top: 10rpx;
 			margin: 0 0 10upx 3%;
-			font-size: 30upx;
-			height: 80upx;
+			font-size: 30rpx;
+			height: 80rpx;
 			display: flex;
 			align-items: center;
 		}
-		.list{
+
+		.list {
 			display: flex;
 			flex-wrap: wrap;
-			.box{
+
+			.box {
 				width: 25%;
-				margin-bottom: 30upx;
-				.img{
+				margin-bottom: 30rpx;
+
+				.img {
 					width: 23vw;
 					height: 10.5vw;
 					display: flex;
 					justify-content: center;
-					
-					image{
+
+					image {
 						width: 9vw;
 						height: 9vw;
 					}
 				}
-				.text{
+
+				.text {
 					width: 100%;
 					display: flex;
 					justify-content: center;
-					font-size: 26upx;
+					font-size: 26rpx;
 					color: #3d3d3d;
 				}
 			}

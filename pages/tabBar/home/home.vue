@@ -13,13 +13,12 @@
 			</view>
 			<!-- 搜索框 -->
 			<view class="input-box">
-				<input placeholder="默认关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />
+				<input placeholder="请输入搜索关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />
 				<view class="icon search"></view>
 			</view>
 			<!-- 右侧图标按钮 -->
 			<view class="icon-btn">
-				<view class="icon yuyin-home"></view>
-				<view class="icon tongzhi" @tap="toMsg"></view>
+				<u-icon class="icon" name="chat" @tap="toMsg"></u-icon>
 			</view>
 		</view>
 		<!-- 占位 -->
@@ -34,9 +33,15 @@
 		<banner :bannerImg="bannerImg" />
 
 		<!-- 选项卡 -->
-		<view style="margin:0 100rpx;">
+		<view class="u-tabs">
 			<u-tabs :list="tabList" :is-scroll="false" :current="current" @change="change"></u-tabs>
 		</view>
+		<!-- 选项卡内容 -->
+		<view class="u-tabs-content">
+			<productShow :productList=productList :loadingText=loadingText />
+		</view>
+		
+		
 	</view>
 </template>
 
@@ -50,17 +55,6 @@
 
 		data() {
 			return {
-				tabList: [{
-					name: '关注'
-				}, {
-					name: '图文'
-				}, {
-					name: '视频'
-				}, {
-					name: '集市'
-				}],
-				// 选项卡下标
-				current: 0,
 				showHeader: true,
 				afterHeaderOpacity: 1, //不透明度
 				headerPosition: 'fixed',
@@ -89,30 +83,112 @@
 				// 分类菜单
 				categoryList: [{
 						id: 1,
-						name: '办公',
+						name: '文化非遗',
 						img: '/static/img/category/1.png'
 					},
 					{
 						id: 2,
-						name: '家电',
+						name: '会员专区',
 						img: '/static/img/category/2.png'
 					},
 					{
 						id: 3,
-						name: '服饰',
+						name: '最新活动',
 						img: '/static/img/category/3.png'
 					},
 					{
 						id: 4,
-						name: '日用',
+						name: '签到',
 						img: '/static/img/category/4.png'
 					},
-					// { id: 5, name: '蔬果', img: '/static/img/category/5.png' },
-					// { id: 6, name: '运动', img: '/static/img/category/6.png' },
-					// { id: 7, name: '书籍', img: '/static/img/category/7.png' },
-					// { id: 8, name: '文具', img: '/static/img/category/8.png' }
+			
 				],
-
+// 选项卡
+				tabList: [{
+					name: '关注'
+				}, {
+					name: '图文'
+				}, {
+					name: '视频'
+				}, {
+					name: '集市'
+				}],
+				// 选项卡下标
+				current: 0,
+				//选项卡关注的内容 
+				productList: [
+					{
+						goods_id: 0,
+						img: '/static/img/goods/p1.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 1,
+						img: '/static/img/goods/p2.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 2,
+						img: '/static/img/goods/p3.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 3,
+						img: '/static/img/goods/p4.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 4,
+						img: '/static/img/goods/p5.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 5,
+						img: '/static/img/goods/p6.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 6,
+						img: '/static/img/goods/p7.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 7,
+						img: '/static/img/goods/p8.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 8,
+						img: '/static/img/goods/p9.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					},
+					{
+						goods_id: 9,
+						img: '/static/img/goods/p10.jpg',
+						name: '商品名称商品名称商品名称商品名称商品名称',
+						authorName: 'testName',
+						slogan: '100'
+					}
+				],
+				loadingText: '正在加载...',
 
 
 			};
@@ -129,31 +205,29 @@
 				uni.stopPullDownRefresh();
 			}, 1000);
 		},
-		//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
-		onReachBottom() {
-			uni.showToast({
-				title: '触发上拉加载'
-			});
-			let len = this.productList.length;
-			if (len >= 40) {
-				this.loadingText = '到底了';
-				return false;
-			}
-			// 演示,随机加入商品,生成环境请替换为ajax请求
-			let end_goods_id = this.productList[len - 1].goods_id;
-			for (let i = 1; i <= 10; i++) {
-				let goods_id = end_goods_id + i;
-				let p = {
-					goods_id: goods_id,
-					img: '/static/img/goods/p' + (goods_id % 10 == 0 ? 10 : goods_id % 10) + '.jpg',
-					name: '商品名称商品名称商品名称商品名称商品名称',
-					price: '￥168',
-					slogan: '1235人付款'
-				};
-				this.productList.push(p);
-			}
-		},
-
+	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+	onReachBottom() {
+		uni.showToast({ title: '触发上拉加载' });
+		let len = this.productList.length;
+		if (len >= 40) {
+			this.loadingText = '到底了';
+			return false;
+		}
+		// 演示,随机加入商品,生成环境请替换为ajax请求
+		let end_goods_id = this.productList[len - 1].goods_id;
+		for (let i = 1; i <= 10; i++) {
+			let goods_id = end_goods_id + i;
+			let p = {
+				goods_id: goods_id,
+				img:
+					'/static/img/goods/p' + (goods_id % 10 == 0 ? 10 : goods_id % 10) + '.jpg',
+				name: '商品名称商品名称商品名称商品名称商品名称',
+				price: 'testName',
+				slogan: '100'
+			};
+			this.productList.push(p);
+		}
+	},
 		onLoad() {
 
 			// #ifdef APP-PLUS
@@ -341,6 +415,7 @@
 				padding-left: 28upx;
 				height: 28upx;
 				font-size: 28upx;
+				width: 480upx;
 			}
 		}
 
@@ -420,5 +495,10 @@
 				}
 			}
 		}
+	}
+	.u-tabs{
+		position: relative;
+		top: -12upx;
+		margin: 0 50upx;
 	}
 </style>
