@@ -104,8 +104,9 @@
 			
 				],
 // 选项卡
-				tabList: [
-					{
+
+				tabList: [{
+
 					name: '关注'
 				}, {
 					name: '图文'

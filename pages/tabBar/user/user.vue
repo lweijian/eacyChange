@@ -323,7 +323,7 @@
 				align-items: center;
 
 				.data-name {
-					font-size: 12rpx;
+					font-size: 20rpx;
 
 				}
 			}
@@ -372,8 +372,8 @@
 		width: 750rpx;
 		border: 1px solid #fff;
 		position: relative;
-		bottom: 10rpx;
-		border-radius: 3%;
+		bottom: 50rpx;
+		border-radius: 5%;
 		.tabs{
 	/deep/	#u-tab-item-0{
 			font-weight: 600 !important;
