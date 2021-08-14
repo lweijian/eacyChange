@@ -3,16 +3,12 @@
 		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop}"></view>
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
 			<view class="addr"></view>
-			<view class="input-box">
-
-			</view>
-
 		</view>
-		<!-- 占位 -->
-		<view v-if="showHeader" class="place"></view>
-		<!-- 用户信息 -->
+	<!-- 	占位 -->
+		<view v-if="showHeader" class="place"></view> 
+	<!-- 	用户信息 -->
 		<view class="user">
-			<!-- 头像 -->
+			 <!-- 头像 -->
 			<view class="left">
 				<image :src="user.face" @tap="toSetting"></image>
 			</view>
@@ -62,9 +58,6 @@
 	export default {
 		data() {
 			return {
-				barStyle:{
-					color:"#55ff7f"
-				},
 				isfirst: true,
 				headerPosition: "fixed",
 				headerTop: null,
@@ -118,7 +111,7 @@
 		},
 		onLoad() {
 			this.statusHeight = 0;
-			// #ifdef APP-PLUS
+			// #ifndef H5
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
@@ -239,8 +232,7 @@
 	}
 
 	.header {
-		width: 92%;
-		padding: 0 4%;
+	
 		height: 100rpx;
 		align-items: center;
 		position: fixed;
@@ -261,11 +253,10 @@
 		/*  #endif  */
 	}
 
-	.place-bottom {
-		height: 300rpx;
-	}
+	
 
 	.user {
+		
 		width: 100%;
 		padding: 0 4%;
 		display: flex;
@@ -274,7 +265,6 @@
 		position: relative;
 		background-color: $HeadColor;
 		padding-bottom: 100rpx;
-
 		.left {
 			width: 15vw;
 			height: 15vw;
@@ -296,7 +286,7 @@
 
 			.username {
 				font-size: 36rpx;
-				color: #fff;
+				color: $FontColor;
 			}
 
 		}

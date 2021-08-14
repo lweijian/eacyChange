@@ -1,203 +1,655 @@
 <template>
-	<view>
-        <view class="logo">
-			<view class="img">
-				<image mode="widthFix" src="data:image/png;base64,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"></image>
+	<view class="content">
+		<view class="login-type">
+			<view v-for="(item,index) in loginTypeList" :key="index" @click="loginType = index" :class="{act: loginType === index}"
+			 class="login-type-btn">{{item}}</view>
+		</view>
+		<view class="input-group" v-if="loginType === 0">
+			<view class="input-row border">
+				<text class="title">手机：</text>
+				<m-input class="m-input" type="text" clearable focus v-model="mobile" placeholder="请输入手机号码"></m-input>
+			</view>
+			<view class="input-row">
+				<text class="title">验证码：</text>
+				<m-input type="text" v-model="code" placeholder="请输入验证码"></m-input>
+				<view class="send-code-btn" @click="sendSmsCode">{{codeDuration ? codeDuration + 's' : '发送验证码' }}</view>
 			</view>
 		</view>
-		<!-- 账号密码输入框 -->
-		<view class="form">
-			<view class="username">
-				<input placeholder="请输入手机号" v-model="phoneNumber" placeholder-style="color: rgba(255,255,255,0.8);"/>
+		<view class="input-group" v-else>
+			<view class="input-row border">
+				<text class="title">账号：</text>
+				<m-input class="m-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></m-input>
 			</view>
-			<view class="password">
-				<input placeholder="请输入密码" v-model="passwd" password=true placeholder-style="color: rgba(255,255,255,0.8);"/>
+			<view class="input-row border">
+				<text class="title">密码：</text>
+				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
 			</view>
-			<view class="btn" @tap="doLogin">登 录</view>
-			<view class="res">
-				<view @tap="toPage('register')">用户注册</view>
-				<view @tap="toPage('resetpasswd')">忘记密码</view>
+			<view v-if="needCaptcha" class="input-row">
+				<text class="title">验证码：</text>
+				<m-input type="text" v-model="captchaText" placeholder="请输入验证码"></m-input>
+				<view class="send-code-btn captcha-view" @click="captcha('refreshCaptcha')">
+					<i v-if="captchaing" class="uni-icon_toast uni-loading"></i>
+					<img v-if="!captchaing" :src="captchaBase64" width="100%" height="100%"></img>
+				</view>
 			</view>
 		</view>
-		<!-- 第三方登录 -->
-		<view class="oauth" v-if="isShowOauth">
-			<view class="text">— 快速登录 —</view>
-			<view class="list">
-				<view @tap="oauthLogin('weixin')" v-if="showProvider.weixin" class="icon weixin"></view>
-				<view @tap="oauthLogin('qq')" v-if="showProvider.qq" class="icon qq"></view>
-				<view @tap="oauthLogin('sinaweibo')" v-if="showProvider.sinaweibo" class="icon sinaweibo"></view>
-				<!-- <view @tap="oauthLogin('xiaomi')" v-if="showProvider.xiaomi" class="icon xiaomi"></view> -->
+		<view class="btn-row">
+			<button type="primary" class="primary" :loading="loginBtnLoading" @tap="bindLogin">登录</button>
+		</view>
+		<view class="action-row">
+			<navigator url="./register">注册账号</navigator>
+		</view>
+		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
+			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
+				<image :src="provider.image" @tap="toLogin(provider.value)"></image>
+				<!-- #ifdef MP-WEIXIN -->
+				<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
+				<!-- #endif -->
 			</view>
+		</view>
+		<view class="oauth-row" v-if="hasProvider && !hasAppleLogin && platform ==='ios'" v-bind:style="{top: (positionTop - 50) + 'px'}">
+			<text style="color: #C8C7CC;text-align: center;">暂无法使用苹果登录，请查阅&nbsp;&nbsp;
+				<text style="color: #C8C7CC;text-decoration: underline;" @click="openAppleLoginDoc">Apple登录集成教程</text>
+			</text>
 		</view>
 	</view>
 </template>
 
 <script>
-	import md5 from "@/common/SDK/md5.min.js";
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
+	import {
+		univerifyLogin,
+		univerifyErrorHandler
+	} from '@/common/univerify.js'
+	import {
+		getDeviceUUID
+	} from '@/common/utils.js'
+
+	let weixinAuthService;
+	const captchaOptions = {
+		deviceId: getDeviceUUID(),
+		scene: 'login'
+	}
+
 	export default {
+	
 		data() {
 			return {
-				phoneNumber: '',
-				passwd:'',
-				isShowOauth:false,
-				showProvider:{
-					weixin:false,
-					qq:false,
-					sinaweibo:false,
-					xiaomi:false
-				}
+				platform: uni.getSystemInfoSync().platform,
+				loginType: 0,
+				loginTypeList: ['免密登录', '密码登录'],
+				mobile: '',
+				code: '',
+				providerList: [],
+				hasProvider: false,
+				username: '',
+				password: '',
+				positionTop: 0,
+				isDevtools: false,
+				codeDuration: 0,
+				loginBtnLoading: false,
+				hasAppleLogin: false,
+				needCaptcha: uni.getStorageSync('uni-needCaptcha'),
+				captchaing: false,
+				captchaBase64: '',
+				captchaText: ''
 			}
 		},
-		onShow() {
-			
-		},
+		computed: mapState(['forcedLogin', 'hasLogin', 'univerifyErrorMsg', 'hideUniverify']),
 		onLoad() {
-			//APP显示第三方登录
 			// #ifdef APP-PLUS
-				this.isShowOauth=true;
+			plus.oauth.getServices((services) => {
+				weixinAuthService = services.find((service) => {
+					return service.id === 'weixin'
+				})
+				if (weixinAuthService) {
+					this.hasWeixinAuth = true
+				}
+			});
 			// #endif
-			this.getProvider();
-			
-		}, 
+			if (this.needCaptcha) {
+				this.captcha('createCaptcha')
+			}
+		},
 		methods: {
-			oauthLogin(provider){
-				uni.showLoading();
-				//第三方登录
-				uni.login({
-					provider: provider,
-					success: (loginRes)=>{
-						console.log("success: "+JSON.stringify(loginRes));
-						//案例直接获取用户信息，一般不是在APP端直接获取用户信息，比如微信，获取一个code，传递给后端，后端再去请求微信服务器获取用户信息
-						uni.getUserInfo({
-							provider: provider,
-							success: (infoRes)=>{
-								console.log('用户信息：' + JSON.stringify(infoRes.userInfo));
-								uni.setStorage({
-									key: 'UserInfo',
-									data: {
-										username:infoRes.userInfo.nickName,
-										face:infoRes.userInfo.avatarUrl,
-										signature:'个性签名',
-										integral:0,
-										balance:0,
-										envelope:0
-									},
-									success: function () {
-										uni.hideLoading()
-										uni.showToast({title: '登录成功',icon:"success"});
-										setTimeout(function(){
-											uni.navigateBack();
-										},300)
-									}
-								});
-							}
-						});
-					},
-					fail:(e)=>{
-						console.log("fail: "+JSON.stringify(e));
-					}
-				});
-			},
-			getProvider(){
-				//获取第三方登录服务
+			...mapMutations(['login']),
+			initProvider() {
+				const filters = ['weixin', 'qq', 'sinaweibo', 'univerify'];
 				uni.getProvider({
 					service: 'oauth',
-					success: (res)=>{
-						let len = res.provider.length;
-						for(let i=0;i<len;i++){
-							//有服务才显示按钮图标
-							this.showProvider[res.provider[i]] = true;
+					success: (res) => {
+						if (res.provider && res.provider.length) {
+							if (res.provider.indexOf('apple') !== -1) {
+								this.hasAppleLogin = true;
+							}
+							for (let i = 0; i < res.provider.length; i++) {
+								const curProvider = res.provider[i];
+								if (~filters.indexOf(curProvider)) {
+									this.providerList.push({
+										value: curProvider,
+										image: '../../static/img/' + curProvider + '.png'
+									});
+								}
+							}
+							this.hasProvider = true;
 						}
-						if(res.provider.length==0){
-							this.isShowOauth=false;
-						}
+					},
+					fail: (err) => {
+						console.error('获取服务供应商失败：' + JSON.stringify(err));
 					}
 				});
 			},
-			toPage(page){
-				uni.hideKeyboard()
-				uni.navigateTo({
-					url: page
-				});
+			initPosition() {
+				/**
+				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
+				 * 反向使用 top 进行定位，可以避免此问题。
+				 */
+				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
-			doLogin(){
-				uni.hideKeyboard();
-				//验证手机号码
-				if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(this.phoneNumber))){ 
-					uni.showToast({title: '请填写正确手机号码',icon:"none"});
-					return false; 
+			sendSmsCode() {
+				if (this.codeDuration) {
+					uni.showModal({
+						content: `请在${this.codeDuration}秒后重试`,
+						showCancel: false
+					})
 				}
-				uni.showLoading({
-					title: '提交中...'
-				})
-				//模板示例比对本地储存的用户信息，实际使用中请替换为上传服务器比对。
-				setTimeout(()=>{
-					let md5PW = md5(this.passwd)
-					uni.getStorage({
-						key: 'UserList',
-						success: (res)=>{
-							for(let i in res.data){
-								let row = res.data[i];
-								if(row.username==this.phoneNumber){
-									uni.hideLoading()
-									//比对密码
-									if(md5PW == res.data[i].passwd){
-										uni.showToast({title: '登录成功',icon:"success"});
-									}else{
-										uni.showToast({title: '账号或密码不正确',icon:"none"});
+				if (!/^1\d{10}$/.test(this.mobile)) {
+					uni.showModal({
+						content: '手机号码填写错误',
+						showCancel: false
+					})
+					return
+				}
+				uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action: 'sendSmsCode',
+						params: {
+							mobile: this.mobile,
+							type: 'login'
+						}
+					},
+					success: (e) => {
+						if (e.result.code == 0) {
+							uni.showModal({
+								content: '验证码发送成功，请注意查收',
+								showCancel: false
+							})
+							this.codeDuration = 60
+							this.codeInterVal = setInterval(() => {
+								this.codeDuration--
+								if (this.codeDuration === 0) {
+									if (this.codeInterVal) {
+										clearInterval(this.codeInterVal)
+										this.codeInterVal = null
 									}
 								}
-							}
-						},
-						fail:function(e){
-							uni.hideLoading()
-							uni.showToast({title: '手机号码未注册',icon:"none"});
+							}, 1000)
+						} else {
+							uni.showModal({
+								content: '验证码发送失败：' + e.result.msg,
+								showCancel: false
+							})
 						}
+
+					},
+					fail(e) {
+						uni.showModal({
+							content: '验证码发送失败',
+							showCancel: false
+						})
+					}
+				})
+			},
+			async loginByPwd() {
+				/**
+				 * 客户端对账号信息进行一些必要的校验。
+				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
+				 */
+				if (this.username.length < 3) {
+					uni.showToast({
+						icon: 'none',
+						title: '账号最短为 3 个字符'
 					});
-				},1000)
+					return;
+				}
+				if (this.password.length < 6) {
+					uni.showToast({
+						icon: 'none',
+						title: '密码最短为 6 个字符'
+					});
+					return;
+				}
+				const data = {
+					username: this.username,
+					password: this.password,
+					captcha: this.captchaText,
+					...captchaOptions
+				};
+				this.loginBtnLoading = true
+				uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action: 'login',
+						params: data
+					},
+					success: (e) => {
+						if (e.result.code == 0) {
+							this.needCaptcha = false;
+							uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
+
+							uni.setStorageSync('uni_id_token', e.result.token)
+							uni.setStorageSync('username', e.result.username)
+							uni.setStorageSync('login_type', 'online')
+							uni.setStorageSync('uni_id_has_pwd', true)
+							this.toHome(this.username);
+						} else {
+							uni.showModal({
+								content: e.result.message,
+								showCancel: false
+							})
+
+							this.needCaptcha = e.result.needCaptcha;
+							uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
+							if (this.needCaptcha) {
+								this.captcha('createCaptcha')
+							}
+						}
+					},
+					fail: (e) => {
+						uni.showModal({
+							content: JSON.stringify(e),
+							showCancel: false
+						})
+					},
+					complete: () => {
+						this.loginBtnLoading = false
+					}
+				})
+			},
+			loginBySms() {
+				if (!/^1\d{10}$/.test(this.mobile)) {
+					uni.showModal({
+						content: '手机号码填写错误',
+						showCancel: false
+					})
+					return
+				}
+				if (!/^\d{6}$/.test(this.code)) {
+					uni.showModal({
+						title: '验证码为6位纯数字',
+						showCancel: false
+					});
+					return;
+				}
+
+				uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action: 'loginBySms',
+						params: {
+							mobile: this.mobile,
+							code: this.code
+						}
+					},
+					success: (e) => {
+						
+						console.log('login success', e);
+
+						if (e.result.code == 0) {
+							const username = e.result.username || '新用户'
+							uni.setStorageSync('uni_id_token', e.result.token)
+							uni.setStorageSync('username', username)
+							uni.setStorageSync('login_type', 'online')
+							this.toHome(username);
+						} else {
+							uni.showModal({
+								content: e.result.msg,
+								showCancel: false
+							})
+							console.log('登录失败', e);
+						}
+
+					},
+					fail(e) {
+						uni.showModal({
+							content: JSON.stringify(e),
+							showCancel: false
+						})
+					}
+				})
+			},
+			bindLogin() {
+				switch (this.loginType) {
+					case 0:
+						this.loginBySms()
+						break;
+					case 1:
+						this.loginByPwd()
+						break;
+					default:
+						break;
+				}
+			},
+			oauth(value) {
+				return new Promise((resolve, reject) => {
+					// #ifdef APP-PLUS
+					weixinAuthService.authorize(function(res) {
+						resolve(res.code)
+					}, function(err) {
+						console.error(err)
+						reject(new Error('微信登录失败'))
+					});
+					// #endif
+					// #ifdef MP-WEIXIN
+					uni.login({
+						provider: 'weixin',
+						success(res) {
+							resolve(res.code)
+						},
+						fail(err) {
+							console.error('授权登录失败：' + JSON.stringify(err));
+							reject(new Error('微信登录失败'))
+						}
+					})
+					// #endif
+				})
+			},
+			getUserInfo({
+				detail
+			}) {
+				console.log('三方登录只演示登录api能力，暂未关联云端数据');
+				if (detail.userInfo) {
+					this.loginLocal(detail.userInfo.nickName);
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: '登陆失败'
+					});
+				}
+			},
+			loginLocal(nickName) {
+				uni.setStorageSync('login_type', 'local')
+				uni.setStorageSync('username', nickName)
+				this.toHome(nickName);
+			},
+			toHome(userName) {
+				this.login(userName);
+				/**
+				 * 强制登录时使用reLaunch方式跳转过来
+				 * 返回首页也使用reLaunch方式
+				 */
+				uni.reLaunch({
+					url: '../tabBar/home/home',
+				});
+			},
+			toLogin(value) {
+				if (value === 'apple') {
+					this.loginByApple(value)
+					return;
+				}
+				if (value === 'weixin') {
+					this.loginByWeixin(value)
+					return;
+				}
+				if (value === 'univerify') {
+					univerifyLogin().catch(err => {
+						if (typeof err === 'boolean') return;
+						univerifyErrorHandler(err);
+					})
+					return;
+				}
+				uni.showModal({
+					content: `${value}登录只演示登录api能力，暂未关联云端数据`,
+					showCancel: false,
+					complete: () => {
+						console.log(`${value}登录只演示登录api能力，暂未关联云端数据`);
+						uni.login({
+							provider: value,
+							success: (res) => {
+								uni.getUserInfo({
+									provider: value,
+									success: (infoRes) => {
+										/**
+										 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
+										 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
+										 */
+										this.loginLocal(infoRes.userInfo.nickName);
+									},
+									fail() {
+										uni.showToast({
+											icon: 'none',
+											title: '登陆失败'
+										});
+									}
+								});
+							},
+							fail: (err) => {
+								console.error('授权登录失败：' + JSON.stringify(err));
+							}
+						});
+					}
+				})
+			},
+			loginByWeixin(value) {
+				this.oauth(value).then((code) => {
+					return uniCloud.callFunction({
+						name: 'user-center',
+						data: {
+							action: 'loginByWeixin',
+							params: {
+								code,
+							}
+						}
+					})
+				}).then((res) => {
+					if (res.result.code === 0) {
+
+						uni.setStorageSync('uni_id_token', res.result.token)
+						uni.setStorageSync('uni_id_token_expired', res.result.tokenExpired)
+						uni.setStorageSync('login_type', 'online')
+						uni.setStorageSync('username', '微信用户')
+						this.toHome('微信用户')
+					}
+				}).catch((e) => {
+					console.error(e)
+					uni.showModal({
+						showCancel: false,
+						content: '微信登录失败，请稍后再试'
+					})
+				})
+			},
+			async loginByApple(value) {
+				if (!this.hasAppleLogin) {
+					uni.showModal({
+						showCancel: false,
+						content: `暂无法使用苹果登录，Apple登录集成教程：\nhttps://ask.dcloud.net.cn/article/36651`
+					})
+					return
+				};
+				let Provider = value;
+				const [loginErr, loginData] = await uni.login({
+					provider: Provider
+				});
+				if (loginErr) {
+					uni.showModal({
+						showCancel: false,
+						content: '苹果登录失败，请稍后再试'
+					})
+					return;
+				}
+				// 获取用户信息
+				const [getUserInfoErr, result] = await uni.getUserInfo({
+					provider: Provider
+				});
+				if (getUserInfoErr) {
+					let content = getUserInfoErr.errMsg;
+					if (~content.indexOf('uni.login')) {
+						content = '请先完成登录操作';
+					}
+					uni.showModal({
+						title: '获取用户信息失败',
+						content: '错误原因' + content,
+						showCancel: false
+					});
+					return;
+				}
+				// uni-id 苹果登录
+				uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action: 'loginByApple',
+						params: result.userInfo
+					},
+					success: (e) => {
+						console.log('loginByApple success', e);
+						if (!e.success) {
+							uni.showModal({
+								showCancel: false,
+								content: JSON.stringify(e.message)
+							})
+							return;
+						}
+						const username = e.result.username || e.result.nickname;
+
+						uni.setStorageSync('uni_id_token', e.result.token)
+						uni.setStorageSync('login_type', 'online')
+
+						this.toHome(username);
+					},
+					fail: (e) => {
+						uni.showModal({
+							content: `苹果登录失败: ${JSON.stringify(e)}`,
+							showCancel: false
+						})
+					}
+				})
+			},
+			async captcha(action, args) {
+				if (this.captchaing) return;
+
+				// 验证不loading
+				this.captchaing = true;
+
+				let {
+					result: res
+				} = await uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action,
+						params: {
+							...captchaOptions,
+							...args
+						}
+					}
+				})
+				this.captchaing = false;
+				if (res.code === 0) {
+					this.captchaBase64 = res.captchaBase64
+				} else {
+					uni.showToast({
+						icon: 'none',
+						title: res.message,
+						duration: 1000
+					})
+				}
+				return res;
+			},
+			openAppleLoginDoc() {
+				// #ifdef APP-PLUS
+				plus.webview.open('https://ask.dcloud.net.cn/article/36651')
+				// #endif
 			}
+		},
+		onReady() {
+			this.initPosition();
+			this.initProvider();
+			// #ifdef MP-WEIXIN
+			this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
+			// #endif
 		}
 	}
 </script>
 
-<style lang="scss">
-	@import "../../static/css/login.scss";
-	
-	.form {
-		.res {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			height: 100upx;
-			color: rgba($color: #ffffff, $alpha: 0.8);
-		}
+<style>
+	.login-type {
+		display: flex;
+		justify-content: center;
 	}
-	.oauth{
-		@media all and (max-height:150vw){
-			display: none;
-		}
+
+	.login-type-btn {
+		line-height: 30px;
+		margin: 0px 15px;
+	}
+
+	.login-type-btn.act {
+		color: #0FAEFF;
+		border-bottom: solid 1px #0FAEFF;
+	}
+
+	.send-code-btn {
+		width: 120px;
+		text-align: center;
+		background-color: #0FAEFF;
+		color: #FFFFFF;
+	}
+
+	.action-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+
+	.action-row navigator {
+		color: #007aff;
+		padding: 0 10px;
+	}
+
+	.oauth-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+		flex-wrap: wrap;
 		position: absolute;
-		bottom: 50upx;
+		top: 0;
+		left: 0;
 		width: 100%;
-		.text{
-			width: 100%;
-			height: 60upx;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			color: rgba($color: #ffffff, $alpha: 0.8);
-			font-size: 28upx;
-		}
-		.list{
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 20upx 0;
-			.icon{
-				font-size:80upx;
-				margin: 0 30upx;
-			}
-		}
+	}
+
+	.oauth-image {
+		position: relative;
+		width: 50px;
+		height: 50px;
+		border: 1px solid #dddddd;
+		border-radius: 50px;
+		background-color: #ffffff;
+	}
+
+	.oauth-image image {
+		width: 30px;
+		height: 30px;
+		margin: 10px;
+	}
+
+	.oauth-image button {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	.captcha-view {
+		line-height: 0;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		position: relative;
+		background-color: #f3f3f3;
 	}
 </style>

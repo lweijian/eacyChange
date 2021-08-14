@@ -50,10 +50,11 @@
 		{
 			"path": "pages/tabBar/user/user",
 			"style": {
-				"enablePullDownRefresh": true,
 				"backgroundTextStyle": "light",
-				"navigationBarBackgroundColor": "#f06c7a",
-				"backgroundColorTop": "#f06c7a",
+				"navigationBarBackgroundColor": "#5a5c6b",
+				"enablePullDownRefresh": true,
+				"backgroundColor": "#5a5c6b",
+				"backgroundColorTop":"#5a5c6b",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": false, //禁用原生导航栏

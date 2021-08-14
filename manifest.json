@@ -62,11 +62,17 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wxf4079f60c1f5ba7e",
         "setting" : {
-            "urlCheck" : true
+            "urlCheck" : true,
+            "minified" : true,
+            "postcss" : true
         },
-        "permission" : {}
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
+            }
+        }
     },
     "h5" : {
         "title" : "challenge-cup",
