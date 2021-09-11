@@ -127,7 +127,7 @@
 							}
 							for (let i = 0; i < res.provider.length; i++) {
 								const curProvider = res.provider[i];
-								if (~filters.indexOf(curProvider)) {
+								if (filters.indexOf(curProvider)) {
 									this.providerList.push({
 										value: curProvider,
 										image: '../../static/img/' + curProvider + '.png'
@@ -245,6 +245,7 @@
 							uni.setStorageSync('username', e.result.username)
 							uni.setStorageSync('login_type', 'online')
 							uni.setStorageSync('uni_id_has_pwd', true)
+						
 							this.toHome(this.username);
 						} else {
 							uni.showModal({
@@ -377,7 +378,9 @@
 				this.toHome(nickName);
 			},
 			toHome(userName) {
+
 				this.login(userName);
+			
 				/**
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式

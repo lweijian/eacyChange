@@ -7,24 +7,33 @@
 		<view v-if="showHeader" class="header"
 			:style="{ position: headerPosition,top:headerTop,opacity: afterHeaderOpacity }">
 			<!-- 定位城市 -->
-			<view class="addr">
-				<view class="icon location"></view>
-				{{ city }}
+			<view class="more">
+		
+				<u-icon name="plus-circle" color="#ff557f" size="45" @tap="moreShow=true"></u-icon>
 			</view>
+			<!-- 点击更多出现遮罩层 -->
+			<u-mask :show="moreShow" @click="moreShow = false">
+					<view class="warp">
+						<view class="rect" @tap.stop></view>
+					</view>
+				</u-mask>
 			<!-- 搜索框 -->
 			<view class="input-box">
 				<input placeholder="请输入搜索关键字" placeholder-style="color:#c0c0c0;" @tap="toSearch()" />
 				<view class="icon search"></view>
 			</view>
 			<!-- 右侧图标按钮 -->
-			<view class="icon-btn">
+			<view class="icon-msg">
 				<u-icon class="icon" name="chat" @tap="toMsg"></u-icon>
 			</view>
 		</view>
 		<!-- 占位 -->
 		<view v-if="showHeader" class="place"></view>
-		<!-- 轮播图 -->
-		<mySwiper :swiperList="swiperList" />
+	
+	
+	<!-- 	轮播图 -->
+	
+		<mySwiper></mySwiper>
 		<!-- 分类列表 -->
 
 		<categoryList :categoryList="categoryList" />
@@ -46,15 +55,14 @@
 </template>
 
 <script>
-	var ttt = 0;
-	//高德SDK
-	import amap from '@/common/SDK/amap-wx.js';
+
 
 	export default {
 
 
 		data() {
 			return {
+				moreShow:false,
 				showHeader: true,
 				afterHeaderOpacity: 1, //不透明度
 				headerPosition: 'fixed',
@@ -208,6 +216,7 @@
 			}, 1000);
 		},
 	//上拉加载，需要自己在page.json文件中配置"onReachBottomDistance"
+	
 	onReachBottom() {
 		uni.showToast({ title: '触发上拉加载' });
 		let len = this.productList.length;
@@ -243,22 +252,8 @@
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
-			this.amapPlugin = new amap.AMapWX({
-				//高德地图KEY，随时失效，请务必替换为自己的KEY，参考：http://ask.dcloud.net.cn/article/35070
-				key: '7c235a9ac4e25e482614c6b8eac6fd8e'
-			});
-			//定位地址
-			this.amapPlugin.getRegeo({
-				success: data => {
-					this.city = data[0].regeocodeData.addressComponent.city.replace(/市/g, ''); //把"市"去掉
-					// #ifdef APP-PLUS
-					this.nVueTitle.postMessage({
-						type: 'location',
-						city: this.city
-					});
-					// #endif
-				}
-			});
+			
+		
 		},
 		methods: {
 			// 选项卡，索引改变方法
@@ -266,7 +261,9 @@
 				this.current = index;
 
 			},
-
+			toMore(){
+				
+			},
 			//消息列表
 			toMsg() {
 				uni.navigateTo({
@@ -318,6 +315,7 @@
 		}
 
 	};
+
 </script>
 <style lang="scss">
 	page {
@@ -374,22 +372,13 @@
 		top: var(--status-bar-height);
 		/*  #endif  */
 
-		.addr {
-			width: 120upx;
+		.more {
+			width: 50upx;
 			height: 60upx;
 			flex-shrink: 0;
 			display: flex;
 			align-items: center;
 			font-size: 28upx;
-
-			.icon {
-				height: 60upx;
-				margin-right: 5upx;
-				display: flex;
-				align-items: center;
-				font-size: 42upx;
-				color: #ffc50a;
-			}
 		}
 
 		.input-box {
@@ -417,11 +406,11 @@
 				padding-left: 28upx;
 				height: 28upx;
 				font-size: 28upx;
-				width: 480upx;
+				width: 550upx;
 			}
 		}
 
-		.icon-btn {
+		.icon-msg {
 			width: 120upx;
 			height: 60upx;
 			flex-shrink: 0;
@@ -502,5 +491,16 @@
 		position: relative;
 		top: -12upx;
 		margin: 0 50upx;
+	}
+	.warp {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
+
+	.rect {
+		width: 120px;
+		height: 120px;
 	}
 </style>

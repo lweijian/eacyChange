@@ -1,29 +1,35 @@
 <template>
-	<!-- 轮播图 -->
-	<view class="swiper">
-		<view class="swiper-box">
-			<swiper circular="true" autoplay="true" @change="swiperChange">
-				<swiper-item v-for="swiper in swiperList" :key="swiper.id">
-					<image :src="swiper.img" @tap="toSwiper(swiper)"></image>
-				</swiper-item>
-			</swiper>
-			<view class="indicator">
-				<view
-					class="dots"
-					v-for="(swiper, index) in swiperList"
-					:class="[currentSwiper >= index ? 'on' : '']"
-					:key="index"
-				></view>
+	<unicloud-db v-slot:default="{data, loading, error, options}" collection="swiper-banner">
+		<view v-if="error">{{error.message}}</view>
+		
+			<!-- 轮播图 -->
+			<view v-else class="swiper">
+				<view class="swiper-box">
+					<swiper circular="true" autoplay="true" @change="swiperChange">
+						<swiper-item v-for="swiper in data" :key="swiper.id">
+							<image :src="swiper.open_url.format" @tap="toSwiper(swiper)"></image>
+						</swiper-item>
+					</swiper>
+					<view class="indicator">
+						<view
+							class="dots"
+							v-for="(swiper, index) in data"
+							:class="[currentSwiper >= index ? 'on' : '']"
+							:key="index"
+						></view>
+					</view>
+				</view>
 			</view>
-		</view>
-	</view>
+	
+	</unicloud-db>
+	
 		
 </template>
 
 <script>
 	export default {
 		name:"mySwiper",
-		props:['swiperList'],
+		
 		data() {
 			return {
 			currentSwiper: 0,
@@ -52,7 +58,7 @@
 		.swiper-box {
 			width: 92%;
 			height: 30.7vw;
-
+			background-color: #999999;
 			overflow: hidden;
 			border-radius: 15upx;
 			box-shadow: 0upx 8upx 25upx rgba(0, 0, 0, 0.2);

@@ -1,0 +1,1 @@
+<view><view><u-navbar vue-id="101e0d60-1" title="手工圈" bind:__l="__l" vue-slots="{{['default']}}"><view class="slot-wrap"><u-icon vue-id="{{('101e0d60-2')+','+('101e0d60-1')}}" name="edit-pen" size="35" bind:__l="__l"></u-icon></view></u-navbar><view class="content"></view></view></view>

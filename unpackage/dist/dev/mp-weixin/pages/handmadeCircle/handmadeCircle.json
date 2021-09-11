@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "nav-header": "/components/navHeader/navHeader",
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "dynamic": "/components/Dynamic/Dynamic"
+  }
+}

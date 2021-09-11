@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "登录",
+  "navigationBarBackgroundColor": "#f06c7a",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "m-input": "/components/m-input/m-input"
+  }
+}

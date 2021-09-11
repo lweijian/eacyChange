@@ -1,5 +1,13 @@
 <script>
+	
+	import config from '@/config.js'
+
 	export default {
+		onPageNotFound(msg) {
+			uni.redirectTo({
+				url: config.error.url
+			})
+		},
 		onLaunch: function () {
 			console.log('App Launch')
 		},
