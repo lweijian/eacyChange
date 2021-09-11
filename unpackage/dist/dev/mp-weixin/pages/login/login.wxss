@@ -1,0 +1,95 @@
+
+.login-type {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+}
+.login-type-btn {
+	line-height: 30px;
+	margin: 0px 15px;
+}
+.login-type-btn.act {
+	color: #0FAEFF;
+	border-bottom: solid 1px #0FAEFF;
+}
+.send-code-btn {
+	width: 120px;
+	text-align: center;
+	background-color: #0FAEFF;
+	color: #FFFFFF;
+}
+.action-row {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+}
+.action-row navigator {
+	color: #007aff;
+	padding: 0 10px;
+}
+.oauth-row {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	        flex-direction: row;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+.oauth-image {
+	position: relative;
+	width: 50px;
+	height: 50px;
+	border: 1px solid #dddddd;
+	border-radius: 50px;
+	background-color: #ffffff;
+}
+.oauth-image image {
+	width: 30px;
+	height: 30px;
+	margin: 10px;
+}
+.oauth-image button {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+.captcha-view {
+	line-height: 0;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	        justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	position: relative;
+	background-color: #f3f3f3;
+}
+

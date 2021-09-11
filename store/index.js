@@ -10,7 +10,7 @@ const store = new Vuex.Store({
 		 */
 		forcedLogin: false,
 		hasLogin: false,
-		userName: "",
+		userName: "未登录",
 		univerifyErrorMsg: "",
 		hideUniverify: true
 	},

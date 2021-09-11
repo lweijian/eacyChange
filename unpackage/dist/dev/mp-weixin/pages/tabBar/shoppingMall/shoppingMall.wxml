@@ -1,0 +1,1 @@
+<view><product-list vue-id="54f1f062-1" productList="{{productList}}" loadingText="{{loadingText}}" bind:__l="__l"></product-list></view>

@@ -55,6 +55,7 @@
 
 </template>
 <script>
+
 	export default {
 		data() {
 			return {
@@ -65,7 +66,7 @@
 				showHeader: true,
 				//个人信息,
 				user: {
-					username: '游客1002',
+					username: this.$store.state.userName,
 					face: '/static/img/face.jpg',
 					signature: '点击昵称跳转登录/注册页',
 					integral: 0,
@@ -126,6 +127,7 @@
 			});
 		},
 		onShow() {
+		
 			uni.getStorage({
 				key: 'UserInfo',
 				success: (res) => {
@@ -142,6 +144,7 @@
 				}
 			});
 		},
+	
 		methods: {
 			
 			// 选项卡，索引改变方法

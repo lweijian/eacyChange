@@ -6,6 +6,8 @@ const db = uniCloud.database()
 const dbCmd = db.command
 
 exports.main = async (event, context) => {
+	
+	
   const uniIDIns = uniID.createInstance({
     context
   })
@@ -63,7 +65,7 @@ exports.main = async (event, context) => {
 		'loginByApple', 'createCaptcha', 'verifyCaptcha',
 		'refreshCaptcha'
 	]
-
+	
 	if (noCheckAction.indexOf(event.action) === -1) {
 		if (!event.uniIdToken) {
 			return {
@@ -127,7 +129,7 @@ exports.main = async (event, context) => {
 			if (!templateId) {
 				return {
 					code: 500,
-					msg: 'sendSmsCode需要传入自己的templateId，参考https://uniapp.dcloud.net.cn/uniCloud/uni-id?id=sendsmscode'
+					msg: '暂不支持验证码登录'
 				}
 			}
 			const randomStr = '00000' + Math.floor(Math.random() * 1000000)
