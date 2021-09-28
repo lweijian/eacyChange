@@ -1,0 +1,3 @@
+.canvasDiv{border:1px dashed #c89191}#imgCutShow{position:absolute;display:none;border:1px dashed #c89191;margin:0 410px}.tools{position:absolute;clear:both}#drawPanel,
+#canvas,
+#imgCut{position:absolute}#canvas{z-index:2}#imgCut{z-index:1}#imgCutShow{position:absolute;bottom:0}

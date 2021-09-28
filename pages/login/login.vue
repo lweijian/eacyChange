@@ -123,6 +123,7 @@
 							uni.setStorageSync('uni_id_has_pwd', true)
 							this.loading = false;
 							this.toHome();
+
 						} else {
 							uni.showModal({
 								content: e.result.message,

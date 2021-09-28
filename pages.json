@@ -28,13 +28,26 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 
 		{
-			"path": "pages/tabBar/design-home/design-home",
-			"style": {
-				"navigationBarTitleText": "easyChange",
-				"enablePullDownRefresh": false
-			}
 
+		    "path" : "pages/tabBar/design-home/design-home",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
 		},
+		
+		{
+		    "path" : "pages/tabBar/design/design",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+	
 		{
 			"path": "pages/myOrder/myOrder",
 			"style": {
@@ -340,21 +353,22 @@
 		//           }
 
 		//       },
-		{
-			"path": "pages/handmadeCircle/handmadeCircle",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
+		// {
+		// 	"path": "pages/handmadeCircle/handmadeCircle",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
 
-		}, {
-			"path": "pages/more/more",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
+		// }, {
+		// 	"path": "pages/more/more",
+		// 	"style": {
+		// 		"navigationBarTitleText": "",
+		// 		"enablePullDownRefresh": false
+		// 	}
 
-		}, {
+		// }
+		 {
 			"path": "pages/tabBar/user-center/user-center",
 			"style": {
 				"navigationBarTitleText": "",
@@ -385,15 +399,7 @@
 			}
 
 		}
-	    ,{
-            "path" : "test/test",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
+
         ,{
             "path" : "pages/drafts/drafts",
             "style" :                                                                                    
@@ -403,7 +409,9 @@
             }
             
         }
+      
     ],
+
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "easyChange",
@@ -417,17 +425,23 @@
 		"selectedColor": "#f06c7a",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
-		"list": [{
+
+		"list": [
+			{
 				"pagePath": "pages/tabBar/design-home/design-home",
 				"iconPath": "static/img/tabBar/design.png",
 				"selectedIconPath": "static/img/tabBar/design-on.png",
+
 				"text": "首页"
-			}, {
+
+			},{
 				"pagePath": "pages/tabBar/user-center/user-center",
+
 				"iconPath": "static/img/tabBar/user.png",
 				"selectedIconPath": "static/img/tabBar/user-on.png",
 				"text": "个人中心"
 			}
+
 
 			// {
 			// 	"pagePath": "pages/tabBar/home/home",
@@ -458,6 +472,37 @@
 			// 	"selectedIconPath": "static/img/tabBar/user-on.png",
 			// 	"text": "我的"
 			// }
+
+			// {
+			// 	"pagePath": "pages/tabBar/home/home",
+			// 	"iconPath": "static/img/tabBar/home.png",
+			// 	"selectedIconPath": "static/img/tabBar/home-on.png",
+			// 	"text": "首页"
+			// },
+			// {
+			// 	"pagePath": "pages/tabBar/design/design",
+			// 	"iconPath": "static/img/tabBar/design.png",
+			// 	"selectedIconPath": "static/img/tabBar/design-on.png",
+			// 	"text": "设计"
+			// }, {
+			// 	"pagePath": "pages/tabBar/find/find",
+			// 	"iconPath": "static/img/tabBar/find.png",
+			// 	"selectedIconPath": "static/img/tabBar/find-on.png",
+			// 	"text": "发现"
+			// },
+			// {
+			// 	"pagePath": "pages/tabBar/shoppingMall/shoppingMall",
+			// 	"iconPath": "static/img/tabBar/shoppingMall.png",
+			// 	"selectedIconPath": "static/img/tabBar/shoppingMall-on.png",
+			// 	"text": "商城"
+			// },
+			// {
+			// 	"pagePath": "pages/tabBar/user/user",
+			// 	"iconPath": "static/img/tabBar/user.png",
+			// 	"selectedIconPath": "static/img/tabBar/user-on.png",
+			// 	"text": "我的"
+			// }
+
 		]
 	}
 }

@@ -1,0 +1,35 @@
+{
+	"bsonType": "object",
+	"required": ["comm_name", "comm_money", "user_id", "comm_describe", "com_picture"],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"comm_name": {
+			"bsonType": "string",
+			"description": "商品的名称"
+		},
+		"comm_money": {
+			"bsonType": "number",
+			"description": "商品的价格"
+		},
+		"user_id": {
+			"bsonType": "number",
+			"description": "用户的id"
+		},
+		"comm_decribe": {
+			"bsonType": "string",
+			"description": "对商品的描述"
+		},
+		"comm_pictrue": {
+			"bsonType": "string",
+			"description": "商品的照片"
+		}
+	}
+}

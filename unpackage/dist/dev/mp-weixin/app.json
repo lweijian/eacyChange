@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/tabBar/design-home/design-home",
+    "pages/tabBar/design/design",
     "pages/myOrder/myOrder",
     "pages/login/login",
     "pages/scan-frame/scan-frame",
@@ -10,13 +11,10 @@
     "pages/login/resetpasswd",
     "pages/pay/payment/payment",
     "pages/pay/success/success",
-    "pages/handmadeCircle/handmadeCircle",
-    "pages/more/more",
     "pages/tabBar/user-center/user-center",
     "pages/recycling/recycling",
     "pages/design/design",
     "pages/penCut/penCut",
-    "test/test",
     "pages/drafts/drafts"
   ],
   "subPackages": [],
@@ -54,6 +52,5 @@
     }
   },
   "plugins": {},
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

@@ -6,11 +6,19 @@ const db = uniCloud.database()
 const dbCmd = db.command
 
 exports.main = async (event, context) => {
+<<<<<<< .mine
 
 
 	const uniIDIns = uniID.createInstance({
 		context
 	})
+=======
+	
+	
+  const uniIDIns = uniID.createInstance({
+    context
+  })
+>>>>>>> .theirs
 	let params = event.params || {}
 	// 登录记录
 	const loginLog = async (res = {}, type = 'login') => {
@@ -65,7 +73,7 @@ exports.main = async (event, context) => {
 		'loginByApple', 'createCaptcha', 'verifyCaptcha',
 		'refreshCaptcha'
 	]
-
+	
 	if (noCheckAction.indexOf(event.action) === -1) {
 		if (!event.uniIdToken) {
 			return {

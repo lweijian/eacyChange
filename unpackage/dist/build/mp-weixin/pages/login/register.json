@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "注册账号",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "m-input": "/components/m-input/m-input"
+  }
+}
