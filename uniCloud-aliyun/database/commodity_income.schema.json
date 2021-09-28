@@ -1,0 +1,35 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": true,
+		"create": true,
+		"update": true,
+		"delete": true
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"comm_name": {
+			"bsonType": "string",
+			"description": "商品的名称"
+		},
+		"user_id": {
+			"bsonType": "number",
+			"description": "用户id"
+		},
+		"comm_sold_number": {
+			"bsonType": "number",
+			"description": "商品卖出去的数量"
+		},
+		"comm_money": {
+			"bsonType": "number",
+			"description": "商品单价"
+		},
+		"comm_allMoney": {
+			"bsonType": "number",
+			"description": "商品卖出的总金额"
+		}
+	}
+}

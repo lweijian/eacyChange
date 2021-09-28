@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/tabBar/design-home/design-home",
+    "pages/login/login",
+    "pages/scan-frame/scan-frame",
+    "pages/drawCanvas/drawCanvas",
+    "pages/blackboard/blackboard",
+    "pages/login/register",
+    "pages/login/resetpasswd",
+    "pages/handmadeCircle/handmadeCircle",
+    "pages/more/more",
+    "pages/tabBar/user-center/user-center",
+    "pages/recycling/recycling",
+    "pages/design/design",
+    "pages/penCut/penCut"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "easyChange",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#ffffff",
+    "backgroundColorTop": "#ffffff",
+    "backgroundColorBottom": "#ffffff"
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#f06c7a",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/tabBar/design-home/design-home",
+        "iconPath": "static/img/tabBar/design.png",
+        "selectedIconPath": "static/img/tabBar/design-on.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tabBar/user-center/user-center",
+        "iconPath": "static/img/tabBar/user.png",
+        "selectedIconPath": "static/img/tabBar/user-on.png",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "plugins": {},
+  "usingComponents": {}
+}
