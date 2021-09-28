@@ -38,4 +38,13 @@ page {
 .user-box {
   background-color: #fff;
 }
+.info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.info .info-content {
+  width: 50vw;
+  text-align: center;
+}
 

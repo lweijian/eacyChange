@@ -68,12 +68,25 @@
         "setting" : {
             "urlCheck" : false,
             "minified" : true,
-            "postcss" : true
+            "postcss" : true,
+            "es6" : true
         },
         "permission" : {
             "scope.userLocation" : {
                 "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             }
+        },
+        "optimization" : {
+            "subPackages" : true // 开启分包优化
+        },
+        "plugins" : {},
+        "packOptions" : {
+            "ignore" : [
+                {
+                    "type" : "folder",
+                    "value" : "static/use4pack" // 忽略打包到小程序的文件路径
+                }
+            ]
         }
     },
     "h5" : {

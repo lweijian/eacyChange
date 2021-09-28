@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "serach-header": "/components/serachHeader/serachHeader",
-    "dynamic": "/components/Dynamic/Dynamic"
-  }
-}

@@ -4,7 +4,7 @@
 			
 		</view>
 		<view class="QR">
-			<image src="../../../static/img/qr.png"></image>
+		<!-- 	<image src="../../../static/img/qr.png"></image> -->
 		</view>
 		<view class="title">
 			扫描二维码，加我好友
@@ -13,7 +13,7 @@
 			{{tis}}
 		</view>
 		<view class="logo">
-			<image mode="widthFix" src="../../../static/img/qrlogo.png"></image>
+			<!-- <image mode="widthFix" src="../../../static/img/qrlogo.png"></image> -->
 		</view>
 	</view>
 </template>

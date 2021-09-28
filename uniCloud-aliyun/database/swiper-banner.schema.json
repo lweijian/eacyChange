@@ -9,9 +9,6 @@
 		"count": true
 	},
 	"properties": {
-		"_id": {
-			"description": "ID，系统自动生成"
-		},
 		"bannerfile": {
 			"bsonType": "file",
 			"fileMediaType": "image",

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header">
-			<navHeader>
+			<navHeader iconName="edit-pen" title="手工圈">
 
 			</navHeader>
 		</view>

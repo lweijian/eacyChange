@@ -1,12 +1,18 @@
 {
   "description": "项目配置文件。",
   "packOptions": {
-    "ignore": []
+    "ignore": [
+      {
+        "type": "folder",
+        "value": "static/use4pack"
+      }
+    ]
   },
   "setting": {
     "urlCheck": false,
     "minified": true,
-    "postcss": true
+    "postcss": true,
+    "es6": true
   },
   "compileType": "miniprogram",
   "libVersion": "",

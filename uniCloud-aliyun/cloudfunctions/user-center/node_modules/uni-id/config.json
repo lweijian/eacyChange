@@ -14,8 +14,8 @@
         "oauth": {
           
             "weixin": {
-                "appid": "weixin appid",
-                "appsecret": "weixin appsecret"
+                "appid": "wxf4079f60c1f5ba7e",
+                "appsecret": "e610ef599ae5c429557d67c50e298b45"
             },
           
       "qq": {
@@ -31,8 +31,8 @@
         "tokenExpiresIn": 259200,
         "oauth": {
             "weixin": {
-                "appid": "weixin appid",
-                "appsecret": "weixin appsecret"
+                "appid": "wxf4079f60c1f5ba7e",
+                "appsecret": "e610ef599ae5c429557d67c50e298b45"
             }
         }
     },

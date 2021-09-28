@@ -1,8 +1,7 @@
 {
-  "navigationBarTitleText": "登录",
-  "navigationBarBackgroundColor": "#f06c7a",
-  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "easyChange",
   "usingComponents": {
+    "u-loading": "/uview-ui/components/u-loading/u-loading",
     "m-input": "/components/m-input/m-input"
   }
 }

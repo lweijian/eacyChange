@@ -179,7 +179,7 @@
 			justify-content: center;
 			align-items: center;
 			color: #fff;
-			background-color: #f06c7a;
+			background-color: #ff9900;
 			box-shadow: 0upx 5upx 10upx rgba(0,0,0,0.2);
 		}
 		.tis{

@@ -11,13 +11,15 @@ const store = new Vuex.Store({
 		forcedLogin: false,
 		hasLogin: false,
 		userName: "未登录",
+		avatarUrl:"",
 		univerifyErrorMsg: "",
 		hideUniverify: true
 	},
 	mutations: {
-		login(state, userName) {
+		login(state, userName,avatarUrl) {
 			state.userName = userName || '新用户';
 			state.hasLogin = true;
+			state.avatarUrl=avatarUrl|| '';
 		},
 		logout(state) {
 			state.userName = "";

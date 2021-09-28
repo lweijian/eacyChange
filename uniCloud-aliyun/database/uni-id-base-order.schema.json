@@ -21,6 +21,29 @@
 			"bsonType": "int",
 			"description": "订单总金额，单位：分。"
 		},
+		"payment": {
+			"bsonType": "int",
+			"description": "单件金额，单位：分。"
+		},
+		"freight": {
+			"bsonType": "int",
+			"description": "运费金额，单位：分。"
+		},
+		"spec": {
+			"bsonType": "int",
+			"description": "规格，重量、码数"
+		},
+		"numner": {
+			"bsonType": "string",
+			"description": "商品数量"
+		},
+		 "image": {
+		        "bsonType": "file",
+		        "title": "图片",
+		        "description": "图片",
+		        "fileMediaType": "image", // 可选值 all|image|video 默认值为all,表示所有文件，image表示图片类型文件，video表示视频类型文件
+		        "fileExtName": "jpg,png" // 扩展名过滤，多个用 , 分割
+		      },
 		"user_id": {
 			"bsonType": "String",
 			"description": "下单用户ID，uni-id-users表",
@@ -29,15 +52,15 @@
 				"$env": "uid"
 			}
 		},
+		
 		"platform": {
 			"bsonType": "String",
 			"description": "下单平台类型：h5、mp-weixin、mp-alipay、app-plus等"
 		},
 		"status": {
-			"bsonType": "int",
-			"minimum": -3,
-			"maximum": 5,
-			"description": "订单状态，1：待付款，2：已付款，3：退款审核中，4：退款中，5：已退款，-1已取消付款\/退款，-2：退款拒绝，-3：退款失败"
+			"bsonType": "string",
+			"enum": ["unpaid","back", "unreceived","received","completed","refunds","cancelled"],
+			"description": "unpaid: '等待付款',back: '等待商家发货',unreceived: '商家已发货',received: '等待用户评价',completed: '交易已完成',refunds: '商品退货处理中',cancelled: '订单已取消'"
 		},
 		"is_refund": {
 			"bsonType": "bool",

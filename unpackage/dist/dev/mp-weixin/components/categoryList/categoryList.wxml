@@ -1,1 +1,0 @@
-<view class="category-list"><block wx:for="{{categoryList}}" wx:for-item="row" wx:for-index="index" wx:key="index"><view data-event-opts="{{[['tap',[['toCategory',['$0'],[[['categoryList','',index]]]]]]]}}" class="category" bindtap="__e"><view class="img"><image src="{{row.img}}"></image></view><view class="text">{{row.name}}</view></view></block></view>

@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<view>
-				<u-navbar  title="手工圈" >
+				<u-navbar  :title="title" >
 					<view class="slot-wrap">
-						<u-icon name="edit-pen"  size="35"></u-icon>
+						<u-icon :name="iconName"  size="35"></u-icon>
 					</view>
 				</u-navbar>
 				<view class="content">
@@ -16,6 +16,10 @@
 <script>
 	export default {
 		name:"navHeader",
+		props:{
+			title:String,
+			iconName:String
+		},
 		data() {
 			return {
 				

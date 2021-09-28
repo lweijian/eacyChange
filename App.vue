@@ -5,11 +5,11 @@
 	export default {
 		onPageNotFound(msg) {
 			uni.redirectTo({
-				url: config.error.url
+		    	url: config.error.url
 			})
 		},
-		onLaunch: function () {
-			console.log('App Launch')
+			onLaunch: function () {
+			console.log('App Launch') 
 		},
 		onShow: function () {
 			console.log('App Show')

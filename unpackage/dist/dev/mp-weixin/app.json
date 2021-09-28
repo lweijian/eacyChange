@@ -1,35 +1,23 @@
 {
   "pages": [
-    "pages/tabBar/home/home",
-    "pages/category/category",
-    "pages/cart/cart",
-    "pages/tabBar/user/user",
-    "pages/goods/goods-list/goods-list",
-    "pages/goods/goods",
+    "pages/tabBar/design-home/design-home",
+    "pages/myOrder/myOrder",
     "pages/login/login",
+    "pages/scan-frame/scan-frame",
+    "pages/drawCanvas/drawCanvas",
+    "pages/blackboard/blackboard",
     "pages/login/register",
     "pages/login/resetpasswd",
-    "pages/order/confirmation",
-    "pages/user/order_list/order_list",
-    "pages/user/setting/setting",
-    "pages/user/myQR/myQR",
-    "pages/msg/msg",
-    "pages/msg/chat/chat",
-    "pages/user/coupon/coupon",
-    "pages/user/keep/keep",
-    "pages/user/address/address",
-    "pages/user/address/edit/edit",
-    "pages/user/deposit/deposit",
     "pages/pay/payment/payment",
     "pages/pay/success/success",
-    "pages/goods/ratings/ratings",
-    "pages/tabBar/shoppingMall/shoppingMall",
-    "pages/error/error",
-    "pages/tabBar/find/find",
-    "pages/tabBar/design/design",
     "pages/handmadeCircle/handmadeCircle",
     "pages/more/more",
-    "pages/tabBar/user-center/user-center"
+    "pages/tabBar/user-center/user-center",
+    "pages/recycling/recycling",
+    "pages/design/design",
+    "pages/penCut/penCut",
+    "test/test",
+    "pages/drafts/drafts"
   ],
   "subPackages": [],
   "window": {
@@ -47,16 +35,16 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/tabBar/design/design",
+        "pagePath": "pages/tabBar/design-home/design-home",
         "iconPath": "static/img/tabBar/design.png",
         "selectedIconPath": "static/img/tabBar/design-on.png",
-        "text": "设计"
+        "text": "首页"
       },
       {
         "pagePath": "pages/tabBar/user-center/user-center",
         "iconPath": "static/img/tabBar/user.png",
         "selectedIconPath": "static/img/tabBar/user-on.png",
-        "text": ""
+        "text": "个人中心"
       }
     ]
   },
@@ -65,6 +53,7 @@
       "desc": "你的位置信息将用于小程序位置接口的效果展示"
     }
   },
+  "plugins": {},
   "usingComponents": {},
   "sitemapLocation": "sitemap.json"
 }

@@ -10,11 +10,12 @@
 		<view class="order-list">
 			<view class="list">
 				<view class="onorder" v-if="list.length==0">
-					<image src="../../../static/img/noorder.png"></image>
+				<!-- 	<image src="../../../static/img/noorder.png"></image> -->
 					<view class="text">
 						没有相关订单
 					</view>
 				</view>
+				
 				<view class="row" v-for="(row,index) in list" :key="index">
 					<view class="type">{{typeText[row.type]}}</view>
 					<view class="order-info">
@@ -48,6 +49,7 @@
 				</view>
 			</view>
 		</view>
+	
 	</view>
 </template>
 <script>
