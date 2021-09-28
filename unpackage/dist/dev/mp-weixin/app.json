@@ -52,5 +52,6 @@
     }
   },
   "plugins": {},
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }
