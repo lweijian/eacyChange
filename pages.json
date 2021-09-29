@@ -32,17 +32,16 @@
 		    "path" : "pages/tabBar/design-home/design-home",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "easyChange",
 		        "enablePullDownRefresh": false
 		    }
 		    
-		},
-		
+		},	
 		{
 		    "path" : "pages/tabBar/design/design",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "design",
 		        "enablePullDownRefresh": false
 		    }
 		    
