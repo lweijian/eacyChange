@@ -251,15 +251,10 @@
 			},
 
 			async oneClickLogin() {
-			
 				this.userInfo= await this.getUserProfile();
 				if(this.userInfo){
 					this.loginByWeixin();
 				}
-				
-				
-				
-			
 			}
 		},
 
