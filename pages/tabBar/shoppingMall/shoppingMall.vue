@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<productList :productList=productList :loadingText=loadingText />
+		<productList :productList="productList" :loadingText="loadingText" />
 	</view>
 </template>
 

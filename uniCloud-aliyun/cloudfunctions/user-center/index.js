@@ -204,9 +204,8 @@ exports.main = async (event, context) => {
 		case 'updateUser':
 			  res = await uniID.updateUser({
 			    uid: params.uid,
-			    nickname: params.userInfo.nickName,
 				avatar:params.userInfo.avatarUrl,
-				userInfo:params.userInfo
+				...params.userInfo
 			  })
 			break;
 		default:

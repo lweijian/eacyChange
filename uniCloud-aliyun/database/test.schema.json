@@ -1,0 +1,21 @@
+{
+	   "bsonType": "object",
+	     "permission": {
+	       "read": true,
+	       "create": true,
+	       "update": true,
+	       "delete":true
+	     },
+	    "required": [],
+	    "properties": {
+	      "_id": {
+	        "description": "ID，系统自动生成"
+	      },
+	      "image": {
+	        "bsonType": "file",
+	        "title": "图片",
+	        "description": "图片",
+	        "fileExtName": "jpg,png" 
+	      }
+	    }
+}

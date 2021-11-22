@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "easyChange",
-  "usingComponents": {
-    "toolbar": "/components/toolbar/toolbar",
-    "color-panel": "/components/colorPanel/color-panel"
-  }
-}

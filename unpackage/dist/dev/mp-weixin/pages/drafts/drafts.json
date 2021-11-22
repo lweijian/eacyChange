@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "草稿箱",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-switch": "/uview-ui/components/u-switch/u-switch",
-    "u-grid": "/uview-ui/components/u-grid/u-grid",
-    "u-grid-item": "/uview-ui/components/u-grid-item/u-grid-item"
-  }
-}

@@ -1,17 +1,17 @@
 {
 	"bsonType": "object",
-	"required": ["user_id"],
+	"required": ["image","uid"],
 	"permission": {
 		"read": true,
-		"create": "user_id != null",
+		"create": "uid != null",
 		"update": false,
-		"delete": "user_id != null"
+		"delete": "uid != null"
 	},
 	"properties": {
 		"_id": {
 			"description": "ID，系统自动生成"
 		},
-		"user_id": {
+		"uid": {
 			"bsonType": "string",
 			"description": "草稿箱作者id，参考uni-id-users表",
 			"forceDefaultValue": {
@@ -26,13 +26,10 @@
 				"$env": "now"
 			}
 		},
-		"images": {
-			"bsonType": "array",
+		"image": {
+			"bsonType": "file",
 			"title": "图片",
-			"description": "多张图片",
-			"arrayType": "file",
-			"multiple": true,
-			"fileMediaType": "image",
+			"description": "图片",
 			"fileExtName": "jpg,png"
 		}
 	}

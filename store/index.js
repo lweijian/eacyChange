@@ -10,19 +10,19 @@ const store = new Vuex.Store({
 		 */
 		forcedLogin: false,
 		hasLogin: false,
-		userName: "未登录",
-		avatarUrl:"",
+		userInfo:{},
+		uniIdToken:"",
 		univerifyErrorMsg: "",
 		hideUniverify: true
 	},
 	mutations: {
-		login(state, userName,avatarUrl) {
-			state.userName = userName || '新用户';
-			state.hasLogin = true;
-			state.avatarUrl=avatarUrl|| '';
+		login(state, userInfo,uniIdToken) {
+			state.userInfo=userInfo
+			state.uniIdToken = uniIdToken;
+				state.hasLogin = true;
 		},
 		logout(state) {
-			state.userName = "";
+			state.nickName = "";
 			state.hasLogin = false;
 		},
 		setUniverifyErrorMsg(state, payload = '') {
@@ -31,6 +31,15 @@ const store = new Vuex.Store({
 		setHideUniverify(state, payload = false) {
 			state.hideUniverify = payload
 		}
+	},
+	getters:{
+		getUserInfo:state=>{
+			return state.userInfo;
+		},
+		getUniIdToken:state=>{
+			return state.uniIdToken;
+		},
+		
 	}
 })
 

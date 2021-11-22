@@ -63,7 +63,6 @@
 
 			}
 		},
-		computed: mapState(['forcedLogin', 'hasLogin', 'univerifyErrorMsg', 'hideUniverify']),
 		onLoad() {
 
 		},
@@ -190,11 +189,6 @@
 			},
 
 			toHome() {
-
-				/**
-				 * 强制登录时使用reLaunch方式跳转过来
-				 * 返回首页也使用reLaunch方式
-				 */
 				uni.reLaunch({
 					url: '../tabBar/design-home/design-home',
 				});
@@ -242,16 +236,19 @@
 				if (loginByWeixinResult.result.code === 0) {
 
 					uni.setStorageSync('uni_id_token', loginByWeixinResult.result.token)
+					uni.setStorageSync('hasLogin', true)
 					uni.setStorageSync('uni_id_token_expired', loginByWeixinResult.result.tokenExpired)
 					uni.setStorageSync('login_type', 'online')
-					await	this.updateUser(loginByWeixinResult.result.token,this.userInfo)
+					await this.updateUser(loginByWeixinResult.result.token,this.userInfo)
 					this.loading = false;
+					this.login(this.userInfo,loginByWeixinResult.result.token)
 					this.toHome()
 				}
 			},
 
 			async oneClickLogin() {
 				this.userInfo= await this.getUserProfile();
+				console.log(this.userInfo)
 				if(this.userInfo){
 					this.loginByWeixin();
 				}

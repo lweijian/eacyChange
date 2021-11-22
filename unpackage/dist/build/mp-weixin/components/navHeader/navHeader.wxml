@@ -1,1 +1,0 @@
-<view><view><u-navbar vue-id="101e0d60-1" title="{{title}}" bind:__l="__l" vue-slots="{{['default']}}"><view class="slot-wrap"><u-icon vue-id="{{('101e0d60-2')+','+('101e0d60-1')}}" name="{{iconName}}" size="35" bind:__l="__l"></u-icon></view></u-navbar><view class="content"></view></view></view>

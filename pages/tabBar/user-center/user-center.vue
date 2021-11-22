@@ -3,10 +3,10 @@
 
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-b-30">
 			<view class="u-m-r-10">
-				<u-avatar :src="avatar" size="140"></u-avatar>
+				<u-avatar :src="getUserInfo.avatar" size="140"></u-avatar>
 			</view>
 			<view class="u-flex-1">
-				<view class="u-font-18 u-p-b-20">{{nickName}}</view>
+				<view class="u-font-18 u-p-b-20">{{getUserInfo.nickName}}</view>
 				<view class="u-font-14 u-tips-color">{{info}}</view>
 			</view>
 		</view>
@@ -47,13 +47,14 @@
 </template>
 
 <script>
+	import {
+		mapGetters,
+		mapMutations
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				nickName: '',
-				avatar: '',
-				info: '这是test简介',
-				userInfo: {},
+				info: '用户没有编辑简介哦',
 				show: true,
 				charityFund: 4399,
 				coupon: 3,
@@ -78,15 +79,23 @@
 				]
 			}
 		},
+		computed:{
+			
+			...mapGetters([
+				'getUniIdToken',
+				'getUserInfo',
+			])
+		},
 		onLoad() {
 			// this.updateInfo()
-			this.init()
+			
 		},
 		onPullDownRefresh() {
 			// this.updateInfo()
-			this.init()
+			
 		},
 		methods: {
+			...mapMutations(['login']),
 			getUserProfile() {
 				return new Promise((resolve, reject) => {
 					if (uni.getUserProfile) {
@@ -119,25 +128,10 @@
 						}
 					},
 					success() {
-						uni.setStorageSync('nickName', userInfo.nickName)
-						uni.setStorageSync('avatar', userInfo.avatarUrl)
+				this.login(userInfo,uniIdToken);
 					}
 				})
 
-			},
-			init() {
-				try {
-					let nickName = uni.getStorageSync('nickName');
-					let avatar = uni.getStorageSync('avatar');
-					if (nickName) {
-						this.nickName = nickName;
-					}
-					if (avatar) {
-						this.avatar = avatar;
-					}
-				} catch (e) {
-					console.log(e)
-				}
 			},
 			toDrafts(targetUrl){
 				uni.navigateTo({
@@ -172,7 +166,7 @@
 		.info-content {
 			width: 50vw;
 			text-align: center;
-			//color: #ffdfa2;
+			
 
 		}
 	}

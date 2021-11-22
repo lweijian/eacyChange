@@ -42,7 +42,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 	page {
 		position: relative;
 		background-color: #f8eddb;

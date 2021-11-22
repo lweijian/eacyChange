@@ -15,7 +15,13 @@
 </template>
 
 <script>
-	import Point from '../../static/js/Point.js'
+	
+	class Point {
+	   constructor(x,y) {
+	       this.pointx = x;
+	       this.pointy = y;
+	   }
+	}
 	export default {
 		data() {
 			return {
