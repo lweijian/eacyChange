@@ -273,12 +273,14 @@
 			 */
 			upload() {
 				let files = []
+				
 				this.files.forEach((v, index) => {
-					if (v.status === 'ready' || v.status === 'error') {
+					if (!v.status||v.status === 'ready' || v.status === 'error') {
 						files.push(Object.assign({}, v))
 					}
 				})
-				this.uploadFiles(files)
+				
+				this.uploadFiles(this.files)
 			},
 			async setValue(newVal, oldVal) {
 				const newData =  async (v) => {
@@ -420,6 +422,7 @@
 						this.setProgress(res, res.index, true)
 					})
 					.then(result => {
+
 						this.setSuccessAndError(result)
 					})
 					.catch(err => {
@@ -513,12 +516,13 @@
 			delFile(index) {
 				this.$emit('delete', {
 					tempFile: this.files[index],
-					tempFilePath: this.files[index].url
+					tempFilePath: this.files[index].url,
+					uploadImageNumber:this.files.length-1
 				})
 				this.files.splice(index, 1)
-				this.$nextTick(() => {
-					this.setEmit()
-				})
+				// this.$nextTick(() => {
+				 	// this.setEmit()
+				// })
 			},
 
 			/**

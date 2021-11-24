@@ -4,23 +4,23 @@
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
 			<view class="addr"></view>
 		</view>
-	<!-- 	占位 -->
-		<view v-if="showHeader" class="place"></view> 
-	<!-- 	用户信息 -->
-		<view class="user">
-			 <!-- 头像 -->
+		<!-- 	占位 -->
+		<view v-if="showHeader" class="place"></view>
+		<!-- 	用户信息 -->
+		<view class="userInfo">
+			<!-- 头像 -->
 			<view class="left">
-				<image :src="user.avatar" @tap="toSetting"></image>
+				<image :src="userInfo.avatar" @tap="toSetting"></image>
 			</view>
 			<!-- 昵称 -->
 			<view class="right">
-				<view class="nickName" @tap="toLogin">{{user.nickName}}</view>
+				<view class="nickName" @tap="toLogin">{{userInfo.nickName}}</view>
 
 			</view>
 			<!--个性签名  数据展示 -->
-			<view class="signature" @tap="toLogin">{{user.signature}}</view>
+			<view class="signature" @tap="toLogin">{{userInfo.signature}}</view>
 			<view class="data-show">
-				<view class="data-item" v-for="(item,index) in user.dataShow">
+				<view class="data-item" v-for="(item,index) in userInfo.dataShow">
 					<view class="data-number"> {{item.number}}</view>
 					<view class="data-name"> {{item.name}}</view>
 
@@ -36,17 +36,25 @@
 
 		</view>
 
-		<view class="user-tabs">
-			<!-- 选项卡 -->
+
+
+
+
+		<view class="tabs-box">
 			<view class="tabs">
-				<u-tabs :list="tabList" :is-scroll="false"   inactive-color='#bdbdbd' active-color="#000000" bar-height="5" bar-width="60" :current="current" @change="change"></u-tabs>
+				<u-tabs :list="tabList" :is-scroll="false" inactive-color='#bdbdbd' active-color="#000000"
+					:show-bar="false" :current="current" @change="change"></u-tabs>
 			</view>
-			<!-- 选项卡内容 -->
-			<view class="tabs-content"></view>
+
+		</view>
+		<view class="tabs-content">
+			<PullDownRefreshView :refresher="false" @on-refresh="refresh">
+				<ArticlesShow v-show="current==0" :articlesList='articlesList' />
+				<DynamicShow :isNeedFocus="false" v-show="current==1" :dynamicList="dynamicList" />
+			</PullDownRefreshView>
 		</view>
 
 
-	
 
 	</view>
 
@@ -55,8 +63,8 @@
 
 </template>
 <script>
-
 	export default {
+		name: 'UserWorks',
 		data() {
 			return {
 				isfirst: true,
@@ -64,10 +72,11 @@
 				headerTop: null,
 				statusTop: null,
 				showHeader: true,
+				articlesList: [],
+				dynamicList: [],
 				//个人信息,
-				user: {
-
-					nickName:'',
+				userInfo: {
+					nickName: '',
 					avatar: '',
 					signature: '',
 					dataShow: [{
@@ -82,11 +91,10 @@
 					}]
 				},
 				// 选项卡
-				tabList: [
-					{
-					name: '笔记'
+				tabList: [{
+					name: '文章'
 				}, {
-					name: '赞过'
+					name: '动态'
 				}, {
 					name: '草稿箱'
 				}],
@@ -94,89 +102,125 @@
 				current: 0,
 			}
 		},
-		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-		onPullDownRefresh() {
-			setTimeout(function() {
-				uni.stopPullDownRefresh();
-			}, 1000);
+		mounted() {
+			this.userInfo.avatar = uni.getStorageSync('avatar');
+			this.userInfo.nickName = uni.getStorageSync('nickName');
+			this.init();
 		},
-		onPageScroll(e) {
-			//兼容iOS端下拉时顶部漂移
-			this.headerPosition = e.scrollTop >= 0 ? "fixed" : "absolute";
-			this.headerTop = e.scrollTop >= 0 ? null : 0;
-			this.statusTop = e.scrollTop >= 0 ? null : -this.statusHeight + 'px';
-		},
-		onLoad() {
-			this.statusHeight = 0;
-			// #ifndef H5
-			this.showHeader = false;
-			this.statusHeight = plus.navigator.getStatusbarHeight();
-			// #endif
-		},
-		onReady() {
-			
-			
-		},
-		mounted(){
-			 this.user.avatar=uni.getStorageSync('avatar');
-			 this.user.nickName=uni.getStorageSync('nickName');
-		},	
 		methods: {
-			
+
+			init() {
+				// 文章列表初始化
+				uniCloud.callFunction({
+					name: 'articles',
+					data: {
+						action: 'getArticlesByUid'
+					},
+					success: (res) => {
+						this.articlesList = res.result.dataSource.data
+					},
+					fail: (err) => {
+						console.log(err)
+					}
+				})
+				// 动态列表初始化
+				uniCloud.callFunction({
+					name: 'dynamics',
+					data: {
+						action: 'getDynamicsByUid',
+					},
+					success: (res) => {
+						this.dynamicList = res.result.dataSource.data
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				})
+
+			},
+
+			refresh(hideLoading) {
+				if (this.current == 0) {
+					// 获取文章列表
+					uniCloud.callFunction({
+						name: 'articles',
+						data: {
+							action: 'getArticlesByUid'
+						},
+						success: (res) => {
+							this.articlesList = res.result.dataSource.data
+
+						},
+						fail: (err) => {
+
+							console.log(err)
+						},
+						complete: () => {
+							setTimeout(function() {
+								hideLoading.complete();
+							}, 600);
+						}
+					})
+
+				} else if (this.current == 1) {
+					// 获取动态列表
+					uniCloud.callFunction({
+						name: 'dynamics',
+						data: {
+							action: 'getDynamicsByUid',
+						},
+						success: (res) => {
+							this.dynamicList = res.result.dataSource.data
+						},
+						fail: (e) => {
+							console.log(e)
+						},
+						complete: () => {
+							setTimeout(function() {
+								hideLoading.complete();
+							}, 600);
+						}
+					})
+				}
+			},
+
 			// 选项卡，索引改变方法
 			change(index) {
 				this.current = index;
-			
+
 			},
 			//消息列表
 			toMsg() {
-				uni.navigateTo({
-					url: '../../msg/msg'
-				})
+				this.toPage('../../msg/msg')
 			},
 			toOrderList(index) {
 				uni.setStorageSync('tbIndex', index);
-				uni.navigateTo({
-					url: '../../user/order_list/order_list?tbIndex=' + index
-				})
+				this.toPage(`../../user/order_list/order_list?tbIndex=${index}`)
+
 			},
 			toSetting() {
-				uni.navigateTo({
-					url: '../../user/setting/setting'
-				})
+				this.toPage('../../user/setting/setting')
 			},
 			toMyQR() {
-				uni.navigateTo({
-					url: '../../user/myQR/myQR'
-				})
+				this.toPage('../../user/myQR/myQR')
 			},
 			toLogin() {
 				uni.showToast({
 					title: '请登录',
 					icon: "none"
 				});
-				uni.navigateTo({
-					url: '../../login/login'
-				})
+				this.toPage('../../login/login');
+
 				this.isfirst = false;
 			},
-			isLogin() {
-				//实际应用中,用户登录状态应该用token等方法去维持登录状态.
-				const value = uni.getStorageSync('UserInfo');
-				if (value) {
-					return true;
-				}
-				return false
-			},
+
 			toDeposit() {
-				uni.navigateTo({
-					url: '../../user/deposit/deposit'
-				})
+				toPage('../../user/deposit/deposit');
 			},
 			toPage(url) {
 				if (!url) {
 					uni.showToast({
-						title: '模板未包含此页面',
+						title: '未包含此页面',
 						icon: "none"
 					});
 					return;
@@ -188,14 +232,11 @@
 		}
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	$HeadColor:#5a5c6b;
 	$FontColor:#eee;
 
-	page {
-		position: relative;
-		
-	}
+
 
 	.status {
 		width: 100%;
@@ -211,7 +252,7 @@
 	}
 
 	.header {
-	
+
 		height: 100rpx;
 		align-items: center;
 		position: fixed;
@@ -232,10 +273,10 @@
 		/*  #endif  */
 	}
 
-	
 
-	.user {
-		
+
+	.userInfo {
+
 		width: 100%;
 		padding: 0 4%;
 		display: flex;
@@ -244,6 +285,7 @@
 		position: relative;
 		background-color: $HeadColor;
 		padding-bottom: 100rpx;
+
 		.left {
 			width: 15vw;
 			height: 15vw;
@@ -335,24 +377,32 @@
 
 	}
 
-	.user-tabs {
-		height: 500upx;
-		background-color: #fff;
+	.tabs-box {
+		position: sticky;
+		left: 0;
+		right: 0;
+		top: 0;
+		width: 100%;
+		z-index: 1000;
+
+		.tabs {
+			top: 300rpx;
+			background-color: #ffffff;
+			padding: 0 50upx;
+		}
+	}
+
+	
+
+	.tabs-content {
+		padding: 0;
+	}
+
+	.sticky {
 		width: 750rpx;
-		border: 1px solid #fff;
-		position: relative;
-		bottom: 50rpx;
-		border-radius: 5%;
-		.tabs{
-	/deep/	#u-tab-item-0{
-			font-weight: 600 !important;
-		}
-			position: relative;
-			margin: 0 50upx;
-		/deep/	.u-tab-bar{
-				    background-color: red !important;
-			}
-		}
-		
+		height: 120rpx;
+		background-color: #2979ff;
+		color: #fff;
+		padding: 24rpx;
 	}
 </style>

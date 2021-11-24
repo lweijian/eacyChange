@@ -13,7 +13,7 @@
 		},
 		"uid": {
 			"bsonType": "string",
-			"description": "文章作者ID， 参考`uni-id-users` 表",
+			"description": "动态作者ID， 参考`uni-id-users` 表",
 			"foreignKey": "uni-id-users._id",
 			"defaultValue": {
 				"$env": "uid"
@@ -21,7 +21,7 @@
 		},
 		"nickName": {
 			"bsonType": "string",
-			"description": "文章作者名字， 参考`uni-id-users` 表",
+			"description": "动态作者名字， 参考`uni-id-users` 表",
 			"foreignKey": "uni-id-users.nickname",
 			"defaultValue": {
 				"$env": "nickname"
@@ -29,7 +29,7 @@
 		},
 		"avatar": {
 			"bsonType": "string",
-			"description": "文章作者头像， 参考`uni-id-users` 表",
+			"description": "动态作者头像， 参考`uni-id-users` 表",
 			"foreignKey": "uni-id-users.avatar",
 			"defaultValue": {
 			"$env": "avatar"
@@ -54,22 +54,21 @@
 		},
 		"content": {
 			"bsonType": "string",
-			"title": "文章内容",
-			"description": "文章内容",
-			"label": "文章内容",
+			"title": "动态内容",
+			"description": "动态内容",
+			"label": "动态内容",
 			"trim": "right"
 		},
-		"excerpt": {
-			"bsonType": "string",
-			"title": "文章摘录",
-			"description": "文章摘录",
-			"label": "摘要",
-			"trim": "both"
+		"imgList": {
+			"bsonType": "array",
+			"title": "图片展示列表",
+			"description": "图片展示列表",
+			"arrayType":"string"
 		},
-		"article_status": {
+		"dynamic_status": {
 			"bsonType": "int",
-			"title": "文章状态",
-			"description": "文章状态：0 草稿箱 1 已发布",
+			"title": "动态状态",
+			"description": "动态状态：0 草稿箱 1 已发布",
 			"defaultValue": 0,
 			"enum": [{
 				"value": 0,
@@ -134,21 +133,7 @@
 			"description": "最后回复用户 id，参考`uni-id-users` 表",
 			"foreignKey": "uni-id-users._id"
 		},
-		"cover": {
-			"bsonType": "string",
-			"title": "封面大图",
-			"description": "缩略图地址",
-			"label": "封面大图",
-			"trim": "both"
-		},
-		"detailSwiper": {
-			"bsonType": "array",
-			"title": "详情顶部图",
-			"description": "数组包含详情页图的地址",
-			"label": "详情顶部图",
-			"arrayType":"string"
-		},
-		
+	
 		"publish_date": {
 			"bsonType": "timestamp",
 			"title": "发表时间",
@@ -159,7 +144,7 @@
 		},
 		"publish_ip": {
 			"bsonType": "string",
-			"title": "发布文章时IP地址",
+			"title": "发布动态时IP地址",
 			"description": "发表时 IP 地址",
 			"forceDefaultValue": {
 				"$env": "clientIP"
@@ -179,11 +164,7 @@
 			"forceDefaultValue": {
 				"$env": "clientIP"
 			}
-		},
-		"mode": {
-			"bsonType": "number",
-			"title": "排版显示模式",
-			"description": "排版显示模式,如左图右文、上图下文等"
 		}
+	
 	}
 }

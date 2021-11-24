@@ -9,10 +9,11 @@
 			</view>
 			<view class="user__content">
 				<view class="user__content-main">
-					<text class="user__content-title uni-ellipsis" @click.stop="clickUser()">{{ name }}</text>
-					<text class="user__content-note uni-ellipsis">{{ timestampFormat(publishTime) }}</text>
+					<text class="user__content-title uni-ellipsis" @click.stop="clickUser()">{{ nickName }}</text>
+					<uni-dateformat class="user__content-note uni-ellipsis" :date="publish_date"
+						:threshold="[60000, 3600000]"> </uni-dateformat>
 				</view>
-				<view class="user__content-extra">
+				<view v-if="isNeedFocus" class="user__content-extra">
 					<slot>
 						<text :class="isFocusOn?'user__focus-on':'user__focus-off'"
 							@click.stop="clickFocus()">{{isFocusOn?'已关注':'关注' }}</text>
@@ -26,17 +27,17 @@
 		<view class="allImage">
 			<view class="imgList">
 				<view class="images" v-for="(item,index) in imgList" :key="index">
-					<image @click.stop="previewImg()" class="oneimg" :src="item" mode="aspectFill"
+			<image @click.stop="previewImg()" class="oneimg" :src="item" mode="aspectFill"
 						:style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
 				</view>
 			</view>
 		</view>
 		<view class="operate" :style="'width: 100%;display:'+operateDisplay">
 			<u-grid :col="4" :border="false">
-				<u-grid-item >
+				<u-grid-item>
 					<span :style="'color:'+thumbsupColor" @click.stop="clickThumbsup()">
 						<u-icon name="thumb-up" size="34" :style="'margin-right: 2px;color:'+thumbsupColor"></u-icon>
-						{{likeNumber?likeNumber:'点赞'}}
+						{{like_count?like_count:'点赞'}}
 					</span>
 				</u-grid-item>
 				<u-grid-item>
@@ -58,9 +59,9 @@
 						分享
 					</span>
 				</u-grid-item>
-			</u-grid >
+			</u-grid>
 		</view>
-		<view class="bottom-line"></view>
+
 	</view>
 </template>
 
@@ -70,38 +71,48 @@
 			avatar: {
 				type: String
 			},
-			name: {
+			nickName: {
 				type: String
 			},
-			publishTime: {
-				type: Number
+			publish_date: {
+				type: Number,
 			},
 			isFocusOn: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			content: {
 				type: String
 			},
 			imgList: {
-				type: Array
+				type: Array,
 			},
 			isLike: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			isCollect: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
-			likeNumber: {
-				type: Number
+			like_count: {
+				type: Number,
+				default: 0
 			},
 			collectionNumber: {
-				type: Number
+				type: Number,
+				default: 0
 			},
 			chatNumber: {
-				type: Number
+				type: Number,
+				default: 0
 			},
 			userNoShow: {
 				type: Boolean
+			},
+			isNeedFocus: {
+				type: Boolean,
+				default: true
 			},
 			operateNoShow: {
 				type: Boolean
@@ -153,54 +164,16 @@
 			// 自适应判断
 			judgeImg() {
 				if (this.imgList.length == 1) {
-					this.imgWidth = this.windowWidth * 2 / 3;
+					this.imgWidth = this.windowWidth * 3 / 5;
 					this.imgHeight = this.windowHeight * 3 / 5;
-				} else if (this.imgList.length == 4) {
-					this.imgWidth = this.windowWidth / 3.3;
+				} else if (this.imgList.length == 2) {
+					this.imgWidth = this.windowWidth * 3 / 7;
 					this.imgHeight = this.imgWidth;
 				} else {
-					this.imgWidth = this.windowWidth / 3.4;
+					this.imgWidth = this.windowWidth / 3.6;
 					this.imgHeight = this.imgWidth;
 				}
 			},
-			timestampFormat(timestamp) {
-				if (!timestamp) return '';
-
-				function zeroize(num) {
-					return (String(num).length == 1 ? '0' : '') + num;
-				}
-
-				var curTimestamp = parseInt(new Date().getTime() / 1000); //当前时间戳
-				var timestampDiff = curTimestamp - timestamp; // 参数时间戳与当前时间戳相差秒数
-
-				var curDate = new Date(curTimestamp * 1000); // 当前时间日期对象
-				var tmDate = new Date(timestamp * 1000); // 参数时间戳转换成的日期对象
-
-				var Y = tmDate.getFullYear(),
-					m = tmDate.getMonth() + 1,
-					d = tmDate.getDate();
-				var H = tmDate.getHours(),
-					i = tmDate.getMinutes(),
-					s = tmDate.getSeconds();
-
-				if (timestampDiff < 60) { // 一分钟以内
-					return "刚刚";
-				} else if (timestampDiff < 3600) { // 一小时前之内
-					return Math.floor(timestampDiff / 60) + "分钟前";
-				} else if (curDate.getFullYear() == Y && curDate.getMonth() + 1 == m && curDate.getDate() == d) {
-					return '今天' + zeroize(H) + ':' + zeroize(i);
-				} else {
-					var newDate = new Date((curTimestamp - 86400) * 1000); // 参数中的时间戳加一天转换成的日期对象
-					if (newDate.getFullYear() == Y && newDate.getMonth() + 1 == m && newDate.getDate() == d) {
-						return '昨天' + zeroize(H) + ':' + zeroize(i);
-					} else if (curDate.getFullYear() == Y) {
-						return zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
-					} else {
-						return Y + '年' + zeroize(m) + '月' + zeroize(d) + '日 ' + zeroize(H) + ':' + zeroize(i);
-					}
-				}
-			},
-
 			/** 触发父级事件 */
 			// 点击动态
 			clickDynamic() {
@@ -216,43 +189,50 @@
 			},
 			// 点赞
 			clickThumbsup() {
-				
+
 				this.$emit(`clickThumbsup`);
 				if (!this.isLike) {
 					this.thumbsupColor = '#fb5f5f'
-				}else{
-				this.thumbsupColor = 'gray'	
+				} else {
+					this.thumbsupColor = 'gray'
 				};
-			
+
 			},
 			// 点击收藏
 			clickCollectionNumber() {
 				this.$emit('clickCollectionNumber');
-				
+
 				if (!this.isCollect) {
 					this.starColor = '#fb5f5f'
-				}else{
-				this.starColor = 'gray'	
+				} else {
+					this.starColor = 'gray'
 				};
 			},
 			// 点击聊天
 			clickChat() {
 				this.$emit('clickChat');
-			
+
 			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
+	@mixin card-box {
+		margin:  20rpx 20rpx 40rpx;
+		background-color: #ffffff;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		border-radius: 20rpx;
+	}
+
 	/* 想法图片排列样式 */
 	.uni-list-chat__content-extra-text {
 		color: #007AFF;
 	}
 
 	.dynamic {
+		@include card-box;
 		background-color: #fff;
-		width: 100%;
 	}
 
 	.allImage {
@@ -271,7 +251,7 @@
 	}
 
 	.text {
-		margin: 1% 3% 2%;
+		margin: 1% 4% 5%;
 	}
 
 	.images {
@@ -281,7 +261,7 @@
 
 	.operate {
 		width: 94%;
-		padding:0 3%;
+		padding: 0 3%;
 		font-size: 14px;
 	}
 
@@ -300,9 +280,6 @@
 		color: #999;
 	}
 
-	.bottom-line {
-		border-bottom: 10px solid #efefef;
-	}
 
 
 	.user__container {

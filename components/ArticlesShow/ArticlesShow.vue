@@ -1,6 +1,6 @@
 <template>
-	<view class="wrap">
-		<u-waterfall v-model="flowList" ref="uWaterfall">
+	<view class="wrap" style="margin-bottom: 150rpx;">
+		<u-waterfall v-model="articlesList" ref="uWaterfall">
 			<template v-slot:left="{ leftList }">
 				<view class="work-warter" v-for="(item, index) in leftList" :key="item._id" @click="toDetail(item._id)">
 					<u-lazy-load threshold="-450" border-radius="10" :image="item.cover" :index="index"></u-lazy-load>
@@ -15,7 +15,7 @@
 
 						</view>
 					</view>
-					
+
 				</view>
 			</template>
 			<template v-slot:right="{ rightList }">
@@ -35,7 +35,7 @@
 						</view>
 
 					</view>
-					
+
 				</view>
 			</template>
 		</u-waterfall>
@@ -45,30 +45,23 @@
 
 <script>
 	export default {
+		name: 'ArticlesShow',
+		props: {
+			articlesList: {
+				type: Array,
+				default: []
+			}
+		},
 		data() {
 			return {
 
 				loadStatus: 'loadmore',
-				flowList: [],
-
 			};
 		},
 		methods: {
 			init() {
-				uniCloud.callFunction({
-					name: 'articles',
-					data: {
-						action: 'getAllArticles'
-					},
-					success: (res) => {
-						this.flowList = res.result.dataSource.data
-					},
-					fail: (err) => {
+				
 
-						console.log(err)
-					}
-				})
-			
 			},
 			addRandomData() {
 
@@ -78,7 +71,7 @@
 					url: `../../pages/detail/detail?id=${id}`
 				})
 			},
-	
+
 			clear() {
 				this.$refs.uWaterfall.clear();
 			}
@@ -101,18 +94,19 @@
 
 
 <style lang="scss" scoped>
+	
 	.work-warter {
 		border-radius: 10px;
-		margin: 5px;
+		margin: 10rpx 10rpx 30rpx 10rpx;
 		background-color: #ffffff;
 		padding: 8px;
 		position: relative;
-		 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 	}
 
-	
 
-	.work-img-wrap {}
+
+	
 
 	.work-image {
 		width: 100%;

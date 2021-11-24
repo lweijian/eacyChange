@@ -3,13 +3,14 @@
 
 		<view class="title">
 
-			<u-input type="text" v-model="title" placeholderStyle="font-size: 18px;" placeholder='这里填写标题~'>
+			<u-input type="text" v-model="title" placeholderStyle="font-size: 18px;" placeholder='这里填写文章标题~'>
 			</u-input>
 			<view class="upload-box">
-				<uni-file-picker title="上传封面" class="grid-img" v-model="fileList" file-mediatype="image" mode="list"
-					file-extname="png,jpg" ref="cover" :limit="1" return-type="array" :image-styles="imageStyles"
-					:auto-upload="false" @success="uploadCoverSuccess" @fail="uploadCoverFail"
-					@select="uploadCoverSelect" />
+				<uni-file-picker title="上传的第一张图片为文章封面" class="grid-img" file-mediatype="image" mode="grid" file-extname="png,jpg"
+					 :limit="9" return-type="array" :image-styles="imageStyles" :auto-upload="true"
+					@success="uploadSwiperSuccess" @fail="uploadSwiperFail" @select="uploadSwiperSelect"
+					@delete="uploadSwiperDelete" />
+
 			</view>
 		</view>
 		<view class="edit-content">
@@ -53,8 +54,8 @@
 			return {
 				title: "",
 				content: "",
-				fileList: [],
-				cover: "",
+
+				detailSwiper: [],
 				modal: null,
 				editable: true,
 				imageList: []
@@ -62,7 +63,6 @@
 		},
 		computed: {
 			...mapGetters([
-				'getUniIdToken',
 				'getUserInfo',
 			])
 		},
@@ -158,7 +158,7 @@
 									name: 'articles',
 									data: {
 										action: 'delArticleImage',
-										uniIdToken: this.$store.uniIdToken,
+
 										params: {
 											fileID: item[key]
 										}
@@ -206,18 +206,15 @@
 						if (res.confirm) {
 							this.imageList.map((item) => {
 								Object.keys(item).map((key) => {
-
 									//调用云函数删除文件
 									uniCloud.callFunction({
 										name: 'articles',
 										data: {
 											action: 'delArticleImage',
-											uniIdToken: this.$store.uniIdToken,
 											params: {
 												fileID: item[key]
 											}
 										},
-
 										fail: (err) => {
 											console.log(err)
 										}
@@ -240,17 +237,15 @@
 						if (res.confirm) {
 							//调用云函数删除文件
 							let userInfo = this.getUserInfo;
-							let uniIdToken = this.getUniIdToken;
-							
 							uniCloud.callFunction({
 								name: 'articles',
 								data: {
 									action: 'addArticle',
-									uniIdToken: uniIdToken,
+
 									params: {
 										nickName: userInfo.nickName,
 										avatar: userInfo.avatar,
-										cover: this.cover,
+										detailSwiper: this.detailSwiper,
 										title: this.title,
 										content: this.$refs.article.getContent(),
 									}
@@ -271,10 +266,7 @@
 						}
 					}
 				})
-			},
 
-			uploadCover() {
-				this.$refs.cover.upload()
 			},
 			upload(src) {
 				return new Promise((resolve, reject) => {
@@ -297,27 +289,37 @@
 			},
 
 			// 获取封面上传状态
-			uploadCoverSelect(e) {
-				uni.showModal({
-					title: '',
-					content: '是否确认上传封面',
-					success: (res) => {
-						if (res.confirm) {
-							// 上传封面
-							this.uploadCover();
-						}
-					}
-				});
+			uploadSwiperSelect(e) {
+				
 			},
 
 			// 上传成功
-			uploadCoverSuccess(e) {
-				this.cover = e.tempFilePaths[0];
+			uploadSwiperSuccess(e) {
+				this.detailSwiper = e.tempFilePaths;
 			},
 
 			// 上传失败
-			uploadCoverFail(e) {
+			uploadSwiperFail(e) {
 				console.log('上传失败：', e)
+			},
+			uploadSwiperDelete(e) {
+				uniCloud.callFunction({
+					name: 'articles',
+					data: {
+						action: 'delArticleImage',
+						params: {
+							fileID: e.tempFilePath
+						}
+					},
+					success: (res) => {
+						console.log(res)
+					},
+					fail: (err) => {
+						console.log(err)
+					}
+
+				})
+
 			}
 
 		}

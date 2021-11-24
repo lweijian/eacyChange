@@ -1,15 +1,16 @@
 'use strict';
 const uniID = require('uni-id')
 const db = uniCloud.database()
-const article = db.collection('articles');
+const dynamic = db.collection('dynamics');
 exports.main = async (event, context) => {
 	const uniIDIns = uniID.createInstance({
 		context
 	})
 	let params = event.params || {}
 	let payload = {}
-	let noCheckAction = ['getAllArticles', 'getArticleById']
+	let noCheckAction = ['getAllDynamic', 'getDynamicById']
 	if (noCheckAction.indexOf(event.action) === -1) {
+		console.log(event.uniIdToken)
 		if (!event.uniIdToken) {
 			return {
 				code: 403,
@@ -26,9 +27,9 @@ exports.main = async (event, context) => {
 	let res = {}
 
 	switch (event.action) {
-		case 'getAllArticles':
+		case 'getAllDynamics':
 			try {
-				let result = await article.get();
+				let result = await dynamic.get();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -42,9 +43,9 @@ exports.main = async (event, context) => {
 				}
 			}
 			break;
-		case 'getArticleById':
+		case 'getDynamicById':
 			try {
-				let result = await article.where({
+				let result = await dynamic.where({
 					_id: params.id
 				}).get({
 					getOne: true
@@ -61,9 +62,9 @@ exports.main = async (event, context) => {
 				}
 			}
 			break;
-		case 'getArticlesByUid':
+		case 'getDynamicsByUid':
 			try {
-				let result = await article.where({
+				let result = await dynamic.where({
 					uid: params.uid
 				}).get();
 				res = {
@@ -81,18 +82,16 @@ exports.main = async (event, context) => {
 
 			break;
 
-		case 'addArticle':
+		case 'addDynamic':
 			try {
-				let result = await article.add({
+				let result = await dynamic.add({
 					uid: params.uid,
 					publish_date: new Date().getTime(),
 					nickName:params.nickName,
 					avatar: params.avatar,
-					detailSwiper:params.detailSwiper,
-					cover: params.detailSwiper[0],
-					title: params.title,
-					content: params.content,
-					article_status: 1,
+					content:params.content,
+					imgList:params.imgList,
+					dynamic_status: 1,
 					view_count: 1000,
 					like_count: 100
 				})
@@ -101,7 +100,7 @@ exports.main = async (event, context) => {
 					msg: '添加成功'
 				}
 			} catch (e) {
-				console.log()
+				
 				res = {
 					code: 500,
 					msg: `添加失败:${e}`,
@@ -109,7 +108,7 @@ exports.main = async (event, context) => {
 				}
 			}
 			break;
-		case 'delArticles':
+		case 'delDynamics':
 			try {
 				const id = params.id;
 				if (!id) {
@@ -118,7 +117,7 @@ exports.main = async (event, context) => {
 						msg: `删除失败,请指定删除的id`
 					}
 				}
-				let result = await article.doc(id).remove()
+				let result = await dynamic.doc(id).remove()
 				res = {
 					code: 200,
 					msg: '删除成功'
@@ -132,19 +131,17 @@ exports.main = async (event, context) => {
 
 			break;
 
-		case 'delArticleImage':
+		case 'delDynamicImage':
+		const fileIDList=params.fileIDList
 			try {
-				const fileID = params.fileID;
-				if (!fileID) {
+				if (!fileIDList) {
 					return res = {
 						code: 500,
 						msg: `删除失败,请指定删除文件的id`
 					}
 				}
 			let result = await uniCloud.deleteFile({
-			    fileList: [
-			        fileID 
-			    ]
+			    fileList:params.fileIDList
 			});
 				res = {
 					code: 200,
