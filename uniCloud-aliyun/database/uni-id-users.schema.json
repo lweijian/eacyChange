@@ -277,5 +277,6 @@
 			"bsonType": "string",
 			"description": "用户自身邀请码"
 		}
+	
 	}
 }

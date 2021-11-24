@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex';
+
 	
 
 	export default {
@@ -46,11 +46,7 @@
 				popupShow: false
 			};
 		},
-		computed: {
-			...mapGetters([
-				'getUniIdToken',
-			])
-		},
+	
 		methods: {
 			refresh() {
 				this.fileList = [];
@@ -60,7 +56,6 @@
 			 uniCloud.callFunction({
 				name: 'drafts',
 				data: {
-					uniIdToken: this.getUniIdToken,
 					action: 'getDraft',
 				},
 				success: (res) => {
@@ -89,7 +84,7 @@
 							uniCloud.callFunction({
 								name: 'drafts',
 								data: {
-									uniIdToken: this.getUniIdToken,
+									
 									action: 'delDraft',
 									params: {
 										id
@@ -152,7 +147,7 @@
 				uniCloud.callFunction({
 					name: 'drafts',
 					data: {
-						uniIdToken: this.getUniIdToken,
+						
 						action: 'addDraft',
 						params: {
 							image

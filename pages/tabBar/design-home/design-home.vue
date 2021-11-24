@@ -53,36 +53,32 @@
 			}
 
 		},
-	// 	async onLoad() {
-	// 		let uniIdToken = uni.getStorageSync('uni_id_token');
-	// 		let tokenResult={};
-	// 		//是否存在token
-	// 		if (uniIdToken) {
-		
-	// 		tokenResult	= await uniCloud.callFunction({
-	// 				name: 'user-center',
-	// 				data: {
-	// 					uniIdToken: uniIdToken,
-	// 					action: 'checkToken',
-	// 				}
-	// 			})
-	// 		} else {
-	// 			this.toLogin();
-	// 		}
+		async onLoad() {
+			let uniIdToken = uni.getStorageSync('uni_id_token');
+			let tokenResult={};
+			//是否存在token
+			if (uniIdToken) {
+			tokenResult	= await uniCloud.callFunction({
+					name: 'user-center',
+					data: {
+						action: 'checkToken',
+					}
+				})
+			} else {
+				this.toLogin();
+			}
 
-	// 		// token是否正确
-	// 		if (tokenResult?.result?.code == 0) {
-	// 			//将用户信息保存到内存
+			// token是否正确
+			if (tokenResult?.result?.code == 0) {
+				//将用户信息保存到内存
+				this.login(tokenResult.result.userInfo,uniIdToken);
 				
-	// 			this.login(tokenResult.result.userInfo,uniIdToken);
-				
-				
-	// 		} else {
-	// 			this.toLogin();
-	// 		}
+			} else {
+				this.toLogin();
+			}
 
 
-	// 	}
+		}
 	
 	}
 </script>

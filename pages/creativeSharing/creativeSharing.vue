@@ -4,11 +4,25 @@
 			<swiper class="swiper-box" :current="swiperCurrent" @transition="transition"
 				@animationfinish="animationfinish">
 				<swiper-item class="swiper-item">
-					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
-						<view class="page-box">
-							<waterfall />
+					<view class="header-tabs-box">
+						<view class="header-tabs">
+							<u-tabs activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs"
+								:list="headerList" :current="headerCurrent" @change="headerChange" :is-scroll="false"
+								swiperWidth="750"></u-tabs>
 						</view>
-					</scroll-view>
+					</view>
+					
+					<PullDownRefreshView   @on-refresh="refresh"  >
+						<view class="page-box">
+	
+							<!-- 文章展示 -->
+							<ArticlesShow v-show="headerCurrent==0" :articlesList='articlesList' />
+							<!-- 动态展示 -->
+							<DynamicShow v-show="headerCurrent==1" :dynamicList="dynamicList" />
+						
+						</view>
+											
+					</PullDownRefreshView>
 				</swiper-item>
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
@@ -17,26 +31,28 @@
 						</view>
 					</scroll-view>
 				</swiper-item>
-				<swiper-item class="swiper-item  ">
+				<swiper-item class="swiper-item ">
 					<scroll-view scroll-y style="height: 100%;width: 100%;">
 						<view class="page-box">
-							<publish />
+							<PublishEdit />
 						</view>
 					</scroll-view>
 				</swiper-item>
 				<swiper-item class="swiper-item swiper-item-whileBackground">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<works />
+							<UserWorks />
 						</view>
 					</scroll-view>
 				</swiper-item>
 			</swiper>
 			<view class="u-tabs-box">
-				<u-tabs-swiper activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs" :list="list"
-					:current="current" @change="change" :is-scroll="false" swiperWidth="750"></u-tabs-swiper>
+				<u-tabs-swiper activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs"
+					:list="footerList" :current="footerCurrent" @change="footerListChange" :is-scroll="false"
+					swiperWidth="750"></u-tabs-swiper>
 			</view>
 		</view>
+	
 	</view>
 </template>
 
@@ -44,14 +60,16 @@
 	export default {
 		data() {
 			return {
-				orderList: [
-					[],
-					[],
-					[],
-					[]
-				],
-			
-				list: [{
+
+				headerList: [{
+					name: '文章'
+				}, {
+					name: '动态'
+				}],
+				dynamicList: [],
+				articlesList: [],
+				headerCurrent: 0,
+				footerList: [{
 						name: '创意'
 					},
 					{
@@ -64,7 +82,7 @@
 						name: '作品',
 					}
 				],
-				current: 0,
+				footerCurrent: 0,
 				swiperCurrent: 0,
 				tabsHeight: 0,
 				dx: 0,
@@ -72,10 +90,96 @@
 			};
 		},
 		onLoad() {
+			this.init();
 
 		},
+		// onPullDownRefresh() {
+			
+		// },
 		computed: {},
 		methods: {
+			
+			init() {
+				// 获取文章列表
+				uniCloud.callFunction({
+					name: 'articles',
+					data: {
+						action: 'getAllArticles'
+					},
+					success: (res) => {
+						this.articlesList = res.result.dataSource.data
+					},
+					fail: (err) => {
+
+						console.log(err)
+					}
+				})
+				// 获取动态列表
+				uniCloud.callFunction({
+					name: 'dynamics',
+					data: {
+						action: 'getAllDynamics',
+					},
+					success: (res) => {
+						this.dynamicList = res.result.dataSource.data
+					},
+					fail: (e) => {
+						console.log(e)
+					}
+				})
+
+			},
+			refresh(e) {
+				if (this.headerCurrent == 0) {
+					// 获取文章列表
+					uniCloud.callFunction({
+						name: 'articles',
+						data: {
+							action: 'getAllArticles'
+						},
+						success: (res) => {
+							this.articlesList = res.result.dataSource.data
+
+						},
+						fail: (err) => {
+
+							console.log(err)
+						},
+						complete: () => {
+							setTimeout(function() {
+								e.complete();
+							}, 600);
+						}
+					})
+
+				} else if (this.headerCurrent == 1) {
+					// 获取动态列表
+					uniCloud.callFunction({
+							name: 'dynamics',
+							data: {
+								action: 'getAllDynamics',
+							},
+							success: (res) => {
+								this.dynamicList = res.result.dataSource.data
+							},
+							fail: (e) => {
+								console.log(e)
+							},
+							complete: () => {
+								setTimeout(function() {
+									e.complete();
+								}, 600);
+							}
+						})
+
+
+				}
+
+
+
+
+			},
+			
 			reachBottom() {
 				// 此tab为空数据
 				if (this.current != 2) {
@@ -85,8 +189,11 @@
 					// }, 1200);
 				}
 			},
-			// tab栏切换
-			change(index) {
+			headerChange(index) {
+				this.headerCurrent = index;
+			},
+			// footerTab栏切换
+			footerListChange(index) {
 				this.swiperCurrent = index;
 			},
 			transition({
@@ -118,118 +225,18 @@
 </style>
 
 <style lang="scss" scoped>
-	.order {
-		width: 710rpx;
-		// background-color: #ffffff;
-		margin: 20rpx auto;
-		border-radius: 20rpx;
-		box-sizing: border-box;
-		padding: 20rpx;
-		font-size: 28rpx;
-
-		.top {
-			display: flex;
-			justify-content: space-between;
-
-			.left {
-				display: flex;
-				align-items: center;
-
-				.store {
-					margin: 0 10rpx;
-					font-size: 32rpx;
-					font-weight: bold;
-				}
-			}
-
-			.right {
-				color: $u-type-warning-dark;
-			}
-		}
-
-		.item {
-			display: flex;
-			margin: 20rpx 0 0;
-
-			.left {
-				margin-right: 20rpx;
-
-				image {
-					width: 200rpx;
-					height: 200rpx;
-					border-radius: 10rpx;
-				}
-			}
-
-			.content {
-				.title {
-					font-size: 28rpx;
-					line-height: 50rpx;
-				}
-
-				.type {
-					margin: 10rpx 0;
-					font-size: 24rpx;
-					color: $u-tips-color;
-				}
-
-				.delivery-time {
-					color: #e5d001;
-					font-size: 24rpx;
-				}
-			}
-
-			.right {
-				margin-left: 10rpx;
-				padding-top: 20rpx;
-				text-align: right;
-
-				.decimal {
-					font-size: 24rpx;
-					margin-top: 4rpx;
-				}
-
-				.number {
-					color: $u-tips-color;
-					font-size: 24rpx;
-				}
-			}
-		}
-
-		.total {
-			margin-top: 20rpx;
-			text-align: right;
-			font-size: 24rpx;
-
-			.total-price {
-				font-size: 32rpx;
-			}
-		}
-
-		.bottom {
-			display: flex;
-			margin-top: 40rpx;
-			padding: 0 10rpx;
-			justify-content: space-between;
-			align-items: center;
-
-			.btn {
-				line-height: 52rpx;
-				width: 160rpx;
-				border-radius: 26rpx;
-				border: 2rpx solid $u-border-color;
-				font-size: 26rpx;
-				text-align: center;
-				color: $u-type-info-dark;
-			}
-
-			.evaluate {
-				color: $u-type-warning-dark;
-				border-color: $u-type-warning-dark;
-			}
+	
+	.header-tabs-box{
+		height: 88rpx;
+		width: 100%;
+		.header-tabs{
+			position: fixed;
+			left: 0;
+			right: 0;
+			top: 0;
+			z-index: 999;
 		}
 	}
-
 	.centre {
 		text-align: center;
 		margin: 200rpx auto;

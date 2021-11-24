@@ -62,7 +62,6 @@
 		},
 		computed: {
 			...mapGetters([
-				'getUniIdToken',
 				'getUserInfo',
 			])
 		},
@@ -158,7 +157,7 @@
 									name: 'articles',
 									data: {
 										action: 'delArticleImage',
-										uniIdToken: this.$store.uniIdToken,
+										
 										params: {
 											fileID: item[key]
 										}
@@ -212,7 +211,6 @@
 										name: 'articles',
 										data: {
 											action: 'delArticleImage',
-											uniIdToken: this.$store.uniIdToken,
 											params: {
 												fileID: item[key]
 											}
@@ -240,13 +238,13 @@
 						if (res.confirm) {
 							//调用云函数删除文件
 							let userInfo = this.getUserInfo;
-							let uniIdToken = this.getUniIdToken;
+							
 							
 							uniCloud.callFunction({
 								name: 'articles',
 								data: {
 									action: 'addArticle',
-									uniIdToken: uniIdToken,
+									
 									params: {
 										nickName: userInfo.nickName,
 										avatar: userInfo.avatar,
@@ -271,6 +269,7 @@
 						}
 					}
 				})
+		
 			},
 
 			uploadCover() {

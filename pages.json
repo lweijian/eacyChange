@@ -344,7 +344,6 @@
             "path": "pages/tabBar/user-center/user-center",
             "style": {
                 "navigationBarTitleText": "EasyChange",
-                "enablePullDownRefresh": false,
                 "enablePullDownRefresh": true
             }
 
