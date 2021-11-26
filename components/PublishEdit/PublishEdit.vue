@@ -38,9 +38,6 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex';
 	export default {
 		data() {
 			return {
@@ -67,9 +64,6 @@
 			};
 		},
 		computed: {
-			...mapGetters([
-				'getUserInfo',
-			])
 		},
 		methods: {
 			headerChange(index) {
@@ -114,9 +108,8 @@
 					data: {
 						action: 'addDynamic',
 						params: {
-							nickName: userInfo.nickName,
-							avatar: userInfo.avatar,
 							content: this.content,
+							dynamic_status:1,
 							imgList: uploadImageResult?.tempFilePaths || [],
 						}
 					},
@@ -158,7 +151,8 @@
 							}
 
 							uni.showLoading({
-								title: '发布中'
+								title: '发布中',
+								mask:true
 							})
 						}
 					}

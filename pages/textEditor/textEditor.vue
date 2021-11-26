@@ -46,9 +46,7 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex';
+
 	export default {
 		data() {
 			return {
@@ -62,9 +60,7 @@
 			}
 		},
 		computed: {
-			...mapGetters([
-				'getUserInfo',
-			])
+		
 		},
 
 		onReady() {
@@ -89,7 +85,8 @@
 										1, // 2.2.0 版本起插入图片时支持多张（修改图片链接时仅限一张）
 										success: res => {
 											uni.showLoading({
-												title: '上传中'
+												title: '上传中',
+												mask:true
 											});
 											(async () => {
 												const arr = []
@@ -236,15 +233,15 @@
 					success: res => {
 						if (res.confirm) {
 							//调用云函数删除文件
-							let userInfo = this.getUserInfo;
+						
+						
 							uniCloud.callFunction({
 								name: 'articles',
 								data: {
 									action: 'addArticle',
 
 									params: {
-										nickName: userInfo.nickName,
-										avatar: userInfo.avatar,
+										
 										detailSwiper: this.detailSwiper,
 										title: this.title,
 										content: this.$refs.article.getContent(),
@@ -330,7 +327,6 @@
 	@mixin card-box {
 		margin: 0rpx 5vw;
 		width: 90vw;
-		padding-bottom: 50px;
 		background-color: #ffffff;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		border-radius: 20px;

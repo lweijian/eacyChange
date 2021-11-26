@@ -1,7 +1,7 @@
 <template>
 	<view class="board-container">
-		
 		<Toolbar :penColor="currentColor" @penWidthChange="penWidthChangeHandler" @toolItemTap="toolItemTapHandler" :toolArr="toolArr"></Toolbar>
+		
 		<view class="board" :class="{'board-out':colorPanelShow}">
 			
 			<canvas class="board-canvas" canvas-id="drawCanvas" disable-scroll="true"
@@ -18,7 +18,7 @@
 	import ColorPanel from '../../components/colorPanel/color-panel.vue'
 	import {
 		customPrint
-	} from '../../common/util/util.js'
+	} from '../../common/utils/utils.js'
 	export default {
 		components: {
 		
@@ -27,7 +27,6 @@
 		},
 		data() {
 			return {
-				testSrc:"../../static/img/drawCanvas/pikaqiu.png",
 				backgroundImageSrc:"",
 				colorPanelShow: false,
 				drawInfos: [],

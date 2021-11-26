@@ -1,32 +1,24 @@
 <template>
 	<view class="content">
-		<u-loading color="red" :show="loading" class="loading"></u-loading>
-		<view class="input-group">
-			<view class="input-row border">
-				<text class="title">账号：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></m-input>
-			</view>
-			<view class="input-row border">
-				<text class="title">密码：</text>
-				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
-			</view>
 
+
+		<view class="logo">
+			<image src="/static/img/logo.png" style="width: 70vw;margin: 20rpx 15vw;" mode="widthFix"></image>
+		</view>	
+		<view class="login-info">
+			<view class="title">EASY CHANGE</view>
+			<view class="title-info">create and enjoy life~</view>
 		</view>
 		<view class="btn-row">
-			<button type="primary" class="primary"  @tap="loginByPwd">密码登录</button>
-		</view>
-		<!-- #ifdef MP-WEIXIN -->
-		<view class="btn-row">
 
-			<button type="primary" class="primary" open-type="getUserInfo" 
-				@tap="oneClickLogin()">微信一键登录</button>
+			<button type="default" class="button-login" open-type="getUserInfo" @click="oneClickLogin()">授权登录</button>
 
 		</view>
-		<!-- #endif -->
+		
 
-		<view class="action-row">
+		<!-- 	<view class="action-row">
 			<navigator url="./register">注册账号</navigator>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -41,8 +33,7 @@
 	} from '@/common/univerify.js'
 	import {
 		getDeviceUUID
-	} from '@/common/utils.js'
-
+	} from '@/common/utils/utils.js'
 	let weixinAuthService;
 	const captchaOptions = {
 		deviceId: getDeviceUUID(),
@@ -77,77 +68,78 @@
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
 
-			async loginByPwd() {
-				/**
-				 * 客户端对账号信息进行一些必要的校验。
-				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-				 */
-				this.loading = true;
-				if (this.username.length < 3) {
-					uni.showToast({
-						icon: 'none',
-						title: '账号最短为 3 个字符'
-					});
-					return;
-				}
-				if (this.password.length < 6) {
-					uni.showToast({
-						icon: 'none',
-						title: '密码最短为 6 个字符'
-					});
-					return;
-				}
-				const data = {
-					username: this.username,
-					password: this.password,
-					captcha: this.captchaText,
-					...captchaOptions
-				};
-				uniCloud.callFunction({
-					name: 'user-center',
-					data: {
-						action: 'login',
-						params: data
-					},
-					success: (e) => {
-						if (e.result.code == 0) {
-							this.needCaptcha = false;
+			// 	async loginByPwd() {
+			// 		/**
+			// 		 * 客户端对账号信息进行一些必要的校验。
+			// 		 * 实际开发中，根据业务需要进行处理，这里仅做示例。
+			// 		 */
+			// 		this.loading = true;
+			// 		if (this.username.length < 3) {
+			// 			uni.showToast({
+			// 				icon: 'none',
+			// 				title: '账号最短为 3 个字符'
+			// 			});
+			// 			return;
+			// 		}
+			// 		if (this.password.length < 6) {
+			// 			uni.showToast({
+			// 				icon: 'none',
+			// 				title: '密码最短为 6 个字符'
+			// 			});
+			// 			return;
+			// 		}
+			// 		const data = {
+			// 			username: this.username,
+			// 			password: this.password,
+			// 			captcha: this.captchaText,
+			// 			...captchaOptions
+			// 		};
+			// 		uniCloud.callFunction({
+			// 			name: 'user-center',
+			// 			data: {
+			// 				action: 'login',
+			// 				params: data
+			// 			},
+			// 			success: (e) => {
+			// 				if (e.result.code == 0) {
+			// 					this.needCaptcha = false;
 
-							uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
-							uni.setStorageSync('uni_id_token', e.result.token)
-							uni.setStorageSync('username', e.result.username)
-							uni.setStorageSync('nickName', e.result.nickName)
-							uni.setStorageSync('avatar', e.result.avatar)
-							uni.setStorageSync('login_type', 'online')
-							uni.setStorageSync('uni_id_has_pwd', true)
-							this.loading = false;
-							this.toHome();
+			// 					uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
+			// 					uni.setStorageSync('uni_id_token', e.result.token)
+			// 					uni.setStorageSync('username', e.result.username)
+			// 					uni.setStorageSync('nickName', e.result.nickName)
+			// 					uni.setStorageSync('avatar', e.result.avatar)
+			// 					uni.setStorageSync('login_type', 'online')
+			// 					uni.setStorageSync('uni_id_has_pwd', true)
+			// 					this.loading = false;
+			// 					this.toHome();
 
-						} else {
-							uni.showModal({
-								content: e.result.message,
-								showCancel: false
-							})
+			// 				} else {
+			// 					uni.showModal({
+			// 						content: e.result.message,
+			// 						showCancel: false
+			// 					})
 
-							this.needCaptcha = e.result.needCaptcha;
-							uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
-							if (this.needCaptcha) {
-								this.captcha('createCaptcha')
-							}
-						}
-					},
-					fail: (e) => {
-						uni.showModal({
-							content: JSON.stringify(e),
-							showCancel: false
-						})
-					},
-					complete: () => {
-						this.loginBtnLoading = false
-					}
-				})
+			// 					this.needCaptcha = e.result.needCaptcha;
+			// 					uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
+			// 					if (this.needCaptcha) {
+			// 						this.captcha('createCaptcha')
+			// 					}
+			// 				}
+			// 			},
+			// 			fail: (e) => {
+			// 				uni.showModal({
+			// 					content: JSON.stringify(e),
+			// 					showCancel: false
+			// 				})
+			// 			},
+			// 			complete: () => {
+			// 				this.loginBtnLoading = false
+			// 			}
+			// 		})
 
-			},
+			// 	},
+
 			// 验证
 			oauth() {
 				return new Promise((resolve, reject) => {
@@ -173,7 +165,7 @@
 						uni.getUserProfile({
 							desc: "更新用户信息",
 							success: (res) => {
-								
+
 								resolve(res.userInfo)
 							},
 							fail: (err) => {
@@ -195,7 +187,7 @@
 			},
 			updateUser(uniIdToken, userInfo) {
 				// 更新用户信息
-				return new Promise((resolve,reject)=>{
+				return new Promise((resolve, reject) => {
 					uniCloud.callFunction({
 						name: 'user-center',
 						data: {
@@ -206,21 +198,24 @@
 							},
 						},
 						success(res) {
-						uni.setStorageSync('nickName', userInfo.nickName)
-						uni.setStorageSync('avatar', userInfo.avatarUrl)
+							uni.setStorageSync('nickName', userInfo.nickName)
+							uni.setStorageSync('avatar', userInfo.avatarUrl)
 							resolve(res)
 						},
-						fail(err){
+						fail(err) {
 							reject(err);
 						}
 					})
-					
+
 				})
-				
+
 			},
 
 			async loginByWeixin() {
-				this.loading = true;
+				uni.showLoading({
+					title:'登录中',
+					mask:true
+				})
 				let code = await this.oauth()
 				let loginByWeixinResult = await uniCloud.callFunction({
 					name: 'user-center',
@@ -239,19 +234,23 @@
 					uni.setStorageSync('hasLogin', true)
 					uni.setStorageSync('uni_id_token_expired', loginByWeixinResult.result.tokenExpired)
 					uni.setStorageSync('login_type', 'online')
-					await this.updateUser(loginByWeixinResult.result.token,this.userInfo)
+					await this.updateUser(loginByWeixinResult.result.token, this.userInfo)
 					this.loading = false;
-					this.login(this.userInfo,loginByWeixinResult.result.token)
+					this.login(this.userInfo, loginByWeixinResult.result.token)
+					uni.hideLoading()
 					this.toHome()
 				}
 			},
 
 			async oneClickLogin() {
+				try{
 				this.userInfo= await this.getUserProfile();
-				console.log(this.userInfo)
-				if(this.userInfo){
-					this.loginByWeixin();
+						this.loginByWeixin();
+					
+				}catch(e){
+					console.log(e)
 				}
+				
 			}
 		},
 
@@ -266,8 +265,12 @@
 		}
 	}
 </script>
-
 <style>
+	page{
+		background-color: #f8eddb;
+	}
+</style>
+<style  scoped>
 	.login-type {
 		display: flex;
 		justify-content: center;
@@ -307,14 +310,41 @@
 		left: 0;
 		width: 100%;
 	}
-
-
-
-
-
-	.loading {
-		position: absolute;
-		top: 49vh;
-		left: 49vw;
+	.logo{
+		height: 560rpx;
+		width: 100%;
 	}
+
+	.login-info{
+		position: relative;
+		top: 100rpx;
+		color: #ffaa00;
+		text-align: center;
+		height: 200rpx;
+		width: 750rpx;
+	}
+	.title{
+		font-size: 35px;
+	}
+	.title-info{
+		font-size: 14px;
+	}
+	
+
+	
+	button[type=default]{
+		
+		margin: 100rpx 15vw;
+		width: 70vw;
+	    background-color: #ffaa00;
+	    border-radius: 50rpx;
+	    color: antiquewhite;
+	
+	}
+
+
+
+
+
+	
 </style>

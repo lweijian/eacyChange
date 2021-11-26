@@ -19,22 +19,6 @@
 				"$env": "uid"
 			}
 		},
-		"nickName": {
-			"bsonType": "string",
-			"description": "文章作者名字， 参考`uni-id-users` 表",
-			"foreignKey": "uni-id-users.nickname",
-			"defaultValue": {
-				"$env": "nickname"
-			}
-		},
-		"avatar": {
-			"bsonType": "string",
-			"description": "文章作者头像， 参考`uni-id-users` 表",
-			"foreignKey": "uni-id-users.avatar",
-			"defaultValue": {
-			"$env": "avatar"
-		}
-		},
 		"category_id": {
 			"bsonType": "string",
 			"title": "分类",

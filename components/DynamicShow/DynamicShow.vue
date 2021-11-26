@@ -1,8 +1,8 @@
 <template>
 	<view class="dynamic-show-box">
 		<!-- 动态 -->
-		<Dynamic v-for="(item,index) in dynamicList" :key="item._id" :imgList="item.imgList" :avatar="item.avatar"
-			:isNeedFocus='isNeedFocus' :nickName="item.nickName" :publish_date="item.publish_date"
+		<Dynamic v-for="(item,index) in dynamicList" :key="item._id" :imgList="item.imgList" :avatar="item.userInfo[0].avatar"
+			:isNeedFocus='isNeedFocus' :nickName="item.userInfo[0].nickName" :publish_date="item.publish_date"
 			:content="item.content" :isLike="item.isLike" :isCollect="item.isCollect" :like_count="item.like_count"
 			:collectionNumber="item.collectionNumber" :chatNumber="item.chatNumber" @clickDynamic="clickDynamic(index)"
 			@clickUser="clickUser(item.id)" @clickFocus="clickFocus(index)" @clickThumbsup="clickThumbsup(item)"

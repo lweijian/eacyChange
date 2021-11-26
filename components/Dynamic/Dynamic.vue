@@ -138,7 +138,7 @@
 			if (this.userNoShow) {
 				this.userDisplay = 'none';
 			}
-			console.log(this.operateNoShow);
+			
 			if (this.operateNoShow) {
 				this.operateDisplay = 'none';
 			}
@@ -153,7 +153,6 @@
 					urls: this.imgList,
 					longPressActions: {
 						itemList: ['保存图片'],
-
 					}
 				})
 			},
@@ -164,7 +163,7 @@
 			// 自适应判断
 			judgeImg() {
 				if (this.imgList.length == 1) {
-					this.imgWidth = this.windowWidth * 3 / 5;
+					this.imgWidth = this.windowWidth * 5 /6;
 					this.imgHeight = this.windowHeight * 3 / 5;
 				} else if (this.imgList.length == 2) {
 					this.imgWidth = this.windowWidth * 3 / 7;
@@ -300,32 +299,15 @@
 		display: flex;
 		width: 45px;
 		height: 45px;
-		-webkit-border-radius: 5px;
-		border-color: #eee;
-		border-width: 1px;
-		border-style: solid;
+		border: 1px solid #eee;
 		overflow: hidden;
-		border-radius: 50px;
+		border-radius: 100%;
 	}
 
 	.user__header-image {
-		display: flex;
-		align-content: center;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
-		-webkit-box-pack: center;
-		justify-content: center;
-		-webkit-box-align: center;
-		align-items: center;
-		flex-wrap: wrap-reverse;
 		width: 45px;
 		height: 45px;
-		border-radius: 5px;
-		border-color: #eee;
-		border-width: 1px;
-		border-style: solid;
-		overflow: hidden;
+		border-radius: 100%;
 	}
 
 	.user__content {

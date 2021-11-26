@@ -7,8 +7,8 @@
 					<view class="work-title u-line-2">{{ item.title }}</view>
 					<view class="info-box">
 						<view class="left-box u-line-1">
-							<u-icon class="work-nickName" :label="item.nickName" size="22" label-size="22"
-								:name="item.avatar" />
+							<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22" label-size="22"
+								:name="item.userInfo[0].avatar" />
 						</view>
 						<view class="right-box">
 							<u-icon class="like-icon" name="heart" size="22" label-size="22" :label="item.like_count" />
@@ -26,8 +26,8 @@
 
 					<view class="info-box">
 						<view class="left-box u-line-1">
-							<u-icon class="work-nickName" :label="item.nickName" size="22" label-size="22"
-								:name="item.avatar" />
+							<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22" label-size="22"
+								:name="item.userInfo[0].avatar" />
 						</view>
 						<view class="right-box">
 							<u-icon class="like-icon" name="heart" size="22" label-size="22" :label="item.like_count" />

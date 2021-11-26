@@ -1,18 +1,17 @@
 <template>
 	<view>
+		<view class="logo">
+			<image src="/static/img/logo.png" style="width: 70vw;margin: 20rpx 15vw;" mode="widthFix"></image>
+		</view>	
 		<view class="function-button">
-			
-			<view class="clothes ">
-				<u-button shape="circle" type="warning" size="default" @click='toCreativeSharing()'>创意分享</u-button>
-			</view>
-			
-			<view class="clothes ">
-				<u-button shape="circle" type="warning" size="default" @click='toDesign()'>旧衣改造</u-button>
-			</view>
-			
-			<view class="clothes ">
-				<u-button shape="circle" type="warning" size="default" @click='toTest()'>test页面</u-button>
-			</view>
+				<button type="default" @click='toCreativeSharing()'>创意分享</button>
+				<button type="default" @click='toDesign()'>旧衣改造</button>
+				<!-- <button type="default" @click='toTest()'>test页面</button> -->
+				
+		
+		
+		
+		
 		</view>
 	</view>
 </template>
@@ -33,7 +32,7 @@
 			toDesign() {
 
 				uni.navigateTo({
-					url: '../../design/design'
+					url: '../../scan-frame/scan-frame'
 				})
 			},
 			toCreativeSharing() {
@@ -41,11 +40,11 @@
 					url: '../../creativeSharing/creativeSharing'
 				})
 			},
-			toTest() {
-				uni.navigateTo({
-					url: '../../detail/detail'
-				})
-			},
+			// toTest() {
+			// 	uni.navigateTo({
+			// 		url: '../../tiezhi-photo/tiezhi-photo'
+			// 	})
+			// },
 			toLogin() {
 				uni.reLaunch({
 					url: '../../login/login',
@@ -89,18 +88,23 @@
 		background-color: #f8eddb;
 	}
 
-	/deep/.u-size-default {
-		height: 160rpx;
+	.logo{
+		height: 560rpx;
+		width: 100%;
 	}
 
 	.function-button {
-
 		width: 100%;
-		position: absolute;
-		top: 40vh;
-
-		.clothes {
-			margin: 100rpx;
+		margin: 100rpx 0;
+		button[type=default]{
+			margin: 100rpx 15vw;
+			width: 70vw;
+		    background-color: #ffaa00;
+		    border-radius: 50rpx;
+		    color: #ffffff;
+			
+		
 		}
 	}
+
 </style>

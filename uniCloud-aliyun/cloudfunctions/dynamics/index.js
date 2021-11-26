@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 	let payload = {}
 	let noCheckAction = ['getAllDynamic', 'getDynamicById']
 	if (noCheckAction.indexOf(event.action) === -1) {
-		console.log(event.uniIdToken)
+		
 		if (!event.uniIdToken) {
 			return {
 				code: 403,
@@ -29,7 +29,14 @@ exports.main = async (event, context) => {
 	switch (event.action) {
 		case 'getAllDynamics':
 			try {
-				let result = await dynamic.get();
+				let result=await dynamic.aggregate()
+				  .lookup({
+				 from: 'uni-id-users',
+				 localField:'uid',
+				 foreignField:'_id',
+				 as:'userInfo'
+				  })
+				  .end()
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -38,18 +45,24 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 
 				}
 			}
 			break;
 		case 'getDynamicById':
 			try {
-				let result = await dynamic.where({
-					_id: params.id
-				}).get({
-					getOne: true
-				});
+			let result = await dynamic
+			.aggregate()
+			.match({
+				_id: params.id
+			}).lookup({
+				from: 'uni-id-users',
+				localField: 'uid',
+				foreignField: '_id',
+				as: 'userInfo'
+			})
+			.end();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -58,15 +71,23 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 				}
 			}
 			break;
 		case 'getDynamicsByUid':
 			try {
-				let result = await dynamic.where({
+				let result = await dynamic.aggregate()
+				.match({
 					uid: params.uid
-				}).get();
+				}).lookup({
+					from: 'uni-id-users',
+					localField: 'uid',
+					foreignField: '_id',
+					as: 'userInfo'
+				})
+				.end()
+			
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -75,7 +96,7 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 
 				}
 			}
@@ -87,11 +108,9 @@ exports.main = async (event, context) => {
 				let result = await dynamic.add({
 					uid: params.uid,
 					publish_date: new Date().getTime(),
-					nickName:params.nickName,
-					avatar: params.avatar,
 					content:params.content,
 					imgList:params.imgList,
-					dynamic_status: 1,
+					dynamic_status:params.dynamic_status,
 					view_count: 1000,
 					like_count: 100
 				})

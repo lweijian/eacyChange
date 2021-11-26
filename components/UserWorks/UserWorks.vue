@@ -20,10 +20,9 @@
 			<!--个性签名  数据展示 -->
 			<view class="signature" @tap="toLogin">{{userInfo.signature}}</view>
 			<view class="data-show">
-				<view class="data-item" v-for="(item,index) in userInfo.dataShow">
+				<view class="data-item" v-for="(item,index) in userInfo.dataShow" :key='index'>
 					<view class="data-number"> {{item.number}}</view>
 					<view class="data-name"> {{item.name}}</view>
-
 				</view>
 
 			</view>
@@ -32,14 +31,7 @@
 				<view>编辑资料</view>
 				<view class="icon setting" @tap="toSetting"></view>
 			</view>
-
-
 		</view>
-
-
-
-
-
 		<view class="tabs-box">
 			<view class="tabs">
 				<u-tabs :list="tabList" :is-scroll="false" inactive-color='#bdbdbd' active-color="#000000"
@@ -51,6 +43,7 @@
 			<PullDownRefreshView :refresher="false" @on-refresh="refresh">
 				<ArticlesShow v-show="current==0" :articlesList='articlesList' />
 				<DynamicShow :isNeedFocus="false" v-show="current==1" :dynamicList="dynamicList" />
+
 			</PullDownRefreshView>
 		</view>
 
@@ -110,6 +103,7 @@
 		methods: {
 
 			init() {
+				
 				// 文章列表初始化
 				uniCloud.callFunction({
 					name: 'articles',
@@ -117,7 +111,8 @@
 						action: 'getArticlesByUid'
 					},
 					success: (res) => {
-						this.articlesList = res.result.dataSource.data
+						
+						this.articlesList = res.result?.dataSource?.data || []
 					},
 					fail: (err) => {
 						console.log(err)
@@ -130,7 +125,7 @@
 						action: 'getDynamicsByUid',
 					},
 					success: (res) => {
-						this.dynamicList = res.result.dataSource.data
+						this.dynamicList = res.result?.dataSource?.data || []
 					},
 					fail: (e) => {
 						console.log(e)
@@ -392,7 +387,7 @@
 		}
 	}
 
-	
+
 
 	.tabs-content {
 		padding: 0;

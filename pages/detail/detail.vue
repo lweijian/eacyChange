@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
 		<view class="banner">
-			<u-swiper :list="articles.detailSwiper" border-radius='0' height="400"  :autoplay='false' />
+			<u-swiper :list="articles.detailSwiper" border-radius='0' height="400" :autoplay='false' />
 			<view class="title-area">
 				{{articles.title}}
 			</view>
 		</view>
-	
+
 		<view class="article-meta">
-			<text class="article-meta-text article-author">{{articles.nickName}}</text>
+			<text class="article-meta-text article-author">{{articles.userInfo[0].nickName}}</text>
 			<text class="article-meta-text article-text">发表于</text>
 			<uni-dateformat class="article-meta-text article-time" :date="articles.publish_date"
 				:threshold="[60000, 3600000]"> </uni-dateformat>
@@ -25,30 +25,37 @@
 		data() {
 			return {
 				articles: {},
-				
+
 			}
 		},
 		onLoad(event) {
+			uni.showLoading({
+				title: '加载中',
+				mask: true
+			})
 			uniCloud.callFunction({
-					name: 'articles',
-					data: {
-						action: 'getArticleById',
-						params: {
-							id: event.id
-						}
-					},
-					success: (res) => {
-						this.articles = res.result.dataSource.data[0] || {}
-							},
-							fail: (err) => {
+				name: 'articles',
+				data: {
+					action: 'getArticleById',
+					params: {
+						id: event.id
+					}
+				},
+				success: (res) => {
+					this.articles = res.result.dataSource.data[0] || {}
+				},
+				fail: (err) => {
 
-								console.log(err)
-							}
-					})
+					console.log(err)
+				},
+				complete: () => {
+					uni.hideLoading()
+				}
+			})
 
 
-			}
 		}
+	}
 </script>
 
 <style>
@@ -59,21 +66,22 @@
 
 	/* #endif */
 
-	.banner{
+	.banner {
 		position: relative;
 	}
-	.title-area{
-	    position: absolute;
-	    background-color: rgba(0, 0, 0, 0.3);
-	    bottom: 0;
-	    left: 0;
-	    width: 100%;
-	    font-size: 28rpx;
-	    padding: 12rpx 24rpx;
-	    color: rgba(255, 255, 255, 0.9);
+
+	.title-area {
+		position: absolute;
+		background-color: rgba(0, 0, 0, 0.3);
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		font-size: 28rpx;
+		padding: 12rpx 24rpx;
+		color: rgba(255, 255, 255, 0.9);
 	}
 
-	
+
 
 	.title-text {
 		font-size: 16px;

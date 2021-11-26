@@ -11,15 +11,17 @@
 			<u-grid-item>
 				<uni-file-picker class="grid-img" v-model="fileList" file-mediatype="image" mode="grid"
 					file-extname="png,jpg" ref="drafts" :limit="1" return-type="array" :image-styles="imageStyles"
-					:auto-upload="false"  @success="uploadSuccess" @fail="uploadFail" @select="uploadSelect" />
+					:auto-upload="false" @success="uploadSuccess" @fail="uploadFail" @select="uploadSelect" />
 			</u-grid-item>
 		</u-grid>
 		<view>
 			<u-popup v-model="popupShow" safe-area-inset-bottom="" mode='bottom'>
 				<image class="current-image" :src="currentImage.image.url" />
-				<u-button @click='handleDelImage(currentImage._id)'>删除此草稿</u-button>
+				<u-button @click='handleSaveImage()'>下载草稿图片</u-button>
+
+				<u-button @click='handleDelImage()'>删除草稿图片</u-button>
 			</u-popup>
-		
+
 		</view>
 
 	</view>
@@ -27,14 +29,11 @@
 </template>
 
 <script>
-
-	
-
 	export default {
 		data() {
 			return {
-				
-		
+
+
 				checked: false,
 				currentImage: {},
 				drafts: [],
@@ -46,63 +45,73 @@
 				popupShow: false
 			};
 		},
-	
+
 		methods: {
 			refresh() {
 				this.fileList = [];
 				uni.showLoading({
-				    title: '加载中'
+					title: '加载中',
+					mask: true
 				});
-			 uniCloud.callFunction({
-				name: 'drafts',
-				data: {
-					action: 'getDraft',
-				},
-				success: (res) => {
-					this.drafts = res.result.dataSource.data || [];
-					 uni.hideLoading();
-					
-				},
-				fail: (err) => {
-					 uni.hideLoading();
-					console.log(err)
-				}
-			})
+				uniCloud.callFunction({
+					name: 'drafts',
+					data: {
+						action: 'getDraft',
+					},
+					success: (res) => {
+						this.drafts = res.result?.dataSource?.data || [];
+					},
+					fail: (err) => {
+						console.log(err)
+					},
+					complete: () => {
+						uni.hideLoading();
+					}
+				})
 			},
-					
-			handleDelImage(id) {
-				
+			handleSaveImage() {
+				uni.saveImageToPhotosAlbum({
+					filePath: this.currentImage.image.path,
+					fail: (err) => {
+						console.log(err)
+					}
+				})
+			},
+			handleDelImage() {
+				const id = this.currentImage._id;
+				const fileID = this.currentImage.image.fileID;
 				uni.showModal({
 					content: '是否确认删除',
 					success: (res) => {
-					
+
 						if (res.confirm) {
 							this.popupShow = false
 							uni.showLoading({
-							    title: '删除中'
+								title: '删除中'
 							});
 							uniCloud.callFunction({
 								name: 'drafts',
 								data: {
-									
+
 									action: 'delDraft',
 									params: {
-										id
+										id,
+										fileID
 									}
 								},
 								success: (res) => {
-									 uni.hideLoading();
-									 this.refresh()
-									 uni.showToast({
-									     title: '删除成功',
-									     duration: 600
-									 });
+									uni.hideLoading();
+									this.refresh()
+									uni.showToast({
+										title: '删除成功',
+										duration: 600
+									});
 								},
 								fail: (err) => {
 									console.log(err)
 									uni.showToast({
-									    title: '删除失败',
-									    duration: 1000
+										title: '删除失败',
+										duration: 1000
 									});
 								}
 							})
@@ -119,8 +128,8 @@
 				this.currentImage = currentImage;
 				this.popupShow = true;
 			},
-			
-			
+
+
 			uploadInDrafts() {
 				this.$refs.drafts.upload()
 			},
@@ -147,14 +156,14 @@
 				uniCloud.callFunction({
 					name: 'drafts',
 					data: {
-						
+
 						action: 'addDraft',
 						params: {
 							image
 						},
 					},
 					success: (res) => {
-					
+
 						this.refresh()
 					},
 					fail: (err) => {

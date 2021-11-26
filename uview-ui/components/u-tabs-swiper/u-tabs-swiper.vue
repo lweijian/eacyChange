@@ -441,7 +441,7 @@
 		position: relative;
 		display: inline-block;
 		text-align: center;
-		transition-property: background-color, color, font-weight;
+		transition-property: background-color, color,  font-weight;
 	}
 
 	.content {

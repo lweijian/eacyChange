@@ -28,13 +28,11 @@
     "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 
         {
-
             "path": "pages/tabBar/design-home/design-home",
             "style": {
                 "navigationBarTitleText": "EasyChange",
                 "enablePullDownRefresh": false
             }
-
         },
     
 
@@ -65,13 +63,97 @@
             "style": {
                 "navigationBarTitleText": "EasyChange"
             }
-        },
-        {
-            "path": "pages/blackboard/blackboard",
+        },   {
+            "path": "pages/pay/payment/payment",
             "style": {
-                "navigationBarTitleText": "EasyChange"
+                "navigationBarBackgroundColor": "#ffffff",
+                "navigationBarTitleText": "订单支付",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
             }
         },
+        {
+            "path": "pages/pay/success/success",
+            "style": {
+                "navigationBarBackgroundColor": "#ffffff",
+                "navigationBarTitleText": "支付成功",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+		{
+		    "path": "pages/tabBar/user-center/user-center",
+		    "style": {
+		        "navigationBarTitleText": "EasyChange",
+		        "enablePullDownRefresh": false
+		    }
+		
+		}, {
+		    "path": "pages/creativeSharing/creativeSharing",
+		    "style": {
+		        "navigationBarTitleText": "EasyChange",
+		        "enablePullDownRefresh": false
+		    }
+		
+		}, {
+		    "path": "pages/penCut/penCut",
+		    "style": {
+		        "navigationBarTitleText": "抠图",
+		        "enablePullDownRefresh": false
+		    }
+		
+		}
+		
+		, {
+		    "path": "pages/drafts/drafts",
+		    "style": {
+		        "navigationBarTitleText": "草稿箱",
+		        "enablePullDownRefresh": false
+		    }
+		
+		}, 
+		{
+		    "path": "pages/test/test",
+		    "style": {
+		        "navigationBarTitleText": "test",
+		        "enablePullDownRefresh": false
+		    }
+		
+		}
+		
+		,{
+		    "path" : "pages/textEditor/textEditor",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "文章编辑",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+		,{
+		    "path" : "pages/detail/detail",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "文章详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}	
+		,{
+		    "path" : "pages/tiezhi-photo/tiezhi-photo",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "Easy Change",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        // {
+        //     "path": "pages/blackboard/blackboard",
+        //     "style": {
+        //         "navigationBarTitleText": "EasyChange"
+        //     }
+        // },
 
         // {
         // 	"path": "pages/tabBar/home/home",
@@ -144,35 +226,29 @@
         // 	}
         // },
 
-        {
-            "path": "pages/login/register",
-            "style": {
-                "navigationBarTitleText": "注册账号",
-                "navigationBarTextStyle": "white",
-                "app-plus": {
-                    "bounce": "none", //关闭窗口回弹效果
-                    "softinputNavBar": "none"
-                }
-            }
-        },
-        {
-            "path": "pages/login/resetpasswd",
-            "style": {
-                "navigationBarTitleText": "重置密码",
-                "navigationBarTextStyle": "white",
-                "app-plus": {
-                    "bounce": "none", //关闭窗口回弹效果
-                    "softinputNavBar": "none"
-                }
-            }
-        },
         // {
-        // 	"path": "pages/order/confirmation",
-        // 	"style": {
-        // 		"navigationBarTitleText": "确认订单",
-        // 		"softinputNavBar": "none"
-        // 	}
-        // }, 
+        //     "path": "pages/login/register",
+        //     "style": {
+        //         "navigationBarTitleText": "注册账号",
+        //         "navigationBarTextStyle": "white",
+        //         "app-plus": {
+        //             "bounce": "none", //关闭窗口回弹效果
+        //             "softinputNavBar": "none"
+        //         }
+        //     }
+        // },
+        // {
+        //     "path": "pages/login/resetpasswd",
+        //     "style": {
+        //         "navigationBarTitleText": "重置密码",
+        //         "navigationBarTextStyle": "white",
+        //         "app-plus": {
+        //             "bounce": "none", //关闭窗口回弹效果
+        //             "softinputNavBar": "none"
+        //         }
+        //     }
+        // },
+    
         // {
         // 	"path": "pages/user/order_list/order_list",
         // 	"style": {
@@ -270,24 +346,7 @@
         // 		"backgroundColorBottom": "#ffffff"
         // 	}
         // },
-        {
-            "path": "pages/pay/payment/payment",
-            "style": {
-                "navigationBarBackgroundColor": "#ffffff",
-                "navigationBarTitleText": "订单支付",
-                "backgroundColorTop": "#ffffff",
-                "backgroundColorBottom": "#ffffff"
-            }
-        },
-        {
-            "path": "pages/pay/success/success",
-            "style": {
-                "navigationBarBackgroundColor": "#ffffff",
-                "navigationBarTitleText": "支付成功",
-                "backgroundColorTop": "#ffffff",
-                "backgroundColorBottom": "#ffffff"
-            }
-        },
+     
         // {
         // 	"path": "pages/goods/ratings/ratings",
         // 	"style": {
@@ -340,72 +399,7 @@
         // 	}
 
         // }
-        {
-            "path": "pages/tabBar/user-center/user-center",
-            "style": {
-                "navigationBarTitleText": "EasyChange",
-                "enablePullDownRefresh": true
-            }
-
-        }, {
-            "path": "pages/creativeSharing/creativeSharing",
-            "style": {
-                "navigationBarTitleText": "EasyChange",
-                "enablePullDownRefresh": false
-            }
-
-        }, {
-            "path": "pages/design/design",
-            "style": {
-                // "navigationBarBackgroundColor": "#f8eddb",
-                "navigationBarTitleText": "EasyChange",
-                "enablePullDownRefresh": false
-            }
-
-        }, {
-            "path": "pages/penCut/penCut",
-            "style": {
-                "navigationBarTitleText": "抠图",
-                "enablePullDownRefresh": false
-            }
-
-        }
-
-        , {
-            "path": "pages/drafts/drafts",
-            "style": {
-                "navigationBarTitleText": "草稿箱",
-                "enablePullDownRefresh": false
-            }
-
-        }, 
-		{
-            "path": "pages/test/test",
-            "style": {
-                "navigationBarTitleText": "test",
-                "enablePullDownRefresh": false
-            }
-
-        }
         
-        ,{
-            "path" : "pages/textEditor/textEditor",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "文章编辑",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/detail/detail",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "文章详情",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
 
     "globalStyle": {
@@ -417,15 +411,15 @@
         "backgroundColorBottom": "#ffffff"
     },
     "tabBar": {
-        "color": "#333333",
-        "selectedColor": "#f06c7a",
+        "color": "#a9a9a9",
+        "selectedColor": "#000000",
         "borderStyle": "black",
         "backgroundColor": "#ffffff",
 
         "list": [{
                 "pagePath": "pages/tabBar/design-home/design-home",
-                "iconPath": "static/img/tabBar/design.png",
-                "selectedIconPath": "static/img/tabBar/design-on.png",
+                "iconPath": "static/img/tabBar/home.png",
+                "selectedIconPath": "static/img/tabBar/home-on.png",
 
                 "text": "首页"
 

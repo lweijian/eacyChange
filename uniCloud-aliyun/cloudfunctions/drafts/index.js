@@ -39,7 +39,7 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 					
 				}
 			}
@@ -68,12 +68,14 @@ exports.main = async (event, context) => {
 		case 'delDraft':
 			try {
 				const id=params.id;
+				const fileID=params.fileID;
 				if(!id){
 					return res={
 						code: 500,
 						msg: `删除失败,请指定删除的id`
 					}
 				}
+			 uniCloud.deleteFile({fileList:[fileID]})
 				let result = await draft.doc(id).remove()
 					res = {
 					code: 200,

@@ -1,9 +1,12 @@
 {
-    "id": "",
-    "name": "",
-    "version": "1.0.1（2021-03-30）",
-    "description": "",
-    "keywords": [
- 
-    ]
+   "id": "",
+   "name": "",
+   "version": "1.0.1（2021-03-30）",
+   "description": "",
+   "keywords": [],
+   "dependencies": {
+      "ali-oss": "^6.16.0",
+      "image-tools": "^1.4.0",
+      "uuid": "^8.3.2"
+   }
 }

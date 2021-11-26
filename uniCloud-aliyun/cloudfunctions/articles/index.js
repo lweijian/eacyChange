@@ -28,7 +28,14 @@ exports.main = async (event, context) => {
 	switch (event.action) {
 		case 'getAllArticles':
 			try {
-				let result = await article.get();
+				let result = await article.aggregate()
+					.lookup({
+						from: 'uni-id-users',
+						localField: 'uid',
+						foreignField: '_id',
+						as: 'userInfo'
+					})
+					.end();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -37,18 +44,24 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 
 				}
 			}
 			break;
 		case 'getArticleById':
 			try {
-				let result = await article.where({
+				let result = await article
+				.aggregate()
+				.match({
 					_id: params.id
-				}).get({
-					getOne: true
-				});
+				}).lookup({
+					from: 'uni-id-users',
+					localField: 'uid',
+					foreignField: '_id',
+					as: 'userInfo'
+				})
+				.end();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -57,15 +70,23 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 				}
 			}
 			break;
 		case 'getArticlesByUid':
 			try {
-				let result = await article.where({
-					uid: params.uid
-				}).get();
+					let result = await article
+					.aggregate()
+					.match({
+						uid: params.uid
+					}).lookup({
+						from: 'uni-id-users',
+						localField: 'uid',
+						foreignField: '_id',
+						as: 'userInfo'
+					})
+					.end();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -74,7 +95,7 @@ exports.main = async (event, context) => {
 			} catch (e) {
 				res = {
 					code: 500,
-					msg: `添加失败:${e}`,
+					msg: `查询失败:${e}`,
 
 				}
 			}
@@ -86,13 +107,11 @@ exports.main = async (event, context) => {
 				let result = await article.add({
 					uid: params.uid,
 					publish_date: new Date().getTime(),
-					nickName:params.nickName,
-					avatar: params.avatar,
-					detailSwiper:params.detailSwiper,
+					detailSwiper: params.detailSwiper,
 					cover: params.detailSwiper[0],
 					title: params.title,
 					content: params.content,
-					article_status: 1,
+					article_status: params.article_status,
 					view_count: 1000,
 					like_count: 100
 				})
@@ -141,11 +160,11 @@ exports.main = async (event, context) => {
 						msg: `删除失败,请指定删除文件的id`
 					}
 				}
-			let result = await uniCloud.deleteFile({
-			    fileList: [
-			        fileID 
-			    ]
-			});
+				let result = await uniCloud.deleteFile({
+					fileList: [
+						fileID
+					]
+				});
 				res = {
 					code: 200,
 					msg: '删除成功'
@@ -160,7 +179,7 @@ exports.main = async (event, context) => {
 			break;
 
 
-		
+
 		default:
 			res = {
 				code: 403,

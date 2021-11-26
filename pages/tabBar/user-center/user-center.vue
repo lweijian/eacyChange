@@ -166,8 +166,6 @@
 		.info-content {
 			width: 50vw;
 			text-align: center;
-			
-
 		}
 	}
 </style>

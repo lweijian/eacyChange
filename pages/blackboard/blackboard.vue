@@ -16,7 +16,7 @@
 	import ColorPanel from '../../components/colorPanel/color-panel.vue'
 	import {
 		customPrint
-	} from '../../common/util/util.js'
+	} from '../../common/utils/utils.js'
 	export default {
 		components: {
 		

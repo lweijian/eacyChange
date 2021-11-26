@@ -1,4 +1,1 @@
 
-db.collection('articles').where({_id:'6199e41513207d000101d7b5'}).get({
-      getOne:true
-    });

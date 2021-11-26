@@ -6,28 +6,27 @@
 				<swiper-item class="swiper-item">
 					<view class="header-tabs-box">
 						<view class="header-tabs">
-							<u-tabs activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" 
-								:list="headerList" :current="headerCurrent" @change="headerChange" :is-scroll="false"
-								></u-tabs>
+							<u-tabs activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" :list="headerList"
+								:current="headerCurrent" @change="headerChange" :is-scroll="false"></u-tabs>
 						</view>
 					</view>
-					
-					<PullDownRefreshView   @on-refresh="refresh"  >
+
+					<PullDownRefreshView @on-refresh="refresh">
 						<view class="page-box">
-	
+
 							<!-- 文章展示 -->
 							<ArticlesShow v-show="headerCurrent==0" :articlesList='articlesList' />
 							<!-- 动态展示 -->
 							<DynamicShow v-show="headerCurrent==1" :dynamicList="dynamicList" />
-						
+
 						</view>
-											
+
 					</PullDownRefreshView>
 				</swiper-item>
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							222
+							<retrieve />
 						</view>
 					</scroll-view>
 				</swiper-item>
@@ -47,12 +46,12 @@
 				</swiper-item>
 			</swiper>
 			<view class="u-tabs-box">
-				<u-tabs-swiper activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs"
+				<u-tabs-swiper activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs" :bold="false"
 					:list="footerList" :current="footerCurrent" @change="footerListChange" :is-scroll="false"
 					swiperWidth="750"></u-tabs-swiper>
 			</view>
 		</view>
-	
+
 	</view>
 </template>
 
@@ -90,43 +89,49 @@
 			};
 		},
 		onLoad() {
+
 			this.init();
 
 		},
 		// onPullDownRefresh() {
-			
+
 		// },
 		computed: {},
 		methods: {
-			
-			init() {
-				// 获取文章列表
-				uniCloud.callFunction({
-					name: 'articles',
-					data: {
-						action: 'getAllArticles'
-					},
-					success: (res) => {
-						this.articlesList = res.result.dataSource.data
-					},
-					fail: (err) => {
 
-						console.log(err)
-					}
+			async init() {
+				uni.showLoading({
+					title: '加载中',
+					mask: true
 				})
-				// 获取动态列表
-				uniCloud.callFunction({
-					name: 'dynamics',
-					data: {
-						action: 'getAllDynamics',
-					},
-					success: (res) => {
-						this.dynamicList = res.result.dataSource.data
-					},
-					fail: (e) => {
-						console.log(e)
-					}
-				})
+				try {
+					// 获取文章列表
+					const getAllArticles = await uniCloud.callFunction({
+						name: 'articles',
+						data: {
+							action: 'getAllArticles'
+						}
+					})
+					
+					this.articlesList = getAllArticles.result?.dataSource?.data || []
+					
+				} catch (e) {
+					console.log(e)
+				}
+				uni.hideLoading();
+				try {
+					// 获取动态列表
+					const getAllDynamics = await uniCloud.callFunction({
+						name: 'dynamics',
+						data: {
+							action: 'getAllDynamics',
+						}
+					})
+					this.dynamicList = getAllDynamics.result?.dataSource?.data || []
+				} catch (e) {
+					console.log(e)
+				}
+
 
 			},
 			refresh(e) {
@@ -139,7 +144,6 @@
 						},
 						success: (res) => {
 							this.articlesList = res.result.dataSource.data
-
 						},
 						fail: (err) => {
 
@@ -155,22 +159,22 @@
 				} else if (this.headerCurrent == 1) {
 					// 获取动态列表
 					uniCloud.callFunction({
-							name: 'dynamics',
-							data: {
-								action: 'getAllDynamics',
-							},
-							success: (res) => {
-								this.dynamicList = res.result.dataSource.data
-							},
-							fail: (e) => {
-								console.log(e)
-							},
-							complete: () => {
-								setTimeout(function() {
-									e.complete();
-								}, 600);
-							}
-						})
+						name: 'dynamics',
+						data: {
+							action: 'getAllDynamics',
+						},
+						success: (res) => {
+							this.dynamicList = res.result.dataSource.data
+						},
+						fail: (e) => {
+							console.log(e)
+						},
+						complete: () => {
+							setTimeout(function() {
+								e.complete();
+							}, 600);
+						}
+					})
 
 
 				}
@@ -179,7 +183,7 @@
 
 
 			},
-			
+
 			reachBottom() {
 				// 此tab为空数据
 				if (this.current != 2) {
@@ -225,11 +229,11 @@
 </style>
 
 <style lang="scss" scoped>
-	
-	.header-tabs-box{
+	.header-tabs-box {
 		height: 88rpx;
 		width: 100%;
-		.header-tabs{
+
+		.header-tabs {
 			position: fixed;
 			left: 0;
 			right: 0;
@@ -237,6 +241,7 @@
 			z-index: 999;
 		}
 	}
+
 	.centre {
 		text-align: center;
 		margin: 200rpx auto;
