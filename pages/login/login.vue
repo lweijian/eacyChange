@@ -3,8 +3,8 @@
 
 
 		<view class="logo">
-			<image src="/static/img/logo.png" style="width: 70vw;margin: 20rpx 15vw;" mode="widthFix"></image>
-		</view>	
+			<image src="/static/img/bulb.png" style="width: 70vw;margin: 20rpx 15vw;" mode="widthFix"></image>
+		</view>
 		<view class="login-info">
 			<view class="title">EASY CHANGE</view>
 			<view class="title-info">create and enjoy life~</view>
@@ -14,11 +14,9 @@
 			<button type="default" class="button-login" open-type="getUserInfo" @click="oneClickLogin()">授权登录</button>
 
 		</view>
-		
 
-		<!-- 	<view class="action-row">
-			<navigator url="./register">注册账号</navigator>
-		</view> -->
+
+
 	</view>
 </template>
 
@@ -44,102 +42,25 @@
 
 		data() {
 			return {
-				platform: uni.getSystemInfoSync().platform,
+
 				userInfo: {},
 				username: '',
 				password: '',
-				positionTop: 0,
+
 				isDevtools: false,
 				loading: false,
 
 			}
 		},
-		onLoad() {
-
+		onShow() {
+			// #ifdef MP-WEIXIN  
+			if (wx.hideHomeButton) {
+				wx.hideHomeButton();
+			}
+			// #endif
 		},
 		methods: {
 			...mapMutations(['login']),
-
-			initPosition() {
-				/**
-				 * 使用 absolute 定位，并且设置 bottom 值进行定位。软键盘弹出时，底部会因为窗口变化而被顶上来。
-				 * 反向使用 top 进行定位，可以避免此问题。
-				 */
-				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
-			},
-
-			// 	async loginByPwd() {
-			// 		/**
-			// 		 * 客户端对账号信息进行一些必要的校验。
-			// 		 * 实际开发中，根据业务需要进行处理，这里仅做示例。
-			// 		 */
-			// 		this.loading = true;
-			// 		if (this.username.length < 3) {
-			// 			uni.showToast({
-			// 				icon: 'none',
-			// 				title: '账号最短为 3 个字符'
-			// 			});
-			// 			return;
-			// 		}
-			// 		if (this.password.length < 6) {
-			// 			uni.showToast({
-			// 				icon: 'none',
-			// 				title: '密码最短为 6 个字符'
-			// 			});
-			// 			return;
-			// 		}
-			// 		const data = {
-			// 			username: this.username,
-			// 			password: this.password,
-			// 			captcha: this.captchaText,
-			// 			...captchaOptions
-			// 		};
-			// 		uniCloud.callFunction({
-			// 			name: 'user-center',
-			// 			data: {
-			// 				action: 'login',
-			// 				params: data
-			// 			},
-			// 			success: (e) => {
-			// 				if (e.result.code == 0) {
-			// 					this.needCaptcha = false;
-
-			// 					uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
-			// 					uni.setStorageSync('uni_id_token', e.result.token)
-			// 					uni.setStorageSync('username', e.result.username)
-			// 					uni.setStorageSync('nickName', e.result.nickName)
-			// 					uni.setStorageSync('avatar', e.result.avatar)
-			// 					uni.setStorageSync('login_type', 'online')
-			// 					uni.setStorageSync('uni_id_has_pwd', true)
-			// 					this.loading = false;
-			// 					this.toHome();
-
-			// 				} else {
-			// 					uni.showModal({
-			// 						content: e.result.message,
-			// 						showCancel: false
-			// 					})
-
-			// 					this.needCaptcha = e.result.needCaptcha;
-			// 					uni.setStorageSync('uni-needCaptcha', this.needCaptcha)
-			// 					if (this.needCaptcha) {
-			// 						this.captcha('createCaptcha')
-			// 					}
-			// 				}
-			// 			},
-			// 			fail: (e) => {
-			// 				uni.showModal({
-			// 					content: JSON.stringify(e),
-			// 					showCancel: false
-			// 				})
-			// 			},
-			// 			complete: () => {
-			// 				this.loginBtnLoading = false
-			// 			}
-			// 		})
-
-			// 	},
-
 			// 验证
 			oauth() {
 				return new Promise((resolve, reject) => {
@@ -151,7 +72,6 @@
 							resolve(res.code)
 						},
 						fail(err) {
-
 							reject(new Error('微信登录失败'))
 						}
 					})
@@ -165,7 +85,6 @@
 						uni.getUserProfile({
 							desc: "更新用户信息",
 							success: (res) => {
-
 								resolve(res.userInfo)
 							},
 							fail: (err) => {
@@ -179,11 +98,12 @@
 
 				})
 			},
-
 			toHome() {
 				uni.reLaunch({
 					url: '../tabBar/design-home/design-home',
+
 				});
+
 			},
 			updateUser(uniIdToken, userInfo) {
 				// 更新用户信息
@@ -213,8 +133,8 @@
 
 			async loginByWeixin() {
 				uni.showLoading({
-					title:'登录中',
-					mask:true
+					title: '登录中',
+					mask: true
 				})
 				let code = await this.oauth()
 				let loginByWeixinResult = await uniCloud.callFunction({
@@ -243,34 +163,31 @@
 			},
 
 			async oneClickLogin() {
-				try{
-				this.userInfo= await this.getUserProfile();
-						this.loginByWeixin();
-					
-				}catch(e){
+				try {
+					this.userInfo = await this.getUserProfile();
+					this.loginByWeixin();
+
+				} catch (e) {
 					console.log(e)
 				}
-				
+
 			}
 		},
 
 
-		onReady() {
-			this.initPosition();
 
-
-			// #ifdef MP-WEIXIN
-			this.isDevtools = uni.getSystemInfoSync().platform === 'devtools';
-			// #endif
-		}
 	}
 </script>
 <style>
-	page{
+	page {
 		background-color: #f8eddb;
 	}
 </style>
-<style  scoped>
+<style scoped>
+	.content {
+		margin-top: 200rpx;
+	}
+
 	.login-type {
 		display: flex;
 		justify-content: center;
@@ -310,12 +227,13 @@
 		left: 0;
 		width: 100%;
 	}
-	.logo{
+
+	.logo {
 		height: 560rpx;
 		width: 100%;
 	}
 
-	.login-info{
+	.login-info {
 		position: relative;
 		top: 100rpx;
 		color: #ffaa00;
@@ -323,28 +241,24 @@
 		height: 200rpx;
 		width: 750rpx;
 	}
-	.title{
+
+	.title {
 		font-size: 35px;
 	}
-	.title-info{
+
+	.title-info {
 		font-size: 14px;
 	}
-	
 
-	
-	button[type=default]{
-		
+
+
+	button[type=default] {
+
 		margin: 100rpx 15vw;
 		width: 70vw;
-	    background-color: #ffaa00;
-	    border-radius: 50rpx;
-	    color: antiquewhite;
-	
+		background-color: #ffaa00;
+		border-radius: 50rpx;
+		color: antiquewhite;
+
 	}
-
-
-
-
-
-	
 </style>

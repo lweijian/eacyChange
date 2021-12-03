@@ -1,13 +1,13 @@
 <template>
 	<view class="content" :style="{width: SCREEN_WIDTH+'px',height: height+'px'}">
 		<view id="wrap" class="image-wrap" :style="{width: img_width+'px',height: img_height+'px'}">
-			<!-- <u-image width="100%" height="300rpx" :src="src"></u-image> -->
+			
 			<canvas class="canvas-target" canvas-id="canvas-target" :style="{width: img_width+'px',height: img_height+'px',right:-(img_width+SCREEN_WIDTH)+'px'}"
 			 ></canvas>
 			<image v-if="bgImg" id="handle_photo" @touchend="touchEndAll" @touchstart="touchStartPhoto" @touchmove="touchMove"
-			 class="source-img" :src="bgImg" mode="widthFix"></image>
+			 class="source-img" :src="bgImg" mode="scaleToFill"></image>
 			<image v-if="!bgImg" id="handle_photo" @touchend="touchEndAll" @touchstart="touchStartPhoto" @touchmove="touchMove" class="source-img" :style="'width: 300px;height: 350px;'+'background-color:'+backgroundColor+';'"
-			 mode="widthFix"></image>
+			 mode="scaleToFill"></image>
 			<image @touchstart.stop="touchStartAll" @touchmove.stop="touchMove" v-for="(mask) in addMaskList" :key="mask.id" :id="'mask'+mask.id"
 			 class="mask" :class="{ 'mask-with-border': mask.editing }" :src="mask.url" :style="{opacity:mask.alpha , top: mask.center.y - mask.size.height / 2 + 'px', left: mask.center.x - mask.size.width / 2 + 'px', transform: 'rotate(' + mask.rotate + 'deg)' + 'scaleX(' + mask.scale.width + ')'+ 'scaleY(' + mask.scale.height + ')'}"></image>
 			<image @touchstart.stop="touchStartAll" @touchmove.stop="touchMove" class="rotate" :class="{ 'hide-handle': !(editMask.editing) }"
@@ -18,9 +18,9 @@
 
 		<view class="toolbar-box" :style="{ height: toolbarHeight + 'px' }">
 			<view class="toolbar">
-<!-- 				<view v-if="editMask.editing" class="scroll-view-item_H not-active-text" @click="setAlpha()">透明度
+				<view v-if="editMask.editing" class="scroll-view-item_H not-active-text" @click="setAlpha()">透明度
 					<slider activeColor="#F0AD4E" style="display: inline-block;width: 450rpx;" :value="editMask.alpha" block-size="20"
-					 @change="setAlpha" step="0.01" min="0" max="1" show-value /> -->
+					 @change="setAlpha" step="0.01" min="0" max="1" show-value />
 				</view>
 				<view v-if="editMask.editing" class="scroll-view-item_H active-text" @click="clear()">清除贴纸</view>
 			</view>
@@ -37,13 +37,12 @@
 		_throttle
 	} from '../../common/utils/utils.js'
 	const sysInfo = uni.getSystemInfoSync();
-	const isIphoneX = sysInfo.model.search('iPhone X') !== -1 || sysInfo.model.search('iPhone 11') !== -1
+	const isIphoneX = sysInfo.model?.search('iPhone X') !== -1 || sysInfo.model.search('iPhone 11') !== -1
 	const paddingBottom = isIphoneX ? 30 : 0;
 	const bottomNavHeight = 40;
 	const toolbarHeight = 40;
 	const SCREEN_WIDTH = sysInfo.windowWidth
 	const SCREEN_HEIGHT = sysInfo.windowHeight - bottomNavHeight - toolbarHeight - paddingBottom - 40
-
 	export default {
 		props: {
 			height: {
@@ -83,16 +82,16 @@
 			};
 		},
 		watch: {
-			selectedFilePath: function(val) {
+			selectedFilePath(val){
 				this.bgImg = val;
 				if(val){
 					setTimeout(() => {
-						const _this = this
+						
 						const query = uni.createSelectorQuery().in(this);
 						query.select('#handle_photo').boundingClientRect(data => {
-							_this.img_width = data.width
-							_this.img_height = data.height
-							_this.bgImgInfo = data
+							this.img_width = data.width
+							this.img_height = data.height
+							this.bgImgInfo = data
 						}).exec()
 					}, 100)
 				}
@@ -102,11 +101,12 @@
 				this.backgroundColor = val
 			},
 		},
-		mounted() {
-			console.log('mounted')
+		async mounted() {
+			
 			this.canvasCtx = uni.createCanvasContext('canvas-target', this);
-			this.$on('save', function() {
-				console.log('onsave')
+		// const getImgInfoResult =await this.getImgInfo(this.selectedFilePath);
+		// 	console.log(getImgInfoResult)
+			this.$on('save', ()=> {
 				this.save()
 			})
 		},
@@ -199,7 +199,7 @@
 				}
 				_throttle(this.touchMoveAll(e), 400)
 			},
-			touchMoveAll: function(e) {
+			touchMoveAll(e){
 				let editMask
 				if (e.target.id.includes('mask')) {
 					const id = e.target.id.substring(4)
@@ -281,9 +281,9 @@
 					editMask.start.y = current_y
 					// }
 
-					// console.log('this.editMask.scale:',distance_old,distance_new,this.editMask.scale)
+					
 				} else if (e.target.id.includes('rotate')) {
-					// console.log('old_center_x:', old_center_x, old_center_y)
+					
 					// 得到旋转点到中心点的距离，可算出旋转角度
 					const diff_rotate_x_old = old_rotate_center_x - old_center_x
 					const diff_rotate_y_old = old_rotate_center_y - old_center_y
@@ -329,7 +329,7 @@
 				return new Promise((resolve, reject) => {
 					uni.getImageInfo({
 						src: path,
-						success: function(imgInfo) {
+						success: (imgInfo)=> {
 							resolve({
 								code: 200,
 								imgInfo
@@ -344,17 +344,17 @@
 			},
 			//从网络图片添加mask
 			selectMask(mask, clear = false) {
-				console.log('mask:', mask)
-				const _this = this
+				
+				
 				let src = mask.url
 				if (src.includes('https://')) {
 					src = src + '!mobile_edit'
 				}
 				uni.getImageInfo({
 					src: src,
-					success: function(_imgInfo) {
+					success: (_imgInfo)=> {
 						// console.log('_imgInfo',_imgInfo)
-						const editMask = _this.getNewMask();
+						const editMask = this.getNewMask();
 						editMask.url = _imgInfo.path;
 						editMask.id = uuidv4();
 						editMask.editing = true;
@@ -364,14 +364,14 @@
 						if (clear) {
 							addMaskList = []
 						} else {
-							addMaskList = _this.addMaskList
+							addMaskList = this.addMaskList
 							addMaskList.map(item => {
 								item.editing = false
 							})
 						}
 						addMaskList.push(editMask)
-						_this.addMaskList = addMaskList
-						_this.editMask = editMask
+						this.addMaskList = addMaskList
+						this.editMask = editMask
 					},
 					fail(err) {
 						console.error(err)
@@ -408,47 +408,49 @@
 				}
 
 				const data = this.bgImgInfo
-				const _this = this
-				_this.canvasCtx.clearRect(0, 0, this.img_width, this.img_height)
-				if (_this.bgColor) {
-					_this.canvasCtx.setFillStyle(_this.bgColor)
-					_this.canvasCtx.fillRect(0, 0, _this.img_width, _this.img_height)
+				
+				this.canvasCtx.clearRect(0, 0, this.img_width, this.img_height)
+				if (this.bgColor) {
+					this.canvasCtx.setFillStyle(this.bgColor)
+					this.canvasCtx.fillRect(0, 0, this.img_width, this.img_height)
 				}
-				if (_this.bgImg) {
+				if (this.bgImg) {
 					// console.log('imgInfo', imgInfo)
-					console.log('data', data)
-					console.log('_this.img_height', _this.img_height)
-					_this.canvasCtx.drawImage(_this.bgImg, 0, 0, data.width, data.height)
+		
+					this.canvasCtx.drawImage(this.bgImg, 0, 0, data.width, data.height)
 				}
 				// // 画贴纸
-				for (let mask of _this.addMaskList) {
+				for (let mask of this.addMaskList) {
 					const mask_width = mask.size.width * mask.scale.width
 					const mask_height = mask.size.height * mask.scale.height
 					const mask_center_x = mask.center.x
 					const mask_center_y = mask.center.y
-					_this.canvasCtx.translate(mask.center.x, mask.center.y)
-					_this.canvasCtx.rotate((mask.rotate * Math.PI) / 180)
-					_this.canvasCtx.setGlobalAlpha(mask.alpha)
-					_this.canvasCtx.drawImage(mask.url, -mask_width / 2, -mask_height / 2, mask_width, mask_height)
+					this.canvasCtx.translate(mask.center.x, mask.center.y)
+					this.canvasCtx.rotate((mask.rotate * Math.PI) / 180)
+					this.canvasCtx.setGlobalAlpha(mask.alpha)
+					this.canvasCtx.drawImage(mask.url, -mask_width / 2, -mask_height / 2, mask_width, mask_height)
 					// _this.canvasCtx.drawImage(mask.url, 0,0,mask.sourceWidth,mask.sourceHeight,-mask_width / 2, -mask_height / 2, mask_width, mask_height)
-					_this.canvasCtx.rotate(-(mask.rotate * Math.PI) / 180)
-					_this.canvasCtx.translate(-mask.center.x, -mask.center.y)
+					this.canvasCtx.rotate(-(mask.rotate * Math.PI) / 180)
+					this.canvasCtx.translate(-mask.center.x, -mask.center.y)
 				}
 				// console.log('_this.canvasCtx---', _this.canvasCtx)
 				//总体绘画出来保存到相册
-				_this.canvasCtx.draw(false, function() {
-					// console.log('draw', data)
+				this.canvasCtx.draw(false, ()=> {
+				
+					
 					uni.canvasToTempFilePath({
 						x: 0,
 						y: 0,
-						width: data && data.width || _this.img_width,
-						height: data && data.height || _this.img_height,
+						// width: data && data.width || _this.img_width,
+						// height: data && data.height || _this.img_height,
+						 width:  this.img_width,
+						 height:  this.img_height,
 						canvasId: 'canvas-target',
-						success: function(res) {
+						success: (res)=> {
 							// 在H5平台下，tempFilePath 为 base64
 							uni.saveImageToPhotosAlbum({
 								filePath: res.tempFilePath,
-								success: function(res) {
+								success: (res)=> {
 									uni.showModal({
 										content: '已保存至相册',
 										showCancel: false
@@ -457,9 +459,6 @@
 								fail(e) {
 									uni.authorize({
 										scope: 'scope.writePhotosAlbum',
-										success: (res) => {
-											console.log('11111');
-										},
 										fail: (res) => {
 											uni.showModal({
 												content: '检测到您没打开获取信息功能权限，是否去设置打开？',
@@ -479,24 +478,20 @@
 											})
 										}
 									})
-									// console.error('saveImageToPhotosAlbum', e)
+									
 								},
-								complete() {
-									// uni.hideLoading()
-								}
+								
 							});
 						},
 						fail(e) {
 							console.error('canvasToTempFilePath', e)
 						},
-						complete() {
-							// _this.canvasCtx.clearRect(0, 0, _this.img_width, _this.img_height)
-						 //    _this.canvasCtx.draw()
-						}
-					}, _this)
+					
+					}, this)
 				})
 			},
 		}
+
 	}
 </script>
 
@@ -525,6 +520,7 @@
 			top: 0;
 			bottom: 0;
 			margin: auto;
+			height:100%;
 			// background-color: #18B566;
 		}
 		.canvas-target {
@@ -565,9 +561,10 @@
 	.toolbar-box {
 		width: 100%;
 		position: fixed;
-		top: 90px;
+		top: 0;
 
 		.toolbar {
+			
 			height: 40px;
 			display: flex;
 			justify-content: space-around;

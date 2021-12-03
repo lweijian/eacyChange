@@ -46,7 +46,7 @@
 				</swiper-item>
 			</swiper>
 			<view class="u-tabs-box">
-				<u-tabs-swiper activeColor="#000000 " inactive-color="#8e8e8e" :show-bar="false" ref="tabs" :bold="false"
+				<u-tabs-swiper activeColor="#000000 " height="100" inactive-color="#8e8e8e" :show-bar="false" ref="tabs" :bold="false"
 					:list="footerList" :current="footerCurrent" @change="footerListChange" :is-scroll="false"
 					swiperWidth="750"></u-tabs-swiper>
 			</view>

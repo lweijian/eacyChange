@@ -11,7 +11,7 @@
 				 @up="upCallback">
 					<view class="img-wrap">
 						<u-image width="100rpx" height="100rpx" style="display: inline;text-align: center;margin: 8px;" v-for="(image,index) in imageList"
-						 :key="image._id" :src="image.url+'!small'" @click="$emit('selectMask',image)">
+						 :key="image._id" :src="image.url" @click="$emit('selectMask',image)">
 							{{index+1}}
 						</u-image>
 					</view>
@@ -61,7 +61,7 @@
 		},
 		methods: {
 			close() {
-				console.log('close')
+				
 				// this.showPopup=false
 				// this.$emit('close')
 			},
@@ -70,47 +70,55 @@
 			},
 			getDecalsCategory() {
 				const _this = this
-		// 		uniCloud.callFunction({
-		// 			name: 'image',
-		// 			data: {
-		// 				action: 'getImageCategory',
-		// 				params: {
-		// 					frozen: 0
-		// 				}
-		// 			},
-		// 			success(response) {
-		// 				const {
-		// 					code,
-		// 					result
-		// 				} = response.result
-		// 				// console.log(' decalsCategory :',response.result)
-		// 				if (code === 200) {
-		// 					_this.categoryList = result
-		// 					_this.tabs = result.map(r => r.name)
-		// 					_this.categoryId = result[0] ? result[0]._id : null
-		// 				}
-		// 			},
-		// 			fail() {},
-		// 			complete() {}
-		// 		});
+				uniCloud.callFunction({
+					name: 'image',
+					data: {
+						action: 'getImageCategory',
+						params: {
+							frozen: 0
+						}
+					},
+					success(response) {
+						
+						const {
+							code,
+							result
+						} = response.result
+						// console.log(' decalsCategory :',response.result)
+						if (code === 200) {
+							_this.categoryList = result
+							_this.tabs = result.map(r => r.name)
+							_this.categoryId = result[0] ? result[0]._id : null
+						}
+					},
+					fail() {},
+					complete() {}
+				});
 		
 			},
 			tabChange(index) {
-				console.log('tabChange', index),
+				// console.log('tabChange', index),
 					this.tabIndex = index;
-				this.categoryId = this.categoryList[index]._id
-				this.$nextTick(() => {
-					this.imageList = [] // 先置空列表,显示加载进度
-					this.mescroll.resetUpScroll() // 再刷新列表数据
-				})
+				this.categoryId = this.categoryList[index]._id;
+				// this.$nextTick(() => {
+				// 	this.imageList = [] // 先置空列表,显示加载进度
+				// 	this.mescroll.resetUpScroll() // 再刷新列表数据
+				// })
 			},
 			upCallback(page) {
-				console.log('page', page)
+					uni.getImageInfo({
+				            src: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-8fc916b8-077c-4613-a6a5-a4677d83a5a0/ca18fc6d-a5b1-4b4d-835f-cb7183fb6b46.jpg',
+				            success:  (image)=> {
+				            	this.imageList =[{_id:'1',url:image.path}];
+				            }
+				        });
+			
+				this.mescroll.endSuccess(1, 1);
 				//联网加载数据
-				this.getImage({
-					current: page.num,
-					size: page.size
-				})
+				// this.getImage({
+				// 	current: page.num,
+				// 	size: page.size
+				// })
 			},
 			async getImage(pageConf) {
 				if (!this.categoryId) {

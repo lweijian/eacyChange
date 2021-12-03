@@ -6,7 +6,7 @@
 		<!-- <view class="back op" @click="back">返回</view> -->
 		<view class="cropper-buttons cus-flex-row">
 			<view class="op" @click="chooseImage(['album','camera'])">{{selectedFilePath?'重新选择':'选择图片'}}</view>
-			<view class="op" @click="save">保存</view>
+			<view class="op" @click="save()">保存</view>
 			<!-- <view class="op" @click="test">test</view> -->
 			<view class="op" @click="showPopup()">选择贴纸</view>
 		</view>
@@ -73,7 +73,7 @@
 		display: flex;
 		position: fixed;
 		bottom: 5px;
-
+		height: 60rpx;
 		width: 100%;
 
 		.op {
