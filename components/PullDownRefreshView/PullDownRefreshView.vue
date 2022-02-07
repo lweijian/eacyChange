@@ -1,10 +1,9 @@
 <template>
 
-	<scroll-view scroll-y style="height: 100%;width: 100%;" :refresher-enabled="refresher"
+	<scroll-view scroll-y style="height: 100%;width: 100%;"  :refresher-enabled="refresher"
 		:refresher-threshold="threshold" :refresher-triggered="triggered" @refresherrefresh="refreshing"
-		:scroll-anchoring="anchoring" >
+		:scroll-anchoring="anchoring" @scroll='handerScroll' >
 		<slot></slot>
-
 	</scroll-view>
 
 </template>
@@ -29,6 +28,7 @@
 				type: Boolean,
 				default: false,
 			},
+		
 		},
 		data() {
 			return {
@@ -39,6 +39,7 @@
 			};
 		},
 		methods: {
+			
 			refreshing() {
 				if (this.isRefreshing) return;
 				this.isRefreshing = true
@@ -53,6 +54,10 @@
 				this.isRefreshing = false;
 				this.isInfiniting = true;
 			},
+			handerScroll(e){
+				
+				this.$emit('scroll',e)
+			}
 
 		}
 	}

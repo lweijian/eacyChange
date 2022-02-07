@@ -11,12 +11,9 @@
 		</view>
 		<view class="btn-row">
 
-			<button type="default" class="button-login" open-type="getUserInfo" @click="oneClickLogin()">授权登录</button>
+			<button type="default" :class="disabled?'button-login-disabled':'button-login ' "  @click="oneClickLogin()" :disabled="disabled">授权登录</button>
 
 		</view>
-
-
-
 	</view>
 </template>
 
@@ -37,12 +34,12 @@
 		deviceId: getDeviceUUID(),
 		scene: 'login'
 	}
-
+	let timer = null;
 	export default {
 
 		data() {
 			return {
-
+				disabled:false,
 				userInfo: {},
 				username: '',
 				password: '',
@@ -80,10 +77,12 @@
 			},
 
 			getUserProfile() {
+				
 				return new Promise((resolve, reject) => {
+				
 					if (uni.getUserProfile) {
 						uni.getUserProfile({
-							desc: "更新用户信息",
+							desc: "获取用户信息",
 							success: (res) => {
 								resolve(res.userInfo)
 							},
@@ -163,13 +162,14 @@
 			},
 
 			async oneClickLogin() {
+				this.disabled=true;
 				try {
 					this.userInfo = await this.getUserProfile();
 					this.loginByWeixin();
-
 				} catch (e) {
-					console.log(e)
+					this.disabled=false;
 				}
+			
 
 			}
 		},
@@ -249,16 +249,22 @@
 	.title-info {
 		font-size: 14px;
 	}
-
-
-
-	button[type=default] {
-
+	.button-login{
 		margin: 100rpx 15vw;
 		width: 70vw;
 		background-color: #ffaa00;
 		border-radius: 50rpx;
 		color: antiquewhite;
-
 	}
+	
+	button[disabled][type=default] {
+	   margin: 100rpx 15vw;
+	   width: 70vw;
+	   background-color: #ffaa00;
+	   border-radius: 50rpx;
+	   color: antiquewhite;
+	   opacity: .5;
+	}
+	
+	
 </style>

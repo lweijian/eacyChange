@@ -42,10 +42,23 @@
 					}
 				},
 				success: (res) => {
+				
+					if(res.result.dataSource.data.length===0){
+						uni.showToast({
+							title: '文章已被删除',
+							duration: 600,
+							icon:'error'
+						});
+						setTimeout(()=>{
+							uni.navigateTo({
+								url: `../creativeSharing/creativeSharing`
+							})
+						},700)
+					}
 					this.articles = res.result.dataSource.data[0] || {}
 				},
 				fail: (err) => {
-
+				
 					console.log(err)
 				},
 				complete: () => {

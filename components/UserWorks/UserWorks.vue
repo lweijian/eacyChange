@@ -39,12 +39,9 @@
 			</view>
 
 		</view>
-		<view class="tabs-content">
-			<PullDownRefreshView :refresher="false" @on-refresh="refresh">
-				<ArticlesShow v-show="current==0" :articlesList='articlesList' />
-				<DynamicShow :isNeedFocus="false" v-show="current==1" :dynamicList="dynamicList" />
-
-			</PullDownRefreshView>
+		<view class="tabs-content">	
+			<ArticlesShow v-show="current==0" :isMyselfArticlesShow="true" />
+			<DynamicShow v-show="current==1"  :isMyselfDynamicShow="true" />	
 		</view>
 
 
@@ -104,34 +101,7 @@
 
 			init() {
 				
-				// 文章列表初始化
-				uniCloud.callFunction({
-					name: 'articles',
-					data: {
-						action: 'getArticlesByUid'
-					},
-					success: (res) => {
-						
-						this.articlesList = res.result?.dataSource?.data || []
-					},
-					fail: (err) => {
-						console.log(err)
-					}
-				})
-				// 动态列表初始化
-				uniCloud.callFunction({
-					name: 'dynamics',
-					data: {
-						action: 'getDynamicsByUid',
-					},
-					success: (res) => {
-						this.dynamicList = res.result?.dataSource?.data || []
-					},
-					fail: (e) => {
-						console.log(e)
-					}
-				})
-
+			
 			},
 
 			refresh(hideLoading) {

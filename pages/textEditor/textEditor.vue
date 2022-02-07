@@ -6,10 +6,10 @@
 			<u-input type="text" v-model="title" placeholderStyle="font-size: 18px;" placeholder='这里填写文章标题~'>
 			</u-input>
 			<view class="upload-box">
-				<uni-file-picker title="上传的第一张图片为文章封面" class="grid-img" file-mediatype="image" mode="grid" file-extname="png,jpg"
-					 :limit="9" return-type="array" :image-styles="imageStyles" :auto-upload="true"
-					@success="uploadSwiperSuccess" @fail="uploadSwiperFail" @select="uploadSwiperSelect"
-					@delete="uploadSwiperDelete" />
+				<uni-file-picker title="上传的第一张图片为文章封面" class="grid-img" file-mediatype="image" mode="grid"
+					file-extname="png,jpg" ref="imageUpload" :limit="9" return-type="array" :image-styles="imageStyles"
+					:auto-upload="false" @success="uploadSwiperSuccess" @fail="uploadSwiperFail"
+					@select="uploadSwiperSelect" @delete="uploadSwiperDelete" />
 
 			</view>
 		</view>
@@ -46,21 +46,20 @@
 </template>
 
 <script>
-
 	export default {
 		data() {
 			return {
 				title: "",
 				content: "",
-
 				detailSwiper: [],
 				modal: null,
 				editable: true,
-				imageList: []
+				imageList: [],
+				uploadImageNumber: 0,
 			}
 		},
 		computed: {
-		
+
 		},
 
 		onReady() {
@@ -86,7 +85,7 @@
 										success: res => {
 											uni.showLoading({
 												title: '上传中',
-												mask:true
+												mask: true
 											});
 											(async () => {
 												const arr = []
@@ -232,32 +231,17 @@
 
 					success: res => {
 						if (res.confirm) {
-							//调用云函数删除文件
-						
-						
-							uniCloud.callFunction({
-								name: 'articles',
-								data: {
-									action: 'addArticle',
+							// 上传图片
+							
+							if (this.uploadImageNumber > 0) {
+								this.$refs.imageUpload.upload();
+							} else {
+								this.addArticle()
+							}
 
-									params: {
-										
-										detailSwiper: this.detailSwiper,
-										title: this.title,
-										content: this.$refs.article.getContent(),
-									}
-								},
-								success: (res) => {
-									console.log(res)
-									// 结束编辑
-									this.editable = false
-									uni.reLaunch({
-										url: '../creativeSharing/creativeSharing',
-									});
-								},
-								fail: (err) => {
-									console.log(err)
-								}
+							uni.showLoading({
+								title: '发布中',
+								mask: true
 							})
 
 						}
@@ -287,12 +271,17 @@
 
 			// 获取封面上传状态
 			uploadSwiperSelect(e) {
-				
+				if (e.tempFilePaths) {
+					this.uploadImageNumber = e.tempFilePaths.length;
+				} else {
+					this.uploadImageNumber = 0;
+				}
 			},
 
 			// 上传成功
 			uploadSwiperSuccess(e) {
 				this.detailSwiper = e.tempFilePaths;
+				this.addArticle()
 			},
 
 			// 上传失败
@@ -300,23 +289,33 @@
 				console.log('上传失败：', e)
 			},
 			uploadSwiperDelete(e) {
+				this.uploadImageNumber = e.uploadImageNumber;
+			},
+			addArticle() {
 				uniCloud.callFunction({
 					name: 'articles',
 					data: {
-						action: 'delArticleImage',
+						action: 'addArticle',
+
 						params: {
-							fileID: e.tempFilePath
+
+							detailSwiper: this.detailSwiper,
+							title: this.title,
+							content: this.$refs.article.getContent(),
 						}
 					},
 					success: (res) => {
-						console.log(res)
+						
+						// 结束编辑
+						this.editable = false
+						uni.reLaunch({
+							url: '../creativeSharing/creativeSharing',
+						});
 					},
 					fail: (err) => {
 						console.log(err)
 					}
-
 				})
-
 			}
 
 		}

@@ -10,7 +10,6 @@
 		<view class="cropper-buttons ">
 			<view class="op" @click="chooseImage(['album','camera'])">{{backgroundImageSrc?'重新选择':'选择图片'}}</view>
 			<view class="op" @click="reDo()">重做</view>
-
 			<view class="op" @click="downLoad()">下载</view>
 		</view>
 	</view>
@@ -24,6 +23,7 @@
 			this.pointy = y;
 		}
 	}
+	let lastDrawTime=Date.now();
 	export default {
 		data() {
 			return {
@@ -31,24 +31,22 @@
 				backgroundImageSrc: "",
 				//缓存画布实例
 				context: {},
+		
+				toDraw: true,
 				canvas: {
 					id: "canvas",
 					width: 0,
 					height: 0,
 					//坐标点集合
 					pointList: [],
-					//临时存储坐标点
-					tempPointList: [],
+
 					//圆点的触发半径：
 					roundR: 10,
 					//圆点的显示半径：
 					roundRr: 5,
 					//当前拖动点的索引值；
 					curPointIndex: 0,
-					//判断是否点击拖动
-					paint: false,
-					//判断是否点圆点拖动，并瞬间离开,是否拖动点；
-					juPull: false,
+
 					//判断是否闭合
 					isClose: false,
 
@@ -68,10 +66,11 @@
 
 			}).exec();
 			this.context = uni.createCanvasContext('canvas');
+		
 
 		},
 		onLoad(obj) {
-this.backgroundImageSrc = obj.backgroundImageSrc;
+			this.backgroundImageSrc=obj.backgroundImageSrc
 		},
 		methods: {
 			chooseImage(sourceType) {
@@ -185,13 +184,13 @@ this.backgroundImageSrc = obj.backgroundImageSrc;
 			//判断结束点是否与起始点重合；
 			equalStartPoint(pointList, x, y) {
 
-			let	pointNumber=pointList.length;
+				let pointNumber = pointList.length;
 				if (pointNumber > 2 && Math.abs((x - pointList[0].pointx) * (x - pointList[0].pointx)) + Math.abs((y -
 						pointList[0].pointy) * (y - pointList[0].pointy)) <= this.canvas.roundR * this.canvas.roundR) {
 					//如果闭合
 					this.canvas.isClose = true;
 				}
-			// 使得最后一个点和第一个点重叠
+				// 使得最后一个点和第一个点重叠
 				if (this.canvas.isClose === true) {
 					pointList[pointNumber - 1].pointx = pointList[0].pointx;
 					pointList[pointNumber - 1].pointy = pointList[0].pointy;
@@ -206,12 +205,12 @@ this.backgroundImageSrc = obj.backgroundImageSrc;
 			},
 			//判断点击的点是坐标数组中的哪个点
 			judgeWhichPoint(pointList, x, y) {
-			
-			
+
+
 				for (let i = 0; i < pointList.length; i++) {
 					if (Math.abs((x - pointList[i].pointx) * (x - pointList[i].pointx)) + Math.abs((y - pointList[i]
 							.pointy) * (y - pointList[i].pointy)) <= 3 * this.canvas.roundR * this.canvas.roundR) {
-						
+
 						this.canvas.curPointIndex = i;
 						this.renderAgain();
 						return;
@@ -231,42 +230,44 @@ this.backgroundImageSrc = obj.backgroundImageSrc;
 			},
 
 			touchMoveEvent(event) {
-
-				let {
-					x,
-					y
-				} = this.getXAndY(event)
-
-				let pointList = this.canvas.pointList
-				let pointNumber = pointList.length;
+				let now = Date.now();
+				//12毫秒渲染一次
+				if (!this.toDraw&& now  - lastDrawTime > 12) {
+					this.toDraw = true;
+				}
 			
-				//是不是触屏了
-				if (this.canvas.paint) {
-					if (pointNumber > 0&&!this.canvas.isClose) {
+				if (this.toDraw) {
+					let curPointIndex =this.canvas.curPointIndex
+					let {
+						x,
+						y
+					} = this.getXAndY(event)
+					let pointList = this.canvas.pointList
+					let pointNumber = pointList.length;
+					if (pointNumber > 0 && !this.canvas.isClose) {
 						this.equalStartPoint(pointList, pointList[pointNumber - 1].pointx, pointList[pointList
 							.length - 1].pointy);
 					}
-					if(this.canvas.isClose){
+					if ( this.canvas.isClose) {
 						pointList[pointNumber - 1].pointx = pointList[0].pointx;
 						pointList[pointNumber - 1].pointy = pointList[0].pointy;
-						pointList[this.canvas.curPointIndex].pointx = x;
-						pointList[this.canvas.curPointIndex].pointy = y;
+						pointList[curPointIndex].pointx = x;
+						pointList[curPointIndex].pointy = y;
 					}
 					this.renderAgain()
-					
+					//添加动态线：
+					this.drawAllMove(this.context, x, y);
+					this.context.draw()
+					this.toDraw = false;
+					lastDrawTime = Date.now();
 				}
-
-
-				//添加动态线：
-				this.drawAllMove(this.context, x, y);
-				this.context.draw()
 			},
 			touchStartEvent(event) {
 				let {
 					x,
 					y
 				} = this.getXAndY(event)
-				this.canvas.paint = true;
+
 
 				//如果闭合了，判断当前点是抠图点的哪一个
 				if (this.canvas.isClose) {
@@ -281,26 +282,25 @@ this.backgroundImageSrc = obj.backgroundImageSrc;
 				// 画布
 
 				let pointList = this.canvas.pointList
-				//触屏结束
-				this.canvas.paint = false;
-				
-					if (pointList.length < 1) {
-						pointList.push(new Point(x, y));
-						this.drawArc(this.context, pointList[pointList.length - 1].pointx, pointList[pointList.length -
-							1].pointy);
-							this.context.draw()
-							return
-					}
-				
-					//如果闭合：禁止添加新的点；
-					if (!this.canvas.isClose) { //没有闭合
-						pointList.push(new Point(x, y));
-						//验证抠图是否闭合：闭合，让结束点=开始点；添加标记
-						this.equalStartPoint(pointList, pointList[pointList.length - 1].pointx, pointList[pointList
-							.length - 1].pointy);
-							
-					} 
-			
+
+
+				if (pointList.length < 1) {
+					pointList.push(new Point(x, y));
+					this.drawArc(this.context, pointList[pointList.length - 1].pointx, pointList[pointList.length -
+						1].pointy);
+					this.context.draw()
+					return
+				}
+
+				//如果闭合：禁止添加新的点；
+				if (!this.canvas.isClose) { //没有闭合
+					pointList.push(new Point(x, y));
+					//验证抠图是否闭合：闭合，让结束点=开始点；添加标记
+					this.equalStartPoint(pointList, pointList[pointList.length - 1].pointx, pointList[pointList
+						.length - 1].pointy);
+
+				}
+
 				this.renderAgain()
 				this.context.draw()
 
@@ -428,8 +428,6 @@ this.backgroundImageSrc = obj.backgroundImageSrc;
 									// #ifndef H5
 									this.saveImageToPhotosAlbum(res.tempFilePath)
 									// #endif
-
-
 								},
 								fail: (err) => {
 									this.reDo();

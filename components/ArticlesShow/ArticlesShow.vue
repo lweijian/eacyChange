@@ -1,100 +1,180 @@
 <template>
-	<view class="wrap" style="margin-bottom: 150rpx;">
-		<u-waterfall v-model="articlesList" ref="uWaterfall">
-			<template v-slot:left="{ leftList }">
-				<view class="work-warter" v-for="(item, index) in leftList" :key="item._id" @click="toDetail(item._id)">
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.cover" :index="index"></u-lazy-load>
-					<view class="work-title u-line-2">{{ item.title }}</view>
-					<view class="info-box">
-						<view class="left-box u-line-1">
-							<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22" label-size="22"
-								:name="item.userInfo[0].avatar" />
-						</view>
-						<view class="right-box">
-							<u-icon class="like-icon" name="heart" size="22" label-size="22" :label="item.like_count" />
+	<PullDownRefreshView @on-refresh="refresh" :refresher="!isMyselfArticlesShow">
 
-						</view>
-					</view>
-
-				</view>
-			</template>
-			<template v-slot:right="{ rightList }">
-				<view class="work-warter" v-for="(item, index) in rightList" :key="item._id"
-					@click="toDetail(item._id)">
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.cover" :index="index"></u-lazy-load>
-					<view class="work-title u-line-2">{{ item.title }}</view>
-
-					<view class="info-box">
-						<view class="left-box u-line-1">
-							<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22" label-size="22"
-								:name="item.userInfo[0].avatar" />
-						</view>
-						<view class="right-box">
-							<u-icon class="like-icon" name="heart" size="22" label-size="22" :label="item.like_count" />
-
+		<view class="wrap" style="margin-bottom: 150rpx;" v-if="showWaterFall">
+			<u-waterfall v-model="articlesList" ref="uWaterfall" idKey="_id" >
+				<template v-slot:left="{ leftList }">
+					<view class="work-warter" v-for="(item, index) in leftList" :key="item._id"
+						@click="toDetail(item._id)" @longpress="longtap(item._id)">
+						<u-lazy-load threshold="-450" border-radius="10" :image="item.cover" :index="index">
+						</u-lazy-load>
+						<view class="work-title u-line-2">{{ item.title }}</view>
+						<view class="info-box">
+							<view class="left-box u-line-1">
+								<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22"
+									label-size="22" :name="item.userInfo[0].avatar" />
+							</view>
+							<view class="right-box">
+								<u-icon class="like-icon" name="heart" size="22" label-size="22"
+									:label="item.like_count" />
+							</view>
 						</view>
 
 					</view>
+				</template>
+				<template v-slot:right="{ rightList }">
+					<view class="work-warter" v-for="(item, index) in rightList" :key="item._id"
+						@click="toDetail(item._id)" @longpress="longtap(item._id)">
+						<u-lazy-load threshold="-450" border-radius="10" :image="item.cover" :index="index">
+						</u-lazy-load>
+						<view class="work-title u-line-2">{{ item.title }}</view>
 
-				</view>
-			</template>
-		</u-waterfall>
-		<!-- <u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore> -->
-	</view>
+						<view class="info-box">
+							<view class="left-box u-line-1">
+								<u-icon class="work-nickName" :label="item.userInfo[0].nickName" size="22"
+									label-size="22" :name="item.userInfo[0].avatar" />
+							</view>
+							<view class="right-box">
+								<u-icon class="like-icon" name="heart" size="22" label-size="22"
+									:label="item.like_count" />
+
+							</view>
+
+						</view>
+
+					</view>
+				</template>
+			</u-waterfall>
+			<!-- <u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore> -->
+		</view>
+	</PullDownRefreshView>
 </template>
 
 <script>
 	export default {
 		name: 'ArticlesShow',
-		props: {
-			articlesList: {
-				type: Array,
-				default: []
-			}
-		},
+
 		data() {
 			return {
-
+				showWaterFall:true,
+				articlesList: [],
 				loadStatus: 'loadmore',
 			};
 		},
+		props: {
+			isMyselfArticlesShow: {
+				type: Boolean,
+				default: false
+			}
+		},
 		methods: {
-			init() {
+			async init() {
+				this.articlesList = await this.getArticles()
 				
+			},
+			async getArticles() {
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				try {
+					// 获取文章列表
+					const getAllArticles = await uniCloud.callFunction({
+						name: 'articles',
+						data: {
+							action: this.isMyselfArticlesShow ? 'getArticlesByUid' : 'getAllArticles'
+						}
+					})
+					return getAllArticles.result?.dataSource?.data || []
+
+				} catch (e) {
+
+					console.log(e)
+				} finally {
+					uni.hideLoading();
+				}
+
+				return [];
 
 			},
-			addRandomData() {
-
+			async refresh(e) {
+				// 获取文章列表
+		
+				let temp =await this.getArticles()
+				  if(this.articlesList.length!==temp.length){
+					  this.showWaterFall=false;
+					  this.articlesList=temp;
+				  }
+						
+				setTimeout(()=> {
+					e.complete();
+					this.showWaterFall=true
+				}, 600);
 			},
 			toDetail(id) {
 				uni.navigateTo({
 					url: `../../pages/detail/detail?id=${id}`
 				})
 			},
+			longtap(id) {
+				if (!this.isMyselfArticlesShow) {
+					return
+				}
+				uni.showModal({
+					content: '是否确认删除',
+					success: async (res) => {
+						try {
+							if (res.confirm) {
+								uni.showLoading({
+									title: '删除中'
+								});
+								await this.delArticle(id);
+								this.removeItem(id)
+								
+								uni.hideLoading();
+								uni.showToast({
+									title: '删除成功',
+									duration: 600
+								});
+							}
+						} catch (e) {
+							console.log(e)
+							uni.showToast({
+								title: '删除失败',
+								duration: 1000
+							});
+						}
 
-			clear() {
-				this.$refs.uWaterfall.clear();
+					}
+				});
+
+			},
+			
+			delArticle(id) {
+				return uniCloud.callFunction({
+					name: 'articles',
+					data: {
+						action: 'delArticles',
+						params: {
+							id,
+						}
+					},
+				})
+
+			},
+			removeItem(id){
+				this.$refs.uWaterfall.remove(id);
 			}
 		},
 		mounted() {
 			this.init()
 		},
-		// onReachBottom() {
-		// 	this.loadStatus = 'loading';
-		// 	// 模拟数据加载
-		// 	setTimeout(() => {
-		// 		this.addRandomData();
-		// 		this.loadStatus = 'loadmore';
-		// 	}, 1000);
-		// },
-
 	}
 </script>
 
 
 
 <style lang="scss" scoped>
-	
 	.work-warter {
 		border-radius: 10px;
 		margin: 10rpx 10rpx 30rpx 10rpx;
@@ -106,7 +186,7 @@
 
 
 
-	
+
 
 	.work-image {
 		width: 100%;

@@ -136,10 +136,29 @@ exports.main = async (event, context) => {
 						msg: `删除失败,请指定删除的id`
 					}
 				}
+			let dynamicData = await dynamic
+			.aggregate()
+			.match({
+				_id: params.id
+			}).lookup({
+				from: 'uni-id-users',
+				localField: 'uid',
+				foreignField: '_id',
+				as: 'userInfo'
+			})
+			.end();
+					
+				if(dynamicData.data[0].uid!==params.uid){
+					return res = {
+						code: 403,
+						msg: `权限不足`
+					}
+				}
+			
 				let result = await dynamic.doc(id).remove()
 				res = {
 					code: 200,
-					msg: '删除成功'
+					msg: '删除成功',
 				}
 			} catch (e) {
 				res = {
@@ -147,7 +166,7 @@ exports.main = async (event, context) => {
 					msg: `删除失败:${e}`,
 				}
 			}
-
+			
 			break;
 
 		case 'delDynamicImage':

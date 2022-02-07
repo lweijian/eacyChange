@@ -1,5 +1,5 @@
 <template>
-	<view class="dynamic" @click="clickDynamic()">
+	<view class="dynamic" @click="clickDynamic() ">
 		<view class="user__container">
 			<view class="user__header-warp">
 				<!-- 头像组 -->
@@ -27,8 +27,9 @@
 		<view class="allImage">
 			<view class="imgList">
 				<view class="images" v-for="(item,index) in imgList" :key="index">
-			<image @click.stop="previewImg()" class="oneimg" :src="item" mode="aspectFill"
-						:style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
+
+					<image @click.stop="previewImg()"  class="oneimg" :src="item"
+						mode="aspectFill" :style="{width:imgWidth+'px','max-height':imgHeight+'px'}"></image>
 				</view>
 			</view>
 		</view>
@@ -68,6 +69,7 @@
 <script>
 	export default {
 		props: {
+			
 			avatar: {
 				type: String
 			},
@@ -120,6 +122,7 @@
 		},
 		data() {
 			return {
+				
 				windowWidth: 0, //屏幕可用宽度
 				windowHeight: 0, //屏幕可用高度
 				imgWidth: 0, //图片宽度
@@ -130,11 +133,11 @@
 				operateDisplay: 'block',
 			}
 		},
-		mounted() {
+		created() {
 			const res = uni.getSystemInfoSync();
 			this.windowHeight = res.windowHeight;
 			this.windowWidth = res.windowWidth;
-
+			
 			if (this.userNoShow) {
 				this.userDisplay = 'none';
 			}
@@ -142,9 +145,11 @@
 			if (this.operateNoShow) {
 				this.operateDisplay = 'none';
 			}
-
 			this.judgeImg();
 			this.initOperate();
+		},
+		watch: {
+			
 		},
 		methods: {
 			// 预览图片
@@ -162,8 +167,9 @@
 			},
 			// 自适应判断
 			judgeImg() {
+				
 				if (this.imgList.length == 1) {
-					this.imgWidth = this.windowWidth * 5 /6;
+					this.imgWidth = this.windowWidth * 5 / 6;
 					this.imgHeight = this.windowHeight * 3 / 5;
 				} else if (this.imgList.length == 2) {
 					this.imgWidth = this.windowWidth * 3 / 7;
@@ -173,6 +179,7 @@
 					this.imgHeight = this.imgWidth;
 				}
 			},
+			
 			/** 触发父级事件 */
 			// 点击动态
 			clickDynamic() {
@@ -210,15 +217,16 @@
 			// 点击聊天
 			clickChat() {
 				this.$emit('clickChat');
-
 			}
-		}
+			
+		},
+	
 	}
 </script>
 
 <style lang="scss">
 	@mixin card-box {
-		margin:  20rpx 20rpx 40rpx;
+		margin: 20rpx 20rpx 40rpx;
 		background-color: #ffffff;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 		border-radius: 20rpx;
@@ -231,7 +239,12 @@
 
 	.dynamic {
 		@include card-box;
-		background-color: #fff;
+		overflow: hidden;
+		// margin: 10px 10px 40rpx;
+	// 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	// 	border-radius: 20rpx;
+	// 	background-color: #fff;
+	
 	}
 
 	.allImage {

@@ -52,16 +52,16 @@ exports.main = async (event, context) => {
 		case 'getArticleById':
 			try {
 				let result = await article
-				.aggregate()
-				.match({
-					_id: params.id
-				}).lookup({
-					from: 'uni-id-users',
-					localField: 'uid',
-					foreignField: '_id',
-					as: 'userInfo'
-				})
-				.end();
+					.aggregate()
+					.match({
+						_id: params.id
+					}).lookup({
+						from: 'uni-id-users',
+						localField: 'uid',
+						foreignField: '_id',
+						as: 'userInfo'
+					})
+					.end();
 				res = {
 					code: 200,
 					msg: '查询成功',
@@ -76,7 +76,7 @@ exports.main = async (event, context) => {
 			break;
 		case 'getArticlesByUid':
 			try {
-					let result = await article
+				let result = await article
 					.aggregate()
 					.match({
 						uid: params.uid
@@ -137,10 +137,30 @@ exports.main = async (event, context) => {
 						msg: `删除失败,请指定删除的id`
 					}
 				}
+				let articlesData = await article
+					.aggregate()
+					.match({
+						_id: params.id
+					}).lookup({
+						from: 'uni-id-users',
+						localField: 'uid',
+						foreignField: '_id',
+						as: 'userInfo'
+					})
+					.end();
+					
+				if(articlesData.data[0].uid!==params.uid){
+					return res = {
+						code: 403,
+						msg: `权限不足`
+					}
+				}
+
 				let result = await article.doc(id).remove()
 				res = {
 					code: 200,
-					msg: '删除成功'
+					msg: '删除成功',
+					
 				}
 			} catch (e) {
 				res = {

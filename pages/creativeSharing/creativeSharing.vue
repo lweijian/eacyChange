@@ -11,18 +11,12 @@
 						</view>
 					</view>
 
-					<PullDownRefreshView @on-refresh="refresh">
-						<view class="page-box">
+						<ArticlesShow v-show="headerCurrent==0" :isMyselfArticlesShow="false" />
+						<DynamicShow v-show="headerCurrent==1"  :isMyselfDynamicShow="false" />
 
-							<!-- 文章展示 -->
-							<ArticlesShow v-show="headerCurrent==0" :articlesList='articlesList' />
-							<!-- 动态展示 -->
-							<DynamicShow v-show="headerCurrent==1" :dynamicList="dynamicList" />
 
-						</view>
-
-					</PullDownRefreshView>
 				</swiper-item>
+
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
@@ -46,9 +40,9 @@
 				</swiper-item>
 			</swiper>
 			<view class="u-tabs-box">
-				<u-tabs-swiper activeColor="#000000 " height="100" inactive-color="#8e8e8e" :show-bar="false" ref="tabs" :bold="false"
-					:list="footerList" :current="footerCurrent" @change="footerListChange" :is-scroll="false"
-					swiperWidth="750"></u-tabs-swiper>
+				<u-tabs-swiper activeColor="#000000 " height="100" inactive-color="#8e8e8e" :show-bar="false" ref="tabs"
+					:bold="false" :list="footerList" :current="footerCurrent" @change="footerListChange"
+					:is-scroll="false" swiperWidth="750"></u-tabs-swiper>
 			</view>
 		</view>
 
@@ -89,36 +83,14 @@
 			};
 		},
 		onLoad() {
-
-			this.init();
-
+		
 		},
-		// onPullDownRefresh() {
-
-		// },
+		
 		computed: {},
 		methods: {
 
 			async init() {
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				})
-				try {
-					// 获取文章列表
-					const getAllArticles = await uniCloud.callFunction({
-						name: 'articles',
-						data: {
-							action: 'getAllArticles'
-						}
-					})
-					
-					this.articlesList = getAllArticles.result?.dataSource?.data || []
-					
-				} catch (e) {
-					console.log(e)
-				}
-				uni.hideLoading();
+		
 				try {
 					// 获取动态列表
 					const getAllDynamics = await uniCloud.callFunction({
@@ -134,6 +106,7 @@
 
 
 			},
+		
 			refresh(e) {
 				if (this.headerCurrent == 0) {
 					// 获取文章列表

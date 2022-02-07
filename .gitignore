@@ -6,3 +6,4 @@ unpackage/
 wxcomponents/**/*.vue
 wxcomponents/**/*.css
 .hbuilderx/
+.idea
