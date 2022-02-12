@@ -7,5 +7,4 @@
 ![79ae09a43d176968f2c02bdbd66c567](https://user-images.githubusercontent.com/63062575/153717981-ca31b313-f2d8-4424-8217-720f25842d71.jpg)
 ![ffdf9a2341e13e6daadee004a4bc93b](https://user-images.githubusercontent.com/63062575/153717982-95d3f090-2cc5-4270-b181-adf58c582f88.jpg)
 ![22c0e3ae8796c9c2845dc89580a2647](https://user-images.githubusercontent.com/63062575/153717988-ddc4734c-c076-470e-a6bc-b37d1e653742.jpg)
-![41c047847d93efe735f6625730dbc14](https://user-images.githubusercontent.com/63062575/153717993-a1af14ac-769f-4eff-b9e8-2d4409c36f2e.jpg)
-![246ce0ddc3b1a3ba8330c0405910c6d](https://user-images.githubusercontent.com/63062575/153717996-9c812642-7252-4261-b411-70b6d6201118.jpg)
+ <img src="https://user-images.githubusercontent.com/63062575/153717996-9c812642-7252-4261-b411-70b6d6201118.jpg" width = "300" height = "200" alt="图片名称" align=center />
