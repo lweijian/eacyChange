@@ -39,17 +39,16 @@
 				})
 			},
 			toLogin(){
-				
 			
 				uni.reLaunch({
 				    url: '../../login/login'
 				});
 			},
-			// 		toTest() {
-			// 			uni.navigateTo({
-			// 				url: '../../test/test'
-			// 			})
-			// 		},
+				toTest() {
+						uni.navigateTo({
+							url: '../../test/test'
+						})
+					},
 
 
 		},

@@ -1,38 +1,39 @@
 <template>
-	<PullDownRefreshView :scroll-top="scrollTop" @on-refresh="refresh" @scroll='handleScroll()'
+
+<PullDownRefreshView  id="dynamic-scroll-view" :scroll-top="scrollTop" @on-refresh="refresh" 
 		:refresher="!isMyselfDynamicShow">
+		<!-- 动态 -->
 
-		<view class="dynamic-show-box">
-			<!-- <view class="dynamic-show-box" :style="{transform:transformOffset}"> -->
-			<!-- <view  class="virtual-occupancy" :style="{height:phantomHeight}"></view> -->
-			<!-- 动态 -->
-			<Dynamic class="dynamic" v-for="(item,index) in dynamicList" :key="item._id" :domIndex="index"
-				:imgList="item.imgList" :avatar="item.userInfo[0].avatar" :isNeedFocus='!isMyselfDynamicShow'
-				:nickName="item.userInfo[0].nickName" :publish_date="item.publish_date" :content="item.content"
-				:isLike="item.isLike" :isCollect="item.isCollect" :like_count="item.like_count"
-				:collectionNumber="item.collectionNumber" :chatNumber="item.chatNumber"
-				@longpress="longtap(item._id,index)" @clickDynamic="clickDynamic(index)" @clickUser="clickUser(item.id)"
-				@clickFocus="clickFocus(index)" @clickThumbsup="clickThumbsup(item)"
-				@clickCollectionNumber="clickCollectionNumber(item)" @clickChat="clickChat(item)">
-			</Dynamic>
-
+		<view class="scroll-box">
+			<view v-for="(item,index) in currentList" :key="item._id">
+				<Dynamic :domIndex="index" :imgList="item.imgList" :avatar="item.userInfo[0].avatar"
+					:isNeedFocus='!isMyselfDynamicShow' :nickName="item.userInfo[0].nickName"
+					:publish_date="item.publish_date" :content="item.content" :isLike="item.isLike"
+					:isCollect="item.isCollect" :like_count="item.like_count" :collectionNumber="item.collectionNumber"
+					:chatNumber="item.chatNumber" @longpress="longtap(item._id,index)"
+					@clickDynamic="clickDynamic(index)" @clickUser="clickUser(item.id)" @clickFocus="clickFocus(index)"
+					@clickThumbsup="clickThumbsup(item)" @clickCollectionNumber="clickCollectionNumber(item)"
+					@clickChat="clickChat(item)">
+				</Dynamic>
+			</view>
+			<view class="loading">
+				{{isLoad?"loading":"not find more"}}
+			</view>
 		</view>
+
+
+
 	</PullDownRefreshView>
+
+	
+
 </template>
 
 <script>
-	function getArrayLength(arr = []) {
-		let len = 0;
-		for (let i = 0; i < arr.length; i++) {
-			if (arr[i]) {
-				len++;
-			}
-		}
-		return len;
-	}
 	import {
 		mapGetters
 	} from 'vuex';
+	let observer = null;
 	export default {
 		name: "DynamicShow",
 		props: {
@@ -45,6 +46,10 @@
 		data() {
 			return {
 
+				isRefreshing: false, // 是否在刷新中
+				isInfiniting: false, // 是否在加载中
+				triggered: true,
+				isLoad: true,
 				currentNodesNumber: 4,
 				estimatedRowHeight: 500,
 				isNeedGetInfo: true,
@@ -55,34 +60,19 @@
 			};
 		},
 		methods: {
-			findStartIndex(scrollTop) {
-				let startIndex = 0;
-				let len = this.position.length;
-				while (startIndex < len) {
-					if (scrollTop < this.position[startIndex + 2].bottom) break;
-					startIndex += 1;
-				}
-				return startIndex;
-			},
-			handleScroll(e) {
-				// 	const {
-				// 		scrollTop,
-				// 	} = e.detail
+			async refreshing() {
+				if (this.isRefreshing) return;
+				this.isRefreshing = true
+				this.triggered = true;
+				this.isInfiniting = false;
+				this.dynamicList = await this.getDynamics();
 
-				// 	if(scrollTop>this.position[this.position.length-1].bottom){
-
-				// 		return
-				// 	}
-
-				// 	let startIndex = this.findStartIndex(scrollTop);
-
-				// 	if (startIndex != this.startIndex) {
-				// 		this.startIndex = startIndex;
-				// 		this.isNeedGetInfo = true
-
-				// 	}
+				this.triggered = false;
+				this.isRefreshing = false;
+				this.isInfiniting = true;
 
 			},
+
 			clickDynamic(e) {
 				console.log('childDynamic');
 			},
@@ -172,16 +162,6 @@
 				let temp = await this.getDynamics();
 				return temp;
 
-				// for (let i = 0; i < this.dynamicList.length; i++) {
-
-				// 	this.position.push({
-				// 		index: i,
-				// 		top: i * this.estimatedRowHeight,
-				// 		height: this.estimatedRowHeight,
-				// 		bottom: (i + 1) * this.estimatedRowHeight,
-				// 		dValue: 0,
-				// 	})
-				// }
 			},
 			async getDynamics() {
 				try {
@@ -199,97 +179,62 @@
 					return [];
 				}
 			},
-			async refresh(e) {
-				this.dynamicList = await this.getDynamics();
-
-				setTimeout(function() {
-					e.complete();
-				}, 600);
-			}
 
 		},
 		computed: {
-			// transformOffset() {
-			// 	return `translate3d(0,${this.startIndex >= 1 ? this.position[this.startIndex - 1].bottom : 0}px,0)`;
-			// },
-			// endIndex() {
-			// 	return this.startIndex + this.currentNodesNumber;
-			// },
-			// currentList() {
 
-			// 	return this.dynamicList.slice(this.startIndex, this.endIndex);
-			// },
-			// phantomHeight() {
+			endIndex() {
+				return Math.min(this.startIndex + this.currentNodesNumber, this.dynamicList.length - 1)
+			},
+			currentList() {
 
-			// 	return `${this.position[this.position.length-1]?.bottom||0}px`;
-			// },
-
-		},
-		watch: {
-			// currentListInfo() {
-			// 	let arrayLength = getArrayLength(this.currentListInfo)
-
-			// 	if (arrayLength !== this.currentNodesNumber) return;
-			// 	for (let i = 0; i < arrayLength; i++) {
-
-			// 		let index = this.startIndex + i
-
-			// 		let height = this.currentListInfo[i]?.height
-			// 		let oldHeight = this.position[index].height;
-			// 		let dValue = oldHeight - height;
-			// 		if (dValue) {
-			// 			this.position[index].top = this.position[index - 1]?.bottom +9||9
-			// 			this.position[index].bottom =this.position[index].top + height
-			// 			this.position[index].height = height
-			// 			this.position[index].dValue = dValue;
-			// 		}
-			// 	}
-
-			// },
+				return this.dynamicList.slice(this.startIndex, this.endIndex);
+			},
 
 
 		},
 
 		async created() {
 			this.dynamicList = await this.init()
-			this.$root.$on('del-dynaimc',async () => {
-				this.dynamicList = await this.init()
+	
+
+			this.$nextTick(function() {
+				observer = uni.createIntersectionObserver(this);
+				observer.relativeTo('#dynamic-scroll-view').observe('.loading', (res) => {
+					if (res.intersectionRatio > 0) {
+						
+						if (this.endIndex === this.dynamicList.length - 1) {
+							this.isLoad = false
+							observer.disconnect()
+						
+						}else{
+							this.currentNodesNumber += 2
+						}
+						
+					}
+					
+				})
+
+				this.$root.$on('del-dynaimc', async () => {
+					this.dynamicList = await this.init()
+				})
 			})
 		},
-
-		updated() {
-			// if (this.isNeedGetInfo) {
-			// 	let query = uni.createSelectorQuery().in(this);
-			// 	query.selectAll('.dynamic').fields({
-			// 		size: true,
-			// 		rect: true,
-			// 	}, data => {
-			// 		if (data.length > 0) {
-			// 			this.currentListInfo = data;
-			// 			this.isNeedGetInfo = false;
-
-			// 		}
-			// 	}).exec();
-			// }
-
+		onUnload() {
+			if (observer) {
+				observer.disconnect()
+			}
 		}
-
-
-
-
 	};
 </script>
 <style lang="scss">
-	.dynamic-show-box {
+	.scroll-box {
 		margin-bottom: 200rpx;
-
 	}
 
-	.virtual-occupancy {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: -1;
+	.loading {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
